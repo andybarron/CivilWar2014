@@ -9,6 +9,7 @@ var STAGE_W = 800
 var STAGE_H = 600
 
 // create HTML5 canvas and add it to the document
+// muahahaha change you didn't know about!
 
 var canvas = document.createElement("canvas");
 canvas.id = 'display';
