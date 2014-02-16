@@ -3,6 +3,8 @@
 // us to switch screens for different games, scenes,
 // etc.
 
+// whee adding a comment in git! yay!
+
 var STAGE_W = 800
 var STAGE_H = 600
 
