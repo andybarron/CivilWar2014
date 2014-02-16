@@ -30,6 +30,7 @@ var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
 // TODO some way to preload/cache textures (yay helper functions)
 var textureBunny = PIXI.Texture.fromImage("assets/img/bunny1.png");
 var textureGreen = PIXI.Texture.fromImage("assets/img/bunny2.png");
+// some code
 
 // disable texture smoothing
 // may actually want to enable this, depending on art style
