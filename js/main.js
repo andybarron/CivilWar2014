@@ -3,10 +3,13 @@
 // us to switch screens for different games, scenes,
 // etc.
 
+// whee adding a comment in git! yay!
+
 var STAGE_W = 800
 var STAGE_H = 600
 
 // create HTML5 canvas and add it to the document
+// muahahaha change you didn't know about!
 
 var canvas = document.createElement("canvas");
 canvas.id = 'display';
@@ -28,6 +31,7 @@ var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
 // TODO some way to preload/cache textures (yay helper functions)
 var textureBunny = PIXI.Texture.fromImage("assets/img/bunny1.png");
 var textureGreen = PIXI.Texture.fromImage("assets/img/bunny2.png");
+// some code
 
 // disable texture smoothing
 // may actually want to enable this, depending on art style
