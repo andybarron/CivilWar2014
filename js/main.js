@@ -51,7 +51,7 @@ bunny.position.x = STAGE_W/2;
 bunny.position.y = STAGE_H/2;
 
 // scale the bunny up to 2x its normal size
-bunny.scale = new PIXI.Point(2,2);
+bunny.scale = new PIXI.Point(3,3);
 
 // make him interactive and popup when you click on him
 bunny.interactive = true;
