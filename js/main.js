@@ -28,11 +28,13 @@ var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
 // TODO some way to preload/cache textures (yay helper functions)
 var textureBunny = PIXI.Texture.fromImage("assets/img/bunny1.png");
 var textureGreen = PIXI.Texture.fromImage("assets/img/bunny2.png");
+var textureTJ = PIXI.Texture.fromImage("assets/img/jefferson.png");
 
 // disable texture smoothing
 // may actually want to enable this, depending on art style
 textureBunny.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 textureGreen.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+textureTJ.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 
 // add text to screen to track framerate
 var text = new PIXI.Text("",{font: "24px Arial", fill: "cyan"});
@@ -51,7 +53,7 @@ bunny.position.x = STAGE_W/2;
 bunny.position.y = STAGE_H/2;
 
 // scale the bunny up to 2x its normal size
-bunny.scale = new PIXI.Point(3,3);
+bunny.scale = new PIXI.Point(2,2);
 
 // make him interactive and popup when you click on him
 bunny.interactive = true;
@@ -62,6 +64,38 @@ bunny.mousedown = function()
 
 // attach him to the stage
 stage.addChild(bunny);
+
+// add Thomas Jefferson
+
+var TJ = new PIXI.Sprite(textureTJ);
+
+// do what's necessary to put him on the screen in a static location
+
+TJ.anchor.x = 0.5;
+TJ.anchor.y = 0.5;
+TJ.position.x = 500;
+TJ.position.y = 400;
+stage.addChild(TJ);
+
+//HARDCODED TEXT! YEAH!
+
+var TJText = new PIXI.Text("Well, I feel anachronistic...", {font: "24px Arial", align: "right"});
+TJText.position.x = 50;
+TJText.position.y = 535;
+var textdisplay = 0;
+
+var TJnamText = new PIXI.Text("TJ", {font: "24px Arial", align: "right"});
+TJnamText.position.x = 50;
+TJnamText.position.y = 475;
+
+var answer1 = new PIXI.Text("Oh really? I didn't notice the cartoon bunnies.", {font: "16px Arial", align: "right"});
+answer1.position.x = 420;
+answer1.position.y = 565;
+
+var answer2 = new PIXI.Text("Yeah, you don't belong in the Civil War, TJ.", {font: "16px Arial", align: "right"});
+answer2.position.x = 420;
+answer2.position.y = 515;
+
 
 // add a hundred friends!
 for (var i = 0; i < 100; i++)
@@ -160,6 +194,48 @@ function animate()
   if (Input.anyKeyDown(KEYS_RIGHT))
   {
     bunny.position.x += PLAYER_SPEED*delta;
+  }
+  
+  // press the spacebar to get TJ to say something.
+  // you should probably also need to be near him for that to occur...\
+  // TODO: More collisions
+  
+  if (Input.anyKeyDown(KEYS_SPACE) && textdisplay == 0)
+  {
+	//RECTANGLES FOR THE RECTANGLE GOD!
+	//This is the text box that appears at the bottom.
+
+	// create graphics object
+	var graphics = new PIXI.Graphics();
+	//define the inside color
+	graphics.beginFill(0xffffff);
+	//line width and color
+	graphics.lineStyle(5, 0xaaaaaa);
+	//and the dimensions(x,y) and position(x,y) of the rectangle
+	graphics.drawRect(0, 500, 400, 100);
+	
+	// and this is the textbox that contains "TJ" or the name
+	graphics.drawRect(40,460,50,50);
+	// and these are two answer buttons
+	// TODO make buttons work.
+	graphics.lineStyle(5, 0x0000ff);
+	graphics.drawRect(405,500, 350, 45);
+	graphics.lineStyle(5, 0xff0000);
+	graphics.drawRect(405,550, 350, 45);
+	
+	
+	//and add it to the stage
+	graphics.endFill();
+	stage.addChild(graphics);
+	
+	
+	
+	stage.addChild(TJText);
+	stage.addChild(TJnamText);
+	stage.addChild(answer1);
+	stage.addChild(answer2);
+	textdisplay = 1;
+	console.log(textdisplay);
   }
 
   // collision detection - remove every obstacle bunny that is touching
