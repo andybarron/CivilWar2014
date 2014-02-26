@@ -1,30 +1,17 @@
-// TODO: Add a Stage instance to Screen class
-// so we can swap out PIXI Sprites, MovieClips, etc.
-
-function Screen(initFunc, updateFunc, renderFunc)
+function Screen(cfg)
 {
-	this.initFunc = initFunc;
-	this.updateFunc = updateFunc;
-	this.renderFunc = renderFunc;
+
+	this.init = validateFunction(cfg.init);
+	this.update = validateFunction(cfg.update);
+	this.onKeyPress = validateFunction(cfg.onKeyPress);
+	this.onMousePress = validateFunction(cfg.onMousePress);
+
+	this.stage = new PIXI.Stage(0x000000,true);
+
 	this.init();
 }
 
-Screen.prototype.init = function()
-{
-	this.initFunc.call(this);
-}
 
-Screen.prototype.update = function(delta)
-{
-	this.updateFunc.call(this,delta);
-}
-
-Screen.prototype.render = function()
-{
-	this.renderFunc.call(this);
-}
-
-// Input functions
 function Input () {}
 
 Input.on = false;
@@ -160,20 +147,50 @@ Input.areKeysUp = function(codes)
 	return !Input.areKeysUp(codes);
 }
 
-// Sound functions
-// TODO music......
 function Sounds () {}
 
 Sounds.files = {};
+Sounds.loadListeners = {};
 
-Sounds.init = function() {
+Sounds.load = function() {
 	for (var i = 0; i < arguments.length; i++)
 	{
 		var sndFilename = arguments[i];
 		var sndName = trimFilename(sndFilename);
 		var snd = new Audio('snd/'+sndFilename);
+		snd.dataName = sndName;
+
+		// make sounds accessible by filename
+		// with and without extension
 		Sounds.files[sndName] = snd;
+		Sounds.files[sndFilename] = snd;
+
+		debug('loading sound: ' + sndName);
+		snd.addEventListener('canplaythrough', function()
+		{
+			debug('loaded sound: ' + this.dataName);
+			var lis = Sounds.loadListeners[this.dataName];
+			if(exists(lis))
+			{
+				debug('calling sound load listener(s) for sound: ' + this.dataName);
+				for(var j = 0; j < lis.length; j++)
+				{
+					lis[j].call(null);
+				}
+			}
+		}, false);
 	}
+}
+
+// only really necessary for long looping
+// sounds i.e. music
+Sounds.addLoadListener = function(name, fn)
+{
+	if(!exists(Sounds.loadListeners[name]))
+	{
+		Sounds.loadListeners[name] = [];
+	}
+	Sounds.loadListeners[name].push(fn);
 }
 
 Sounds.play = function(name)
@@ -187,4 +204,45 @@ Sounds.play = function(name)
 	{
 		debug('Sound not found: ' + name);
 	}
+}
+
+// TODO this is currently inconsistent;
+// consider alternatives. streaming?
+Sounds.loop = function(name)
+{
+	debug('requesting sound loop: ' + name)
+	var sound = Sounds.files[name];
+	if(exists(sound))
+	{
+		var ls = new Audio(sound.src);
+		ls.loop = true;
+		ls.play();
+
+		// ls.addEventListener('ended', function() 
+		// {
+		// 	debug('looping sound: ' + name);
+		// 	debug(getData(this));
+		// 	this.currentTime = 0;
+		// }, false);
+		// ls.play();
+
+		// TODO store it somewhere so we can stop it later
+	}
+	else
+	{
+		debug('Sound not found: ' + name);
+	}
+}
+
+function Gfx () {}
+
+Gfx.loadTexture = function(name,smooth)
+{
+	var disableSmoothing = !exists(smooth) || smooth == false;
+	var tex = PIXI.Texture.fromImage("img/" + name + ".png");
+	if ( disableSmoothing )
+	{
+		tex.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+	}
+	return tex;
 }

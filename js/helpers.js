@@ -97,3 +97,15 @@ function spriteZSort(a,b)
 	}
 	else return 0;
 }
+
+function validateFunction(fn)
+{
+	return exists(fn) ? fn : doNothing;
+}
+
+function doNothing()
+{
+	// an empty function
+	// a command to do nothing
+	// such sweet irony
+}
