@@ -214,7 +214,7 @@ function animate() {
 	// you should probably also need to be near him for that to occur...\
 	// TODO: More collisions
 
-	if (Input.anyKeyDown(KEYS_SPACE) && textdisplay == 0) {
+	if (Input.anyKeyDown(KEYS_INTERACT) && textdisplay == 0) {
 		//RECTANGLES FOR THE RECTANGLE GOD!
 		//This is the text box that appears at the bottom.
 
