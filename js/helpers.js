@@ -37,12 +37,12 @@ function getRandomInt (max) { //max is EXCLUSIVE?!
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomElement(array)
+function arrayGetRandom(array)
 {
 	return array[getRandomInt(array.length)];
 }
 
-function removeElement(array,element)
+function arrayRemove(array,element)
 {
 	for( var i = 0; i < array.length; i ++ )
 	{
@@ -83,4 +83,17 @@ function recTouch(a,b,error) // error > 0 is easier to hit (bigger)
 	{
 		return true;
 	}
+}
+
+function spriteZSort(a,b)
+{
+	if(a.position.y < b.position.y)
+	{
+		return -1;
+	}
+	else if (a.position.y > b.position.y)
+	{
+		return 1;
+	}
+	else return 0;
 }
