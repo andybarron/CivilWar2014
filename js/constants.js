@@ -14,6 +14,19 @@ KEYS_DOWN = [40, 83]; // S, DownArrow
 KEYS_LEFT = [37, 65]; // A, LeftArrow
 KEYS_RIGHT = [39, 68]; // D, RightArrow
 KEYS_INTERACT = [32]; // Space
+KEYS_EXIT = [27]; // Escape
 
 // how quickly the player moves
 PLAYER_SPEED = 250;
+
+// asset info
+ASSET_PATH = "assets/";
+IMAGE_PATH = ASSET_PATH+"img/";
+SOUND_PATH = ASSET_PATH+"snd/";
+
+// size of game
+STAGE_W = 800;
+STAGE_H = 600;
+
+// maximum time per frame
+MAX_DELTA = 1.0/30;

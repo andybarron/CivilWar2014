@@ -56,6 +56,11 @@ function arrayRemove(array,element)
 	return false;
 }
 
+function arrayContains(array,element)
+{
+	return array.indexOf(element) != -1;
+}
+
 function recTouch(a,b,error) // error > 0 is easier to hit (bigger)
 {
 	if(!exists(error))

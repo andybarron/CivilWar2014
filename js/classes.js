@@ -3,8 +3,8 @@ function Screen(cfg)
 
 	this.init = validateFunction(cfg.init);
 	this.update = validateFunction(cfg.update);
-	this.onKeyPress = validateFunction(cfg.onKeyPress);
-	this.onMousePress = validateFunction(cfg.onMousePress);
+	this.onKeyDown = validateFunction(cfg.onKeyDown);
+	this.onMouseDown = validateFunction(cfg.onMouseDown);
 
 	this.stage = new PIXI.Stage(0x000000,true);
 
@@ -234,15 +234,15 @@ Sounds.loop = function(name)
 	}
 }
 
-function Gfx () {}
+function Images () {}
 
-Gfx.loadTexture = function(name,smooth)
+Images.getTexture = function(filename)
 {
-	var disableSmoothing = !exists(smooth) || smooth == false;
-	var tex = PIXI.Texture.fromImage("img/" + name + ".png");
-	if ( disableSmoothing )
-	{
-		tex.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-	}
-	return tex;
+	// TODO some kind of texture atlasing, etc......
+	return PIXI.Texture.fromImage(IMAGE_PATH + filename, false, PIXI.scaleModes.NEAREST);
+}
+
+Images.createSprite = function(tex)
+{
+	return new PIXI.Sprite(tex instanceof PIXI.Texture ? tex : Images.getTexture(tex));
 }
