@@ -103,6 +103,11 @@ function spriteZSort(a,b)
 	else return 0;
 }
 
+function validateObject(o,defaultValue)
+{
+	return exists(o) ? o : defaultValue;
+}
+
 function validateFunction(fn)
 {
 	return exists(fn) ? fn : doNothing;

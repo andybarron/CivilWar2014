@@ -6,7 +6,9 @@ function Screen(cfg)
 	this.onKeyDown = validateFunction(cfg.onKeyDown);
 	this.onMouseDown = validateFunction(cfg.onMouseDown);
 
-	this.stage = new PIXI.Stage(0x000000,true);
+	this.backgroundColor = validateObject(cfg.backgroundColor,DEFAULT_BACKGROUND_COLOR);
+
+	this.stage = new PIXI.DisplayObjectContainer();
 
 	this.init();
 }

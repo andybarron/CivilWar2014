@@ -30,3 +30,6 @@ STAGE_H = 600;
 
 // maximum time per frame
 MAX_DELTA = 1.0/30;
+
+// default screen bg color
+DEFAULT_BACKGROUND_COLOR = 0xBEEFEE;

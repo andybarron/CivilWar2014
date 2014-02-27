@@ -13,7 +13,8 @@ Game.canvas.width = STAGE_W;
 Game.canvas.height = STAGE_H;
 document.body.appendChild(Game.canvas);
 
-Game.currentScreen = TestWorldScreen;
+Game.stage = new PIXI.Stage(0x66CC99);
+Game.currentScreen = null; // we make sure to call Game.setScreen()
 
 // create renderer instance
 // defaults to WebGL, falls back to Canvas on old/mobile devices
@@ -38,6 +39,25 @@ Game.onKeyDown = function(code) {
 
 Game.onMouseDown = function(point) {
 	Game.currentScreen.onMouseDown(point);
+}
+
+Game.setScreen = function(screen) {
+	debug("setting screen...");
+	debug(Game.stage);
+	debug(Game.stage.children);
+	for(var i = 0; i < Game.stage.children.length; i++)
+	{
+		debug("removing a child...");
+		Game.stage.removeChild(Game.stage.children[0]);
+		if(i != 0)
+		{
+			throw "There are extraneous root objects on the stage!!";
+			return;
+		}
+	}
+	Game.stage.setBackgroundColor(screen.backgroundColor);
+	Game.stage.addChild(screen.stage);
+	Game.currentScreen = screen;
 }
 
 // update function
@@ -77,7 +97,7 @@ Game.loop = function() {
 	Game.secToUpdate -= Game.delta;
 
 	Game.currentScreen.update(Game.delta);
-	Game.renderer.render(Game.currentScreen.stage);
+	Game.renderer.render(Game.stage);
 }
 
 // initialize custom input
@@ -85,9 +105,11 @@ Input.init({
 	mouseAnchor : Game.canvas
 });
 
+Game.setScreen(TestWorldScreen);
+
 // IMPORTANT: render the stageWorld once before calling an update
 // so all the PIXI variables and actors are updated properly
-Game.renderer.render(Game.currentScreen.stage);
+Game.renderer.render(Game.stage);
 
 Input.keyPressListeners.push(Game.onKeyDown);
 Input.mousePressListeners.push(Game.onMouseDown);

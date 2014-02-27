@@ -1,13 +1,12 @@
 // method one of defining a Screen: separate functions.
 // make sure the names don't conflict.
-// this is preferred!
-
-// TODO change keys on KEYS_EXIT press
+// -andy
 
 TestWorldScreen = new Screen ({
 	init: twsInit,
 	update: twsUpdate,
-	onKeyDown: twsOnKeyDown
+	onKeyDown: twsOnKeyDown,
+	backgroundColor: 0x66CC99
 	// onMouseDown: someOtherFunction
 	// remember, you need commas after every
 	// key-value pair except the last one!
@@ -26,7 +25,6 @@ function twsInit()
 
 	var stageWorld = this.stage;
 	// just a nickname so we don't have to change so much stuff
-	stageWorld.setBackgroundColor(0x66CC99);
 
 	// load textures from file
 	var textureBunny = Images.getTexture("bunny1.png");
@@ -35,7 +33,7 @@ function twsInit()
 	// add text to screen to track framerate
 	this.text = new PIXI.Text("", {
 			font : "24px Arial",
-			fill : "cyan"
+			fill : "white"
 		});
 	this.text.position.x = 6;
 	this.text.position.y = 6;
@@ -223,18 +221,43 @@ function twsOnKeyDown(keyCode)
 	// switch screens on ESC press
 	if (arrayContains(KEYS_EXIT,keyCode))
 	{
-		Game.currentScreen = TestMenuScreen;
+		Game.setScreen(TestMenuScreen);
 	}
 }
 
 // method two of defining a Screen: inlining everything
-// not particularly pretty, but hey, it works...
-// don't forget the commas!
+// i was going to make a comment about how this is
+// not preffered, but i almost like it better?
+// we shall see... -andy
 
 TestMenuScreen = new Screen ({
 	init: function()
 	{
-		this.stage.setBackgroundColor(0x0011CC);
+		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014 (try clicking on this screen)", {
+			font : "64px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = STAGE_H/3;
+		this.stage.addChild(this.testWords);
+
+
+		// just for fun.... ;)
+		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd"];
+		var doges = this.doges;
+
+		for(var i = 0; i < doges.length; i++)
+		{
+			var dogeWord = new PIXI.Text(doges[i], {
+				font : "36px Comic Sans MS",
+				fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
+			});
+			dogeWord.position.x = Math.random()*STAGE_W/2;
+			dogeWord.position.y = Math.random()*STAGE_H/2+STAGE_H/4;
+			this.stage.addChild(dogeWord);
+		}
 	},
 	update: function(delta)
 	{
@@ -244,7 +267,18 @@ TestMenuScreen = new Screen ({
 	{
 		if (arrayContains(KEYS_EXIT,keyCode))
 		{
-			Game.currentScreen = TestWorldScreen;
+			Game.setScreen(TestWorldScreen);
 		}
+	},
+	onMouseDown: function(point)
+	{
+		var doges = this.doges;
+		var dogeWord = new PIXI.Text(doges[getRandomInt(doges.length)], {
+			font : "36px Comic Sans MS",
+			fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
+		});
+		dogeWord.position.x = point.x;
+		dogeWord.position.y = point.y;
+		this.stage.addChild(dogeWord);
 	}
 });
