@@ -107,7 +107,8 @@ function twsInit()
 	// NPC list
 	
 	//Placeholder NPC - so that BOX# lines up with NPCList[#]
-	this.Blanky = new PIXI.Sprite(box0);
+	var blankTexture = Images.getTexture("nothing.png");
+	this.Blanky = new PIXI.Sprite(blankTexture);
 	
 	
 	// Lee
@@ -125,6 +126,10 @@ function twsInit()
 	this.NPCList.push(this.Blanky)
 	this.NPCList.push(this.TJ);
 	this.NPCList.push(this.Lee);
+	
+	//Proximity checker
+	
+	var TJbounds = this.TJ.getBounds();
 
 	
 	// add a hundred friends!
@@ -158,8 +163,6 @@ function twsUpdate(delta)
 	var bunny = this.bunny; // i'm lazy
 	var TJ = this.TJ;
 	bunny.rotation += delta*2*Math.PI/5;
-	
-	//console.log(TJ.position.x);
 
 	// run bunny around screen based on key presses
 	if (Input.anyKeyDown(KEYS_UP)) {
@@ -174,13 +177,32 @@ function twsUpdate(delta)
 	if (Input.anyKeyDown(KEYS_RIGHT)) {
 		bunny.position.x += PLAYER_SPEED * delta;
 	}
+	
+	// if near an NPC, highlight them
+	
+	for(var i = 0; i < this.NPCList.length; i++){
+		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+			var NPCBounds = this.NPCList[i].getBounds();
+			var outline = new PIXI.Graphics();
+			outline.lineStyle(4, 0xFFFF00);
+			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
+			this.stage.addChild(outline);
+		}
+		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+			var NPCBounds = this.NPCList[i].getBounds();
+			var outline = new PIXI.Graphics();
+			outline.lineStyle(4, 0xFFFFFF);
+			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
+			this.stage.addChild(outline);
+		}
+	}
 
 	// press the spacebar near an NPC to get 'em to say something.
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
 		for(var i = 0; i < this.NPCList.length; i++){
-			if(inProximity(bunny.position.x, bunny.position.y, this.NPCList[i].position.x, this.NPCList[i].position.y)){
+			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
 				this.interact = 1;
 				this.dialoguebox.gotoAndStop(i);
 			}
