@@ -63,11 +63,14 @@ function twsInit()
 	
 	//add Dialogue Boxes
 	var boxen = [];
-    
+   
+	//blank
 	var box0 = Images.getTexture("BOX0.png");
 	boxen.push(box0);
+	//TJ's dialogue box
 	var box1 = Images.getTexture("BOX1.png");
 	boxen.push(box1);
+	//Others
 	var box2 = Images.getTexture("BOX2.png");
 	boxen.push(box2);
 	var box3 = Images.getTexture("BOX3.png");
@@ -100,6 +103,28 @@ function twsInit()
 	this.TJ.position.x = 500;
 	this.TJ.position.y = 400;
 	stageWorld.addChild(this.TJ);
+	
+	// NPC list
+	
+	//Placeholder NPC - so that BOX# lines up with NPCList[#]
+	this.Blanky = new PIXI.Sprite(box0);
+	
+	
+	// Lee
+	
+	var LeeTexture = Images.getTexture("lee.png");
+	this.Lee = new PIXI.Sprite(LeeTexture);
+	
+	this.Lee.anchor.x = 0.5;
+	this.Lee.anchor.y = 0.5;
+	this.Lee.position.x = 100;
+	this.Lee.position.y = 100;
+	stageWorld.addChild(this.Lee);
+	
+	this.NPCList = [];
+	this.NPCList.push(this.Blanky)
+	this.NPCList.push(this.TJ);
+	this.NPCList.push(this.Lee);
 
 	
 	// add a hundred friends!
@@ -150,13 +175,16 @@ function twsUpdate(delta)
 		bunny.position.x += PLAYER_SPEED * delta;
 	}
 
-	// press the spacebar near TJ to get him to say something.
-	// TODO: expand this so that other NPC's can get in on the dialogue action
+	// press the spacebar near an NPC to get 'em to say something.
 	
-	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0 && inProximity(bunny.position.x, bunny.position.y, TJ.position.x, TJ.position.y)) {
-		//ew Hardcoded TJ
-		this.interact = 1;
-		this.dialoguebox.gotoAndStop(1);
+	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
+	
+		for(var i = 0; i < this.NPCList.length; i++){
+			if(inProximity(bunny.position.x, bunny.position.y, this.NPCList[i].position.x, this.NPCList[i].position.y)){
+				this.interact = 1;
+				this.dialoguebox.gotoAndStop(i);
+			}
+		}
 	}
 	
 	if (this.interact == 1 && this.textdisplay == 0 && !Input.anyKeyDown(KEYS_INTERACT)){
