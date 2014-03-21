@@ -182,28 +182,10 @@ function twsUpdate(delta)
 	
 	for(var i = 0; i < this.NPCList.length; i++){
 		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
-		
 			this.NPCList[i].gotoAndStop(1);
-			
-			/*
-			var NPCBounds = this.NPCList[i].getBounds();
-			var outline = new PIXI.Graphics();
-			outline.lineStyle(4, 0xFFFF00);
-			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
-			this.stage.addChild(outline);
-			*/
 		}
 		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
-		
 			this.NPCList[i].gotoAndStop(0);
-			
-			/*
-			var NPCBounds = this.NPCList[i].getBounds();
-			var outline = new PIXI.Graphics();
-			outline.lineStyle(4, 0xFFFFFF);
-			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
-			this.stage.addChild(outline);
-			*/
 		}
 	}
 
