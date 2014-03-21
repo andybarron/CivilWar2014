@@ -27,7 +27,7 @@ function twsInit()
 	// just a nickname so we don't have to change so much stuff
 
 	// load textures from file
-	var textureBunny = Images.getTexture("bunny1.png");
+	var textureBunny = Images.getTexture("hat4.png");
 	var textureGreen = Images.getTexture("bunny2.png");
 
 	// add text to screen to track framerate
@@ -38,8 +38,15 @@ function twsInit()
 	this.text.position.x = 6;
 	this.text.position.y = 6;
 
-	// create PIXI sprite
-	this.bunny = new PIXI.Sprite(textureBunny);
+	// create PIXI MovieClip
+	var newClip = [];
+	
+	newClip.push(Images.getTexture("hat4.png"));
+	newClip.push(Images.getTexture("hat4back.png"));
+	newClip.push(Images.getTexture("hat4sideleft.png"));
+	newClip.push(Images.getTexture("hat4sideright.png"));
+
+	this.bunny = new PIXI.MovieClip(newClip);
 
 	// center the sprite's anchor point
 	this.bunny.anchor.x = 0.5;
@@ -50,7 +57,7 @@ function twsInit()
 	this.bunny.position.y = STAGE_H / 2;
 
 	// scale the bunny up to 2x its normal size
-	this.bunny.scale = new PIXI.Point(2, 2);
+	this.bunny.scale = new PIXI.Point(.2, .2);
 
 	// make him interactive and popup when you click on him
 	this.bunny.interactive = true;
@@ -162,19 +169,23 @@ function twsUpdate(delta)
 	var stageWorld = this.stage;
 	var bunny = this.bunny; // i'm lazy
 	var TJ = this.TJ;
-	bunny.rotation += delta*2*Math.PI/5;
+	//bunny.rotation += delta*2*Math.PI/5;
 
 	// run bunny around screen based on key presses
 	if (Input.anyKeyDown(KEYS_UP)) {
+		bunny.gotoAndStop(1);
 		bunny.position.y -= PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_DOWN)) {
+		bunny.gotoAndStop(0);
 		bunny.position.y += PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_LEFT)) {
+		bunny.gotoAndStop(2);
 		bunny.position.x -= PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_RIGHT)) {
+		bunny.gotoAndStop(3);
 		bunny.position.x += PLAYER_SPEED * delta;
 	}
 	
