@@ -65,16 +65,12 @@ function twsInit()
 	var boxen = [];
    
 	//blank
-	var box0 = Images.getTexture("BOX0.png");
-	boxen.push(box0);
+	boxen.push(Images.getTexture("BOX0.png"));
 	//TJ's dialogue box
-	var box1 = Images.getTexture("BOX1.png");
-	boxen.push(box1);
+	boxen.push(Images.getTexture("BOX1.png"));
 	//Others
-	var box2 = Images.getTexture("BOX2.png");
-	boxen.push(box2);
-	var box3 = Images.getTexture("BOX3.png");
-	boxen.push(box3);
+	boxen.push(Images.getTexture("BOX2.png"));
+	boxen.push(Images.getTexture("BOX3.png"));
 	
 	this.dialoguebox = new PIXI.MovieClip(boxen);
 	
@@ -93,8 +89,10 @@ function twsInit()
 
 	// add Thomas Jefferson
 
-	var TJexture = Images.getTexture("jefferson.png");
-	this.TJ = new PIXI.Sprite(TJexture);
+	var TJexture = [];
+	TJexture.push(Images.getTexture("jefferson.png"));
+	TJexture.push(Images.getTexture("jefferson_h.png"));
+	this.TJ = new PIXI.MovieClip(TJexture);
 
 	// do what's necessary to put him on the screen in a static location
 
@@ -104,17 +102,19 @@ function twsInit()
 	this.TJ.position.y = 400;
 	stageWorld.addChild(this.TJ);
 	
-	// NPC list
-	
 	//Placeholder NPC - so that BOX# lines up with NPCList[#]
-	var blankTexture = Images.getTexture("nothing.png");
-	this.Blanky = new PIXI.Sprite(blankTexture);
+	var blankTexture = [];
+	blankTexture.push(Images.getTexture("nothing.png"));
+	blankTexture.push(Images.getTexture("nothing.png"));
+	this.Blanky = new PIXI.MovieClip(blankTexture);
 	
 	
 	// Lee
 	
-	var LeeTexture = Images.getTexture("lee.png");
-	this.Lee = new PIXI.Sprite(LeeTexture);
+	var LeeTexture = [];
+	LeeTexture.push(Images.getTexture("lee.png"));
+	LeeTexture.push(Images.getTexture("lee_h.png"));
+	this.Lee = new PIXI.MovieClip(LeeTexture);
 	
 	this.Lee.anchor.x = 0.5;
 	this.Lee.anchor.y = 0.5;
@@ -182,18 +182,28 @@ function twsUpdate(delta)
 	
 	for(var i = 0; i < this.NPCList.length; i++){
 		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+		
+			this.NPCList[i].gotoAndStop(1);
+			
+			/*
 			var NPCBounds = this.NPCList[i].getBounds();
 			var outline = new PIXI.Graphics();
 			outline.lineStyle(4, 0xFFFF00);
 			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
 			this.stage.addChild(outline);
+			*/
 		}
 		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+		
+			this.NPCList[i].gotoAndStop(0);
+			
+			/*
 			var NPCBounds = this.NPCList[i].getBounds();
 			var outline = new PIXI.Graphics();
 			outline.lineStyle(4, 0xFFFFFF);
 			outline.drawRect(NPCBounds.x, NPCBounds.y, NPCBounds.width, NPCBounds.height);
 			this.stage.addChild(outline);
+			*/
 		}
 	}
 
