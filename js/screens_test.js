@@ -60,54 +60,48 @@ function twsInit()
 
 	// attach him to the stageWorld
 	stageWorld.addChild(this.bunny);
+	
+	//add Dialogue Boxes
+	var boxen = [];
+    
+	var box0 = Images.getTexture("BOX0.png");
+	boxen.push(box0);
+	var box1 = Images.getTexture("BOX1.png");
+	boxen.push(box1);
+	var box2 = Images.getTexture("BOX2.png");
+	boxen.push(box2);
+	var box3 = Images.getTexture("BOX3.png");
+	boxen.push(box3);
+	
+	this.dialoguebox = new PIXI.MovieClip(boxen);
+	
+	
+	this.dialoguebox.position.x = 0;
+	this.dialoguebox.position.y = 400;
+	
+	stageWorld.addChild(this.dialoguebox);
+
+	//helper variables for dialogue box control
+	//text display should be 1 if a dialogue box is on-screen
+	//interact should be 1 if the interaction button is currently held down
+	
+	this.textdisplay = 0;
+	this.interact = 0;
 
 	// add Thomas Jefferson
 
-	var TJ = Images.createSprite("jefferson.png");
+	var TJexture = Images.getTexture("jefferson.png");
+	this.TJ = new PIXI.Sprite(TJexture);
 
 	// do what's necessary to put him on the screen in a static location
 
-	TJ.anchor.x = 0.5;
-	TJ.anchor.y = 0.5;
-	TJ.position.x = 500;
-	TJ.position.y = 400;
-	stageWorld.addChild(TJ);
+	this.TJ.anchor.x = 0.5;
+	this.TJ.anchor.y = 0.5;
+	this.TJ.position.x = 500;
+	this.TJ.position.y = 400;
+	stageWorld.addChild(this.TJ);
 
-	//HARDCODED TEXT! YEAH!
-	// TODO "display dialog" Screen method
-	// that does all this rectangle stuff
-	// so all you have to do is supply
-	// a string or three
-
-	this.TJText = new PIXI.Text("Well, I feel anachronistic...", {
-			font : "24px Arial",
-			align : "right"
-		});
-	this.TJText.position.x = 50;
-	this.TJText.position.y = 535;
-	this.textdisplay = 0;
-
-	this.TJnamText = new PIXI.Text("TJ", {
-			font : "24px Arial",
-			align : "right"
-		});
-	this.TJnamText.position.x = 50;
-	this.TJnamText.position.y = 475;
-
-	this.answer1 = new PIXI.Text("Oh really? I didn't notice the cartoon bunnies.", {
-			font : "16px Arial",
-			align : "right"
-		});
-	this.answer1.position.x = 420;
-	this.answer1.position.y = 565;
-
-	this.answer2 = new PIXI.Text("Yeah, you don't belong in the Civil War, TJ.", {
-			font : "16px Arial",
-			align : "right"
-		});
-	this.answer2.position.x = 420;
-	this.answer2.position.y = 515;
-
+	
 	// add a hundred friends!
 	for (var i = 0; i < 100; i++) {
 		var ob = new PIXI.Sprite(textureGreen);
@@ -137,7 +131,10 @@ function twsUpdate(delta)
 
 	var stageWorld = this.stage;
 	var bunny = this.bunny; // i'm lazy
+	var TJ = this.TJ;
 	bunny.rotation += delta*2*Math.PI/5;
+	
+	//console.log(TJ.position.x);
 
 	// run bunny around screen based on key presses
 	if (Input.anyKeyDown(KEYS_UP)) {
@@ -153,43 +150,34 @@ function twsUpdate(delta)
 		bunny.position.x += PLAYER_SPEED * delta;
 	}
 
-	// press the spacebar to get TJ to say something.
-	// you should probably also need to be near him for that to occur...\
-	// TODO: More collisions
-
-	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0) {
-		//RECTANGLES FOR THE RECTANGLE GOD!
-		//This is the text box that appears at the bottom.
-
-		// create graphics object
-		var graphics = new PIXI.Graphics();
-		//define the inside color
-		graphics.beginFill(0xffffff);
-		//line width and color
-		graphics.lineStyle(5, 0xaaaaaa);
-		//and the dimensions(x,y) and position(x,y) of the rectangle
-		graphics.drawRect(0, 500, 400, 100);
-
-		// and this is the textbox that contains "TJ" or the name
-		graphics.drawRect(40, 460, 50, 50);
-		// and these are two answer buttons
-		// TODO make buttons work.
-		graphics.lineStyle(5, 0x0000ff);
-		graphics.drawRect(405, 500, 350, 45);
-		graphics.lineStyle(5, 0xff0000);
-		graphics.drawRect(405, 550, 350, 45);
-
-		//and add it to the stageWorld
-		graphics.endFill();
-		stageWorld.addChild(graphics);
-
-		stageWorld.addChild(this.TJText);
-		stageWorld.addChild(this.TJnamText);
-		stageWorld.addChild(this.answer1);
-		stageWorld.addChild(this.answer2);
-		this.textdisplay = 1;
+	// press the spacebar near TJ to get him to say something.
+	// TODO: expand this so that other NPC's can get in on the dialogue action
+	
+	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0 && inProximity(bunny.position.x, bunny.position.y, TJ.position.x, TJ.position.y)) {
+		//ew Hardcoded TJ
+		this.interact = 1;
+		this.dialoguebox.gotoAndStop(1);
 	}
-
+	
+	if (this.interact == 1 && this.textdisplay == 0 && !Input.anyKeyDown(KEYS_INTERACT)){
+		this.textdisplay = 1;
+		this.interact =  0;
+	}
+	
+	
+	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
+		this.dialoguebox.gotoAndStop(0);
+		this.interact = 1;
+	 }
+	 
+	 if (this.interact == 1 && this.textdisplay == 1 && !Input.anyKeyDown(KEYS_INTERACT)){
+		this.textdisplay = 0;
+		this.interact = 0;
+	 }
+	
+	//console.log("Textdisplayed: "+this.textdisplay);
+	//console.log("Interacting: "+this.interact);
+	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
 	var pBounds = this.bunny.getBounds();
