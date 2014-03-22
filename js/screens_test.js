@@ -14,7 +14,7 @@ TestWorldScreen = new Screen ({
 
 function twsInit()
 {
-
+	Sounds.load("coin.wav");
 	// IMPORTANT:
 	// anything that you want to access
 	// after the init() method completes
@@ -28,7 +28,7 @@ function twsInit()
 
 	// load textures from file
 	var textureBunny = Images.getTexture("hat4.png");
-	var textureGreen = Images.getTexture("bunny2.png");
+	var textureGreen = Images.getTexture("wheat.gif");
 
 	// add text to screen to track framerate
 	this.text = new PIXI.Text("", {
@@ -192,10 +192,10 @@ function twsUpdate(delta)
 	// if near an NPC, highlight them
 	
 	for(var i = 0; i < this.NPCList.length; i++){
-		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(1);
 		}
-		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(0);
 		}
 	}
@@ -205,7 +205,7 @@ function twsUpdate(delta)
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
 		for(var i = 0; i < this.NPCList.length; i++){
-			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), 30)){
+			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 				this.interact = 1;
 				this.dialoguebox.gotoAndStop(i);
 			}
@@ -249,6 +249,7 @@ function twsUpdate(delta)
 		var touching = recTouch(oBounds, pBounds, -10);
 
 		if (touching) {
+			Sounds.play("coin.wav");
 			stageWorld.removeChild(ob);
 			i--;
 		}
@@ -268,14 +269,26 @@ function twsOnKeyDown(keyCode)
 
 // method two of defining a Screen: inlining everything
 // i was going to make a comment about how this is
-// not preffered, but i almost like it better?
+// not preferred, but i almost like it better?
 // we shall see... -andy
 
 TestMenuScreen = new Screen ({
 	init: function()
 	{
-		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014 (try clicking on this screen)", {
-			font : "64px Arial",
+		Sounds.load("bark.wav");
+		this.doge = Images.createSprite("doge.png");
+		this.stage.addChild(this.doge);
+
+		this.dogeX = 0;
+		this.dogeY = 0;
+		this.dogeTime = 1;
+		this.doged = false;
+
+		this.doge.position.x = -13370;
+		this.doge.position.y = -13370;
+
+		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+			font : "56px Arial",
 			fill: "001166",
 			wordWrap: true,
 			wordWrapWidth: 800
@@ -286,23 +299,39 @@ TestMenuScreen = new Screen ({
 
 
 		// just for fun.... ;)
-		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd"];
+		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
+			"war so civl","ted burns","wow","such game","many educate"];
 		var doges = this.doges;
 
 		for(var i = 0; i < doges.length; i++)
 		{
-			var dogeWord = new PIXI.Text(doges[i], {
-				font : "36px Comic Sans MS",
-				fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
-			});
-			dogeWord.position.x = Math.random()*STAGE_W/2;
-			dogeWord.position.y = Math.random()*STAGE_H/2+STAGE_H/4;
-			this.stage.addChild(dogeWord);
+			//this.onMouseDown( new PIXI.Point(Math.random()*STAGE_W/2,Math.random()*STAGE_H/2+STAGE_H/4) );
 		}
+
 	},
 	update: function(delta)
 	{
+		this.dogeTime += delta;
+		if(this.dogeTime >= 1)
+		{
+			if(this.doged){
+				this.onMouseDown( new PIXI.Point( this.dogeX, this.dogeY+100 ) );
+				Sounds.play("bark.wav");
+			}
+			this.doged = true;
+			this.dogeTime -= 1;
+			this.oldX = this.doge.position.x;
+			this.oldY = this.doge.position.y;
+			this.dogeX = Math.random()*STAGE_W - this.doge.width/2;
+			this.dogeY = Math.random()*STAGE_H - this.doge.height/2;
+		}
 
+		var tx = this.dogeX;
+		var ty = this.dogeY;
+		var x = this.doge.position.x;
+		var y = this.doge.position.y;
+		this.doge.position.x += (tx-x)/4;
+		this.doge.position.y += (ty-y)/4;
 	},
 	onKeyDown: function(keyCode)
 	{
