@@ -119,3 +119,10 @@ function doNothing()
 	// a command to do nothing
 	// such sweet irony
 }
+
+function inProximity(x1, y1, x2, y2){
+	if( Math.abs(x2-x1) < 100 && Math.abs(y2-y1) < 100){
+		return true;
+	}else
+		return false;
+}

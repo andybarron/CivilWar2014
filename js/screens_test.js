@@ -14,7 +14,7 @@ TestWorldScreen = new Screen ({
 
 function twsInit()
 {
-
+	Sounds.load("coin.wav");
 	// IMPORTANT:
 	// anything that you want to access
 	// after the init() method completes
@@ -27,8 +27,8 @@ function twsInit()
 	// just a nickname so we don't have to change so much stuff
 
 	// load textures from file
-	var textureBunny = Images.getTexture("bunny1.png");
-	var textureGreen = Images.getTexture("bunny2.png");
+	var textureBunny = Images.getTexture("hat4.png");
+	var textureGreen = Images.getTexture("wheat.gif");
 
 	// add text to screen to track framerate
 	this.text = new PIXI.Text("", {
@@ -38,8 +38,15 @@ function twsInit()
 	this.text.position.x = 6;
 	this.text.position.y = 6;
 
-	// create PIXI sprite
-	this.bunny = new PIXI.Sprite(textureBunny);
+	// create PIXI MovieClip
+	var newClip = [];
+	
+	newClip.push(Images.getTexture("hat4.png"));
+	newClip.push(Images.getTexture("hat4back.png"));
+	newClip.push(Images.getTexture("hat4sideleft.png"));
+	newClip.push(Images.getTexture("hat4sideright.png"));
+
+	this.bunny = new PIXI.MovieClip(newClip);
 
 	// center the sprite's anchor point
 	this.bunny.anchor.x = 0.5;
@@ -50,7 +57,7 @@ function twsInit()
 	this.bunny.position.y = STAGE_H / 2;
 
 	// scale the bunny up to 2x its normal size
-	this.bunny.scale = new PIXI.Point(2, 2);
+	this.bunny.scale = new PIXI.Point(.2, .2);
 
 	// make him interactive and popup when you click on him
 	this.bunny.interactive = true;
@@ -60,54 +67,78 @@ function twsInit()
 
 	// attach him to the stageWorld
 	stageWorld.addChild(this.bunny);
+	
+	//add Dialogue Boxes
+	var boxen = [];
+   
+	//blank
+	boxen.push(Images.getTexture("BOX0.png"));
+	//TJ's dialogue box
+	boxen.push(Images.getTexture("BOX1.png"));
+	//Others
+	boxen.push(Images.getTexture("BOX2.png"));
+	boxen.push(Images.getTexture("BOX3.png"));
+	
+	this.dialoguebox = new PIXI.MovieClip(boxen);
+	
+	
+	this.dialoguebox.position.x = 0;
+	this.dialoguebox.position.y = 400;
+	
+	stageWorld.addChild(this.dialoguebox);
+
+	//helper variables for dialogue box control
+	//text display should be 1 if a dialogue box is on-screen
+	//interact should be 1 if the interaction button is currently held down
+	
+	this.textdisplay = 0;
+	this.interact = 0;
 
 	// add Thomas Jefferson
 
-	var TJ = Images.createSprite("jefferson.png");
+	var TJexture = [];
+	TJexture.push(Images.getTexture("jefferson.png"));
+	TJexture.push(Images.getTexture("jefferson_h.png"));
+	this.TJ = new PIXI.MovieClip(TJexture);
 
 	// do what's necessary to put him on the screen in a static location
 
-	TJ.anchor.x = 0.5;
-	TJ.anchor.y = 0.5;
-	TJ.position.x = 500;
-	TJ.position.y = 400;
-	stageWorld.addChild(TJ);
+	this.TJ.anchor.x = 0.5;
+	this.TJ.anchor.y = 0.5;
+	this.TJ.position.x = 500;
+	this.TJ.position.y = 400;
+	stageWorld.addChild(this.TJ);
+	
+	//Placeholder NPC - so that BOX# lines up with NPCList[#]
+	var blankTexture = [];
+	blankTexture.push(Images.getTexture("nothing.png"));
+	blankTexture.push(Images.getTexture("nothing.png"));
+	this.Blanky = new PIXI.MovieClip(blankTexture);
+	
+	
+	// Lee
+	
+	var LeeTexture = [];
+	LeeTexture.push(Images.getTexture("lee.png"));
+	LeeTexture.push(Images.getTexture("lee_h.png"));
+	this.Lee = new PIXI.MovieClip(LeeTexture);
+	
+	this.Lee.anchor.x = 0.5;
+	this.Lee.anchor.y = 0.5;
+	this.Lee.position.x = 100;
+	this.Lee.position.y = 100;
+	stageWorld.addChild(this.Lee);
+	
+	this.NPCList = [];
+	this.NPCList.push(this.Blanky)
+	this.NPCList.push(this.TJ);
+	this.NPCList.push(this.Lee);
+	
+	//Proximity checker
+	
+	var TJbounds = this.TJ.getBounds();
 
-	//HARDCODED TEXT! YEAH!
-	// TODO "display dialog" Screen method
-	// that does all this rectangle stuff
-	// so all you have to do is supply
-	// a string or three
-
-	this.TJText = new PIXI.Text("Well, I feel anachronistic...", {
-			font : "24px Arial",
-			align : "right"
-		});
-	this.TJText.position.x = 50;
-	this.TJText.position.y = 535;
-	this.textdisplay = 0;
-
-	this.TJnamText = new PIXI.Text("TJ", {
-			font : "24px Arial",
-			align : "right"
-		});
-	this.TJnamText.position.x = 50;
-	this.TJnamText.position.y = 475;
-
-	this.answer1 = new PIXI.Text("Oh really? I didn't notice the cartoon bunnies.", {
-			font : "16px Arial",
-			align : "right"
-		});
-	this.answer1.position.x = 420;
-	this.answer1.position.y = 565;
-
-	this.answer2 = new PIXI.Text("Yeah, you don't belong in the Civil War, TJ.", {
-			font : "16px Arial",
-			align : "right"
-		});
-	this.answer2.position.x = 420;
-	this.answer2.position.y = 515;
-
+	
 	// add a hundred friends!
 	for (var i = 0; i < 100; i++) {
 		var ob = new PIXI.Sprite(textureGreen);
@@ -137,59 +168,69 @@ function twsUpdate(delta)
 
 	var stageWorld = this.stage;
 	var bunny = this.bunny; // i'm lazy
-	bunny.rotation += delta*2*Math.PI/5;
+	var TJ = this.TJ;
+	//bunny.rotation += delta*2*Math.PI/5;
 
 	// run bunny around screen based on key presses
 	if (Input.anyKeyDown(KEYS_UP)) {
+		bunny.gotoAndStop(1);
 		bunny.position.y -= PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_DOWN)) {
+		bunny.gotoAndStop(0);
 		bunny.position.y += PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_LEFT)) {
+		bunny.gotoAndStop(2);
 		bunny.position.x -= PLAYER_SPEED * delta;
 	}
 	if (Input.anyKeyDown(KEYS_RIGHT)) {
+		bunny.gotoAndStop(3);
 		bunny.position.x += PLAYER_SPEED * delta;
 	}
-
-	// press the spacebar to get TJ to say something.
-	// you should probably also need to be near him for that to occur...\
-	// TODO: More collisions
-
-	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0) {
-		//RECTANGLES FOR THE RECTANGLE GOD!
-		//This is the text box that appears at the bottom.
-
-		// create graphics object
-		var graphics = new PIXI.Graphics();
-		//define the inside color
-		graphics.beginFill(0xffffff);
-		//line width and color
-		graphics.lineStyle(5, 0xaaaaaa);
-		//and the dimensions(x,y) and position(x,y) of the rectangle
-		graphics.drawRect(0, 500, 400, 100);
-
-		// and this is the textbox that contains "TJ" or the name
-		graphics.drawRect(40, 460, 50, 50);
-		// and these are two answer buttons
-		// TODO make buttons work.
-		graphics.lineStyle(5, 0x0000ff);
-		graphics.drawRect(405, 500, 350, 45);
-		graphics.lineStyle(5, 0xff0000);
-		graphics.drawRect(405, 550, 350, 45);
-
-		//and add it to the stageWorld
-		graphics.endFill();
-		stageWorld.addChild(graphics);
-
-		stageWorld.addChild(this.TJText);
-		stageWorld.addChild(this.TJnamText);
-		stageWorld.addChild(this.answer1);
-		stageWorld.addChild(this.answer2);
-		this.textdisplay = 1;
+	
+	// if near an NPC, highlight them
+	
+	for(var i = 0; i < this.NPCList.length; i++){
+		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
+			this.NPCList[i].gotoAndStop(1);
+		}
+		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
+			this.NPCList[i].gotoAndStop(0);
+		}
 	}
 
+	// press the spacebar near an NPC to get 'em to say something.
+	
+	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
+	
+		for(var i = 0; i < this.NPCList.length; i++){
+			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
+				this.interact = 1;
+				this.dialoguebox.gotoAndStop(i);
+			}
+		}
+	}
+	
+	if (this.interact == 1 && this.textdisplay == 0 && !Input.anyKeyDown(KEYS_INTERACT)){
+		this.textdisplay = 1;
+		this.interact =  0;
+	}
+	
+	
+	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
+		this.dialoguebox.gotoAndStop(0);
+		this.interact = 1;
+	 }
+	 
+	 if (this.interact == 1 && this.textdisplay == 1 && !Input.anyKeyDown(KEYS_INTERACT)){
+		this.textdisplay = 0;
+		this.interact = 0;
+	 }
+	
+	//console.log("Textdisplayed: "+this.textdisplay);
+	//console.log("Interacting: "+this.interact);
+	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
 	var pBounds = this.bunny.getBounds();
@@ -208,6 +249,7 @@ function twsUpdate(delta)
 		var touching = recTouch(oBounds, pBounds, -10);
 
 		if (touching) {
+			Sounds.play("coin.wav");
 			stageWorld.removeChild(ob);
 			i--;
 		}
@@ -227,14 +269,26 @@ function twsOnKeyDown(keyCode)
 
 // method two of defining a Screen: inlining everything
 // i was going to make a comment about how this is
-// not preffered, but i almost like it better?
+// not preferred, but i almost like it better?
 // we shall see... -andy
 
 TestMenuScreen = new Screen ({
 	init: function()
 	{
-		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014 (try clicking on this screen)", {
-			font : "64px Arial",
+		Sounds.load("bark.wav");
+		this.doge = Images.createSprite("doge.png");
+		this.stage.addChild(this.doge);
+
+		this.dogeX = 0;
+		this.dogeY = 0;
+		this.dogeTime = 1;
+		this.doged = false;
+
+		this.doge.position.x = -13370;
+		this.doge.position.y = -13370;
+
+		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+			font : "56px Arial",
 			fill: "001166",
 			wordWrap: true,
 			wordWrapWidth: 800
@@ -245,23 +299,39 @@ TestMenuScreen = new Screen ({
 
 
 		// just for fun.... ;)
-		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd"];
+		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
+			"war so civl","ted burns","wow","such game","many educate"];
 		var doges = this.doges;
 
 		for(var i = 0; i < doges.length; i++)
 		{
-			var dogeWord = new PIXI.Text(doges[i], {
-				font : "36px Comic Sans MS",
-				fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
-			});
-			dogeWord.position.x = Math.random()*STAGE_W/2;
-			dogeWord.position.y = Math.random()*STAGE_H/2+STAGE_H/4;
-			this.stage.addChild(dogeWord);
+			//this.onMouseDown( new PIXI.Point(Math.random()*STAGE_W/2,Math.random()*STAGE_H/2+STAGE_H/4) );
 		}
+
 	},
 	update: function(delta)
 	{
+		this.dogeTime += delta;
+		if(this.dogeTime >= 1)
+		{
+			if(this.doged){
+				this.onMouseDown( new PIXI.Point( this.dogeX, this.dogeY+100 ) );
+				Sounds.play("bark.wav");
+			}
+			this.doged = true;
+			this.dogeTime -= 1;
+			this.oldX = this.doge.position.x;
+			this.oldY = this.doge.position.y;
+			this.dogeX = Math.random()*STAGE_W - this.doge.width/2;
+			this.dogeY = Math.random()*STAGE_H - this.doge.height/2;
+		}
 
+		var tx = this.dogeX;
+		var ty = this.dogeY;
+		var x = this.doge.position.x;
+		var y = this.doge.position.y;
+		this.doge.position.x += (tx-x)/4;
+		this.doge.position.y += (ty-y)/4;
 	},
 	onKeyDown: function(keyCode)
 	{
