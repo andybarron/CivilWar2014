@@ -262,6 +262,7 @@ function twsOnKeyDown(keyCode)
 	// switch screens on ESC press
 	if (arrayContains(KEYS_EXIT,keyCode))
 	{
+		Game.audio.pause();		
 		Game.setScreen(TestMenuScreen);
 	}
 }
@@ -308,6 +309,7 @@ TestMenuScreen = new Screen ({
 	{
 		if (arrayContains(KEYS_EXIT,keyCode))
 		{
+			Game.audio.play();
 			Game.setScreen(TestWorldScreen);
 		}
 	},

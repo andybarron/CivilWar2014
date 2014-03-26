@@ -58,6 +58,7 @@ Game.setScreen = function(screen) {
 	Game.stage.setBackgroundColor(screen.backgroundColor);
 	Game.stage.addChild(screen.stage);
 	Game.currentScreen = screen;
+	Game.audio = document.getElementById("MUSIC");	
 }
 
 // update function
