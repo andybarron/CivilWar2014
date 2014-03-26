@@ -159,7 +159,7 @@ Sounds.load = function() {
 	{
 		var sndFilename = arguments[i];
 		var sndName = trimFilename(sndFilename);
-		var snd = new Audio('snd/'+sndFilename);
+		var snd = new Audio(ASSET_PATH+'snd/'+sndFilename);
 		snd.dataName = sndName;
 
 		// make sounds accessible by filename
