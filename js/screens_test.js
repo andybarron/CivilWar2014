@@ -37,6 +37,7 @@ function twsInit()
 		});
 	this.text.position.x = 6;
 	this.text.position.y = 6;
+	this.text.fixed = true;
 
 	// create PIXI MovieClip
 	var newClip = [];
@@ -84,6 +85,7 @@ function twsInit()
 	
 	this.dialoguebox.position.x = 0;
 	this.dialoguebox.position.y = 400;
+	this.dialoguebox.fixed = true;
 	
 	stageWorld.addChild(this.dialoguebox);
 
@@ -255,6 +257,8 @@ function twsUpdate(delta)
 		}
 	}
 
+	this.centerCameraPosition(bunny.position.x, bunny.position.y);
+
 	this.text.setText(DEBUG_MODE ? (Math.round(Game.fps) + " FPS") : "");
 }
 
@@ -263,7 +267,6 @@ function twsOnKeyDown(keyCode)
 	// switch screens on ESC press
 	if (arrayContains(KEYS_EXIT,keyCode))
 	{
-		Game.audio.pause();		
 		Game.setScreen(TestMenuScreen);
 	}
 }
@@ -301,7 +304,7 @@ TestMenuScreen = new Screen ({
 
 		// just for fun.... ;)
 		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
-			"war so civl","ted burns","wow","such game","many educate"];
+			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man"];
 		var doges = this.doges;
 
 		for(var i = 0; i < doges.length; i++)
@@ -338,7 +341,6 @@ TestMenuScreen = new Screen ({
 	{
 		if (arrayContains(KEYS_EXIT,keyCode))
 		{
-			Game.audio.play();
 			Game.setScreen(TestWorldScreen);
 		}
 	},
