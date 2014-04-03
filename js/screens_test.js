@@ -25,6 +25,9 @@ function twsInit()
 
 	var stageWorld = this.stage;
 	// just a nickname so we don't have to change so much stuff
+	
+	//REMEMBER - stuff added to the screen is added in order
+	//Lowest stuff first (the things that go behind everything else)
 
 	// load textures from file
 	var textureBunny = Images.getTexture("hat4.png");
@@ -39,6 +42,25 @@ function twsInit()
 	this.text.position.y = 6;
 	this.text.fixed = true;
 
+	// add a hundred friends!
+	for (var i = 0; i < 100; i++) {
+		var ob = new PIXI.Sprite(textureGreen);
+
+		// randomize their positions
+		ob.position.x = Math.random() * STAGE_W;
+		ob.position.y = Math.random() * STAGE_H;
+
+		// center their anchor points
+		ob.anchor.x = 0.5;
+		ob.anchor.y = 0.5;
+
+		// add a name var to track them
+		ob.name = "obstacle";
+
+		// put 'em onstage
+		stageWorld.addChild(ob);
+	}
+	
 	// create PIXI MovieClip
 	var newClip = [];
 	
@@ -68,33 +90,6 @@ function twsInit()
 
 	// attach him to the stageWorld
 	stageWorld.addChild(this.bunny);
-	
-	//add Dialogue Boxes
-	var boxen = [];
-   
-	//blank
-	boxen.push(Images.getTexture("BOX0.png"));
-	//TJ's dialogue box
-	boxen.push(Images.getTexture("BOX1.png"));
-	//Others
-	boxen.push(Images.getTexture("BOX2.png"));
-	boxen.push(Images.getTexture("BOX3.png"));
-	
-	this.dialoguebox = new PIXI.MovieClip(boxen);
-	
-	
-	this.dialoguebox.position.x = 0;
-	this.dialoguebox.position.y = 400;
-	this.dialoguebox.fixed = true;
-	
-	stageWorld.addChild(this.dialoguebox);
-
-	//helper variables for dialogue box control
-	//text display should be 1 if a dialogue box is on-screen
-	//interact should be 1 if the interaction button is currently held down
-	
-	this.textdisplay = 0;
-	this.interact = 0;
 
 	// add Thomas Jefferson
 
@@ -139,27 +134,81 @@ function twsInit()
 	//Proximity checker
 	
 	var TJbounds = this.TJ.getBounds();
-
 	
-	// add a hundred friends!
-	for (var i = 0; i < 100; i++) {
-		var ob = new PIXI.Sprite(textureGreen);
+	//add Dialogue Boxes
+	var boxen = [];
+   
+	//blank
+	boxen.push(Images.getTexture("BOX0.png"));
+	//TJ's dialogue box
+	boxen.push(Images.getTexture("BOX1.png"));
+	//Lee
+	boxen.push(Images.getTexture("BOX2.png"));
+	//Someone else's
+	boxen.push(Images.getTexture("BOX3.png"));
+	
+	this.dialoguebox = new PIXI.MovieClip(boxen);
+	
+	
+	this.dialoguebox.position.x = 0;
+	this.dialoguebox.position.y = 400;
+	this.dialoguebox.fixed = true;
+	
+	stageWorld.addChild(this.dialoguebox);
 
-		// randomize their positions
-		ob.position.x = Math.random() * STAGE_W;
-		ob.position.y = Math.random() * STAGE_H;
-
-		// center their anchor points
-		ob.anchor.x = 0.5;
-		ob.anchor.y = 0.5;
-
-		// add a name var to track them
-		ob.name = "obstacle";
-
-		// put 'em onstage
-		stageWorld.addChild(ob);
-	}
-
+	//helper variables for dialogue box control
+	//text display should be 1 if a dialogue box is on-screen
+	//interact should be 1 if the interaction button is currently held down
+	//currNPC holds what npc is currently being talked to
+	
+	this.textdisplay = 0;
+	this.interact = 0;
+	this.currNPC = 0;
+	
+	//Answer boxes, makes the dialogue trees!
+	
+	var answerboxen1 = [];
+	answerboxen1.push(Images.getTexture("nothing.png"));
+	answerboxen1.push(Images.getTexture("placeholderanswer.png"));
+	
+	this.answerbox1 = new PIXI.MovieClip(answerboxen1);
+	this.answerbox1.position.x = 600;
+	this.answerbox1.position.y = 400;
+	this.answerbox1.fixed = true;
+	
+	stageWorld.addChild(this.answerbox1);
+	
+	var answerboxen2 = [];
+	answerboxen2.push(Images.getTexture("nothing.png"));
+	answerboxen2.push(Images.getTexture("placeholderanswer.png"));
+	
+	this.answerbox2 = new PIXI.MovieClip(answerboxen2);
+	this.answerbox2.position.x = 600;
+	this.answerbox2.position.y = 500;
+	this.answerbox2.fixed = true;
+	
+	stageWorld.addChild(this.answerbox2);
+	
+	this.answerbox1.interactive = true;
+	this.answerbox1.mousedown = function () {
+		if(TestWorldScreen.currNPC == 1){
+			TestWorldScreen.dialoguebox.gotoAndStop(2);
+			TestWorldScreen.answerbox1.gotoAndStop(2);
+			TestWorldScreen.answerbox2.gotoAndStop(2);
+		}
+	};
+	
+	
+	this.answerbox2.interactive = true;
+	this.answerbox2.mousedown = function () {
+		if(TestWorldScreen.currNPC == 1){
+			TestWorldScreen.dialoguebox.gotoAndStop(3);
+			TestWorldScreen.answerbox1.gotoAndStop(3);
+			TestWorldScreen.answerbox2.gotoAndStop(3);
+		}
+	};
+	
+	
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
 	stageWorld.addChild(this.text);
@@ -202,14 +251,22 @@ function twsUpdate(delta)
 		}
 	}
 
-	// press the spacebar near an NPC to get 'em to say something.
+	//DIALOGUE!
+	//TODO: Make this less hardcoded and hacky.
+	
+	// press the spacebar near an NPC to start interacting (get 'em to say something).
+	
+	
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
 		for(var i = 0; i < this.NPCList.length; i++){
 			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 				this.interact = 1;
+				this.currNPC = i;
 				this.dialoguebox.gotoAndStop(i);
+				this.answerbox1.gotoAndStop(i);
+				this.answerbox2.gotoAndStop(i);
 			}
 		}
 	}
@@ -219,19 +276,26 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
+	console.log(this.currNPC);
+	
+	//Insert logic for dialogue trees here.
+	//While interacting, choices are available to peruse.
+	//So, space is to start talking, but everything else is mouse controlled.
+	
+	//Press space again to stop interacting
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
 		this.dialoguebox.gotoAndStop(0);
+		this.answerbox1.gotoAndStop(0);
+		this.answerbox2.gotoAndStop(0);
 		this.interact = 1;
 	 }
 	 
 	 if (this.interact == 1 && this.textdisplay == 1 && !Input.anyKeyDown(KEYS_INTERACT)){
 		this.textdisplay = 0;
 		this.interact = 0;
+		this.currNPC = 0;
 	 }
-	
-	//console.log("Textdisplayed: "+this.textdisplay);
-	//console.log("Interacting: "+this.interact);
 	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
@@ -304,7 +368,7 @@ TestMenuScreen = new Screen ({
 
 		// just for fun.... ;)
 		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
-			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man"];
+			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man","aeiou"];
 		var doges = this.doges;
 
 		for(var i = 0; i < doges.length; i++)
