@@ -94,8 +94,8 @@ function twsInit()
 	// add Thomas Jefferson
 
 	var TJexture = [];
-	TJexture.push(Images.getTexture("jefferson.png"));
-	TJexture.push(Images.getTexture("jefferson_h.png"));
+	TJexture.push(Images.getTexture("Harriet.png")); // I know she looks bad but she's better than Thomas Jefferson
+	TJexture.push(Images.getTexture("Harriet_Speaking.png")); // She opens her mouth when you get close!
 	this.TJ = new PIXI.MovieClip(TJexture);
 
 	// do what's necessary to put him on the screen in a static location
