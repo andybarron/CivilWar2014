@@ -161,11 +161,14 @@ function twsInit()
 	//text display should be 1 if a dialogue box is on-screen
 	//interact should be 1 if the interaction button is currently held down
 	//currNPC holds what npc is currently being talked to
+	//change fadeLoadingScreen to 1 if you want to fade to a loading screen
+	//loadingscreenIsDone will report true after it's done fading and 3 seconds have elapsed
 	
 	this.textdisplay = 0;
 	this.interact = 0;
 	this.currNPC = 0;
 	this.fadeLoadingScreen = 0;
+	this.loadingScreenIsDone = false;
 	
 	//Answer boxes, makes the dialogue trees!
 	
@@ -313,14 +316,27 @@ function twsUpdate(delta)
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
+		//If you don't wan to do an activity/minigame, just exit dialogue as normal.
+		this.fadeLoadingScreen = 0;
 	 }
 	 
 	 //Fade a loading screen
 	 
-	 if(this.fadeLoadingScreen == 1 && this.loadingscreen.alpha < 1){
+	 //This is probably the hackiest thing I've done this semester.
+	 if(this.fadeLoadingScreen == 1 && this.loadingscreen.alpha <= 6){
 		this.loadingscreen.alpha+= 0.01;
 		this.text.alpha -= 0.01;
 	 }
+	 
+	 if(this.loadingscreen.alpha >= 4 && this.fadeLoadingScreen == 1){
+			this.loadingScreenIsDone = true;
+			this.fadeLoadingScreen = 0;
+			//INSERT MINIGAME OR CHANGE SCREEN HERE or wherever it works, this.loadingScreenIsDone now returns true.
+	 }
+	 
+	//console.log(this.loadingscreen.alpha);
+	//console.log(this.fadeLoadingScreen);
+	console.log(this.loadingScreenIsDone);
 	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
