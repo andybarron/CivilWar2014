@@ -336,7 +336,7 @@ function twsUpdate(delta)
 	 
 	//console.log(this.loadingscreen.alpha);
 	//console.log(this.fadeLoadingScreen);
-	console.log(this.loadingScreenIsDone);
+	//console.log(this.loadingScreenIsDone);
 	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
