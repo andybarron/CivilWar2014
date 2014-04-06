@@ -165,12 +165,13 @@ function twsInit()
 	this.textdisplay = 0;
 	this.interact = 0;
 	this.currNPC = 0;
+	this.fadeLoadingScreen = 0;
 	
 	//Answer boxes, makes the dialogue trees!
 	
 	var answerboxen1 = [];
 	answerboxen1.push(Images.getTexture("nothing.png"));
-	answerboxen1.push(Images.getTexture("placeholderanswer.png"));
+	answerboxen1.push(Images.getTexture("tubanswer.png"));
 	
 	this.answerbox1 = new PIXI.MovieClip(answerboxen1);
 	this.answerbox1.position.x = 600;
@@ -181,7 +182,7 @@ function twsInit()
 	
 	var answerboxen2 = [];
 	answerboxen2.push(Images.getTexture("nothing.png"));
-	answerboxen2.push(Images.getTexture("placeholderanswer2.png"));
+	answerboxen2.push(Images.getTexture("tubanswer2.png"));
 	
 	this.answerbox2 = new PIXI.MovieClip(answerboxen2);
 	this.answerbox2.position.x = 600;
@@ -190,12 +191,28 @@ function twsInit()
 	
 	stageWorld.addChild(this.answerbox2);
 	
+	//Loading screen! Fun facts!
+	
+	var FunFacts = [];
+	FunFacts.push(Images.getTexture("FunFacts1.png"));
+	this.loadingscreen = new PIXI.MovieClip(FunFacts);
+	this.loadingscreen.alpha = 0;
+	this.loadingscreen.loop = false;
+	this.loadingscreen.fixed = true;
+	
+	stageWorld.addChild(this.loadingscreen);
+	
+	//Dialogue Tree Logic. TODO: Make this less hacky and hard-coded.
+	
 	this.answerbox1.interactive = true;
 	this.answerbox1.mousedown = function () {
 		if(TestWorldScreen.currNPC == 1){
 			TestWorldScreen.dialoguebox.gotoAndStop(3);
 			TestWorldScreen.answerbox1.gotoAndStop(0);
 			TestWorldScreen.answerbox2.gotoAndStop(0);
+			setTimeout(function(){
+				TestWorldScreen.fadeLoadingScreen = 1;
+			},5000);
 		}
 	};
 	
@@ -277,7 +294,7 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
-	console.log(this.currNPC);
+	//console.log(this.currNPC);
 	
 	//Insert logic for dialogue trees here.
 	//While interacting, choices are available to peruse.
@@ -296,6 +313,13 @@ function twsUpdate(delta)
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
+	 }
+	 
+	 //Fade a loading screen
+	 
+	 if(this.fadeLoadingScreen == 1 && this.loadingscreen.alpha < 1){
+		this.loadingscreen.alpha+= 0.01;
+		this.text.alpha -= 0.01;
 	 }
 	
 	// collision detection - remove every obstacle bunny that is touching
