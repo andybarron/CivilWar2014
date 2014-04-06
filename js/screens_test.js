@@ -140,12 +140,13 @@ function twsInit()
    
 	//blank
 	boxen.push(Images.getTexture("BOX0.png"));
-	//TJ's dialogue box
+	//TJ's (HT's?) dialogue box
 	boxen.push(Images.getTexture("BOX1.png"));
 	//Lee
 	boxen.push(Images.getTexture("BOX2.png"));
 	//Someone else's
 	boxen.push(Images.getTexture("BOX3.png"));
+	boxen.push(Images.getTexture("BOX4.png"));
 	
 	this.dialoguebox = new PIXI.MovieClip(boxen);
 	
@@ -180,7 +181,7 @@ function twsInit()
 	
 	var answerboxen2 = [];
 	answerboxen2.push(Images.getTexture("nothing.png"));
-	answerboxen2.push(Images.getTexture("placeholderanswer.png"));
+	answerboxen2.push(Images.getTexture("placeholderanswer2.png"));
 	
 	this.answerbox2 = new PIXI.MovieClip(answerboxen2);
 	this.answerbox2.position.x = 600;
@@ -192,9 +193,9 @@ function twsInit()
 	this.answerbox1.interactive = true;
 	this.answerbox1.mousedown = function () {
 		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(2);
-			TestWorldScreen.answerbox1.gotoAndStop(2);
-			TestWorldScreen.answerbox2.gotoAndStop(2);
+			TestWorldScreen.dialoguebox.gotoAndStop(3);
+			TestWorldScreen.answerbox1.gotoAndStop(0);
+			TestWorldScreen.answerbox2.gotoAndStop(0);
 		}
 	};
 	
@@ -202,9 +203,9 @@ function twsInit()
 	this.answerbox2.interactive = true;
 	this.answerbox2.mousedown = function () {
 		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(3);
-			TestWorldScreen.answerbox1.gotoAndStop(3);
-			TestWorldScreen.answerbox2.gotoAndStop(3);
+			TestWorldScreen.dialoguebox.gotoAndStop(4);
+			TestWorldScreen.answerbox1.gotoAndStop(0);
+			TestWorldScreen.answerbox2.gotoAndStop(0);
 		}
 	};
 	
