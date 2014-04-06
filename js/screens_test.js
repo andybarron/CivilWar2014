@@ -169,6 +169,7 @@ function twsInit()
 	this.currNPC = 0;
 	this.fadeLoadingScreen = 0;
 	this.loadingScreenIsDone = false;
+	this.delay = 0;
 	
 	//Answer boxes, makes the dialogue trees!
 	
@@ -226,6 +227,7 @@ function twsInit()
 			TestWorldScreen.dialoguebox.gotoAndStop(4);
 			TestWorldScreen.answerbox1.gotoAndStop(0);
 			TestWorldScreen.answerbox2.gotoAndStop(0);
+			TestWorldScreen.delay = 1;
 		}
 	};
 	
@@ -288,6 +290,10 @@ function twsUpdate(delta)
 				this.dialoguebox.gotoAndStop(i);
 				this.answerbox1.gotoAndStop(i);
 				this.answerbox2.gotoAndStop(i);
+				//If dialogue trees extend past 1 branch, this needs to change
+				if(i > this.answerbox1.textures.length-1){
+					this.delay = 1;
+				}
 			}
 		}
 	}
@@ -316,7 +322,7 @@ function twsUpdate(delta)
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
-		//If you don't wan to do an activity/minigame, just exit dialogue as normal.
+		//If you don't want to do an activity/minigame, just exit dialogue as normal.
 		this.fadeLoadingScreen = 0;
 	 }
 	 
@@ -337,6 +343,25 @@ function twsUpdate(delta)
 	//console.log(this.loadingscreen.alpha);
 	//console.log(this.fadeLoadingScreen);
 	//console.log(this.loadingScreenIsDone);
+	
+	
+	//Delay function - in case people don't want to press the spacebar to end a conversation.
+	
+	if(this.delay >= 1){
+		this.delay++;
+	}
+	
+	if(this.delay >= 400){
+		this.dialoguebox.gotoAndStop(0);
+		this.answerbox1.gotoAndStop(0);
+		this.answerbox2.gotoAndStop(0);
+		this.textdisplay = 0;
+		this.interact = 0;
+		this.currNPC = 0;
+		this.delay = 0;
+	}
+	
+	//console.log(this.delay);
 	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
