@@ -183,6 +183,7 @@ function twsInit()
 	this.answerbox1.fixed = true;
 	
 	stageWorld.addChild(this.answerbox1);
+	this.answerbox1.buttonMode = true;
 	
 	var answerboxen2 = [];
 	answerboxen2.push(Images.getTexture("nothing.png"));
@@ -194,6 +195,7 @@ function twsInit()
 	this.answerbox2.fixed = true;
 	
 	stageWorld.addChild(this.answerbox2);
+	this.answerbox2.buttonMode = true;
 	
 	//Loading screen! Fun facts!
 	
