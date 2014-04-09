@@ -88,8 +88,8 @@ function twsInit()
 		alert("that tickles!");
 	};
 
-	// attach him to the stageWorld
-	stageWorld.addChild(this.bunny);
+	// attach him to the stageWorld is at the bottom, because the main character should probably be on top of everything
+	
 
 	// add Thomas Jefferson
 
@@ -272,6 +272,8 @@ function twsInit()
 		}
 	};
 	
+	// Player character
+	stageWorld.addChild(this.bunny);
 	
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
