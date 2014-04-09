@@ -43,7 +43,7 @@ function twsInit()
 	this.text.fixed = true;
 
 	// add a hundred friends!
-	for (var i = 0; i < 100; i++) {
+	for (var i = 0; i < 5; i++) {
 		var ob = new PIXI.Sprite(textureGreen);
 
 		// randomize their positions
@@ -113,25 +113,60 @@ function twsInit()
 	this.Blanky = new PIXI.MovieClip(blankTexture);
 	
 	
-	// Lee
+	// Not Lee anymore, Background NPC 1
 	
 	var LeeTexture = [];
-	LeeTexture.push(Images.getTexture("lee.png"));
-	LeeTexture.push(Images.getTexture("lee_h.png"));
+	LeeTexture.push(Images.getTexture("hat4.png"));
+	//LeeTexture.push(Images.getTexture("lee_h.png"));
 	this.Lee = new PIXI.MovieClip(LeeTexture);
 	
 	this.Lee.anchor.x = 0.5;
 	this.Lee.anchor.y = 0.5;
 	this.Lee.position.x = 100;
 	this.Lee.position.y = 100;
+	this.Lee.scale = new PIXI.Point(.2, .2);
 	stageWorld.addChild(this.Lee);
 	
+	// Background NPC 2
+	
+	var bgnpc2 = [];
+	bgnpc2.push(Images.getTexture("hat4.png"));
+	//LeeTexture.push(Images.getTexture("lee_h.png"));
+	this.backy2 = new PIXI.MovieClip(LeeTexture);
+	
+	this.backy2.anchor.x = 0.5;
+	this.backy2.anchor.y = 0.5;
+	this.backy2.position.x = 600;
+	this.backy2.position.y = 100;
+	this.backy2.scale = new PIXI.Point(.2, .2);
+	stageWorld.addChild(this.backy2);
+	
+	// Newspaper (inanimate objects can be NPC's too!)
+	
+	var news = [];
+	news.push(Images.getTexture("newspaper.png"));
+	//LeeTexture.push(Images.getTexture("lee_h.png"));
+	this.paper = new PIXI.MovieClip(news);
+	
+	this.paper.anchor.x = 0.5;
+	this.paper.anchor.y = 0.5;
+	this.paper.position.x = 100;
+	this.paper.position.y = 300;
+	this.paper.scale = new PIXI.Point(.2, .2);
+	stageWorld.addChild(this.paper);
+	
+	// NPC List
+	
 	this.NPCList = [];
-	this.NPCList.push(this.Blanky)
+	this.NPCList.push(this.Blanky);
 	this.NPCList.push(this.TJ);
 	this.NPCList.push(this.Lee);
+	this.NPCList.push(this.backy2); 
+	this.NPCList.push(this.paper);
 	
-	//Proximity checker
+	
+	
+	//Proximity checker - I think this is outdated
 	
 	var TJbounds = this.TJ.getBounds();
 	
@@ -142,11 +177,15 @@ function twsInit()
 	boxen.push(Images.getTexture("BOX0.png"));
 	//TJ's (HT's?) dialogue box
 	boxen.push(Images.getTexture("BOX1.png"));
-	//Lee
+	//Lee no, wait, first background NPC
 	boxen.push(Images.getTexture("BOX2.png"));
-	//Someone else's
+	//backy2's
 	boxen.push(Images.getTexture("BOX3.png"));
+	//newspaper's
 	boxen.push(Images.getTexture("BOX4.png"));
+	//Tubman's answers
+	boxen.push(Images.getTexture("BOX5.png"));
+	boxen.push(Images.getTexture("BOX6.png"));
 	
 	this.dialoguebox = new PIXI.MovieClip(boxen);
 	
@@ -213,7 +252,7 @@ function twsInit()
 	this.answerbox1.interactive = true;
 	this.answerbox1.mousedown = function () {
 		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(3);
+			TestWorldScreen.dialoguebox.gotoAndStop(5);
 			TestWorldScreen.answerbox1.gotoAndStop(0);
 			TestWorldScreen.answerbox2.gotoAndStop(0);
 			setTimeout(function(){
@@ -226,7 +265,7 @@ function twsInit()
 	this.answerbox2.interactive = true;
 	this.answerbox2.mousedown = function () {
 		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(4);
+			TestWorldScreen.dialoguebox.gotoAndStop(6);
 			TestWorldScreen.answerbox1.gotoAndStop(0);
 			TestWorldScreen.answerbox2.gotoAndStop(0);
 			TestWorldScreen.delay = 1;
@@ -290,8 +329,10 @@ function twsUpdate(delta)
 				this.interact = 1;
 				this.currNPC = i;
 				this.dialoguebox.gotoAndStop(i);
-				this.answerbox1.gotoAndStop(i);
-				this.answerbox2.gotoAndStop(i);
+				if(i == 1){//oh god why. no, no, no.
+					this.answerbox1.gotoAndStop(i);
+					this.answerbox2.gotoAndStop(i);
+					}
 				//If dialogue trees extend past 1 branch, this needs to change
 				if(i > this.answerbox1.textures.length-1){
 					this.delay = 1;
@@ -305,7 +346,7 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
-	//console.log(this.currNPC);
+	console.log(this.currNPC);
 	
 	//Insert logic for dialogue trees here.
 	//While interacting, choices are available to peruse.
@@ -324,6 +365,7 @@ function twsUpdate(delta)
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
+		this.delay = 0;
 		//If you don't want to do an activity/minigame, just exit dialogue as normal.
 		this.fadeLoadingScreen = 0;
 	 }
@@ -367,9 +409,10 @@ function twsUpdate(delta)
 	
 	// collision detection - remove every obstacle bunny that is touching
 	// our debug character
+	
 	var pBounds = this.bunny.getBounds();
 
-	for (var i = 0; i < stageWorld.children.length; i++) {
+	/*for (var i = 0; i < stageWorld.children.length; i++) {
 		var ob = stageWorld.children[i];
 		if (!exists(ob.name) || ob.name != "obstacle") {
 			continue;
@@ -388,7 +431,7 @@ function twsUpdate(delta)
 			i--;
 		}
 	}
-
+	*/
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
 	this.text.setText(DEBUG_MODE ? (Math.round(Game.fps) + " FPS") : "");
@@ -436,7 +479,7 @@ TestMenuScreen = new Screen ({
 
 		// just for fun.... ;)
 		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
-			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man","aeiou"];
+			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man","aeiou","egg of easter"];
 		var doges = this.doges;
 
 		for(var i = 0; i < doges.length; i++)
