@@ -90,6 +90,21 @@ function twsInit()
 
 	// attach him to the stageWorld is at the bottom, because the main character should probably be on top of everything
 	
+	//Load all NPC's in a few lines.
+	var AllOfTheNPCs = [];
+	LoadNPCs(AllOfTheNPCs);
+	
+	for(var i = 0; i < AllOfTheNPCs.length;i++){
+		AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(AllOfTheNPCs[i].texture);
+		
+		var current = AllOfTheNPCs[i].MovieClip;
+		
+		current.anchor.x = 0.5;
+		current.anchor.y = 0.5;
+		current.position.x = AllOfTheNPCs[i].x;
+		current.position.y = AllOfTheNPCs[i].y;
+		stageWorld.addChild(current);
+	}
 
 	// add Thomas Jefferson
 
@@ -348,7 +363,7 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
-	console.log(this.currNPC);
+	//console.log(this.currNPC);
 	
 	//Insert logic for dialogue trees here.
 	//While interacting, choices are available to peruse.
@@ -466,7 +481,7 @@ TestMenuScreen = new Screen ({
 		this.doged = false;
 
 		this.doge.position.x = -13370;
-		this.doge.position.y = -13370;
+		this.doge.position.y = -90010;
 
 		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
 			font : "56px Arial",

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Make sure all fields are filled with something. -->
+<!-- I'm aiming to depreciate the 'image' field in dialogue -->
+<npclist>
+	<NPC>
+		<name>Harriet Tubman</name>
+		<xpos>2000</xpos>
+		<ypos>-200</ypos>
+		<main_texture>Harriet.png</main_texture>
+		<interact_texture>Harriet_Speaking.png</interact_texture>
+		<dialogue>
+			<intro answer1="Yes" answer2="What" image="BOX1.png">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
+			<Yes>Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
+			<What>Never mind. Just an old woman rambling.</What>
+		</dialogue>
+		
+	</NPC>
+	<NPC>
+		<name>Random Dude 1</name>
+		<xpos>2000</xpos>
+		<ypos>100</ypos>
+		<main_texture>hat4.png</main_texture>
+		<interact_texture>hat4.png</interact_texture>
+		<dialogue>
+			<intro>I read that Senator Brooks beat Senator Sumner with a cane a week ago on the Senate floor! War must be right around the corner...</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Random Dude 2</name>
+		<xpos>2000</xpos>
+		<ypos>300</ypos>
+		<main_texture>hat4.png</main_texture>
+		<interact_texture>hat4.png</interact_texture>
+		<dialogue>
+			<intro>That woman down there sure is saying some strange things. I hope she isn't up to anything...</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>A newspaper</name>
+		<xpos>2000</xpos>
+		<ypos>500</ypos>
+		<main_texture>newspaper.png</main_texture>
+		<interact_texture>newspaper.png</interact_texture>
+		<dialogue>
+			<intro>Brooks Canes Sumner! 'The fragments of the stick are begged for as sacred relics' says Brooks.</intro>
+		</dialogue>
+	</NPC>
+</npclist>
+
+<!--<NPC>
+		<name>Copypasta</name>
+		<xpos></xpos>
+		<ypos></ypos>
+		<main_texture></main_texture>
+		<interact_texture></interact_texture>
+		<dialogue>
+			<intro></intro>
+		</dialogue>
+	</NPC> -->
