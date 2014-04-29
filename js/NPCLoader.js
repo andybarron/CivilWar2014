@@ -12,6 +12,7 @@ var texture1 = xmlDoc.getElementsByTagName("main_texture");
 //console.log(texture1[0].childNodes[0].nodeValue);
 var texture2 = xmlDoc.getElementsByTagName("interact_texture");
 //console.log(texture2[0].childNodes[0].nodeValue);
+var scale = xmlDoc.getElementsByTagName("scale");
 
 for(var i = 0; i < xmlDoc.getElementsByTagName("NPC").length;i++){
 	
@@ -22,7 +23,8 @@ for(var i = 0; i < xmlDoc.getElementsByTagName("NPC").length;i++){
 	var NPC = {	name:name[i].childNodes[0].nodeValue, 
 				x:x[i].childNodes[0].nodeValue, 
 				y:y[i].childNodes[0].nodeValue, 
-				texture:textures};
+				texture:textures,
+				scale:scale[i].childNodes[0].nodeValue}
 
 	NPCArray.push(NPC);
 

@@ -90,10 +90,11 @@ function twsInit()
 
 	// attach him to the stageWorld is at the bottom, because the main character should probably be on top of everything
 	
-	//Load all NPC's in a few lines.
+	//Load NPC's data from the XML file
 	var AllOfTheNPCs = [];
 	LoadNPCs(AllOfTheNPCs);
 	
+	//Add NPC's to the world
 	for(var i = 0; i < AllOfTheNPCs.length;i++){
 		AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(AllOfTheNPCs[i].texture);
 		
@@ -103,6 +104,7 @@ function twsInit()
 		current.anchor.y = 0.5;
 		current.position.x = AllOfTheNPCs[i].x;
 		current.position.y = AllOfTheNPCs[i].y;
+		current.scale = new PIXI.Point(AllOfTheNPCs[i].scale, AllOfTheNPCs[i].scale);
 		stageWorld.addChild(current);
 	}
 
