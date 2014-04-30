@@ -50,7 +50,7 @@ return false;
 }
 function twsInit()
 {
-	Sounds.load("coin.wav");
+	//Sounds.load("coin.wav");
 	// IMPORTANT:
 	// anything that you want to access
 	// after the init() method completes
@@ -591,9 +591,12 @@ SampleMiniGame = new Screen({
 init: function()
 	{
 		/*
-		First off, let me apologize for this. Everything to create the graph is hardcoded. It's ugly. I'm sorry. I really am. But this is due in a few hours, so I'm gonna leave it. Feel free to build a better system, honestly, do.
-		-David
+		There's an issue where on occasion the necessary assets don't load. This is bigger than just this code, but if it doesn't seem to be working when you make the change, check the console log.
+		Need to implement win nodes in a better way than hard-coding them
 		*/
+		var backMap = PIXI.Texture.fromImage("map.png");
+		var back = new PIXI.Sprite(backMap);
+		this.stage.addChild(back);
 		var markTexture = [];
 	markTexture.push(Images.getTexture("node.png"));
 	markTexture.push(Images.getTexture("node_player.png"));
@@ -707,6 +710,8 @@ init: function()
     		arrData[ arrData.length - 1 ].push( strMatchedValue );
     	}
 	
+	//shameless stealing ends here
+	
 	for(var key in arrData){
 	//alert(arrData[key][2]);
 	var tempnode = new graphnode(new PIXI.MovieClip(markTexture), arrData[key][2],[]);
@@ -729,10 +734,22 @@ init: function()
 	this.graph[39].setescape();
 	this.graph[43].setescape();
 	this.playerturn = true;
+	this.switchtimer = 120;
 	},
 	update: function(delta)
 	{
-		//gonna need to ensure the player's position is updated
+	if(this.switchtimer < 1){
+		this.switchtimer = 120;
+		if(this.playerturn){
+		this.graph[this.enemynode].setinvis();
+		this.graph[this.playernode].setvis();
+		}else{
+		this.graph[this.playernode].setinvis();
+		this.graph[this.enemynode].setenemy();
+		}
+		}else{
+		this.switchtimer = this.switchtimer - 1;
+		}
 	},
 	onKeyDown: function(keyCode)
 	{
@@ -743,15 +760,12 @@ init: function()
 	},
 	onMouseDown: function(point)
 	{
-		//need to check graph for valid move, sleep for a few seconds while disabling input to make it look like comp is "thinking"
-		//then process comp move and execute it
 		if(this.playerturn){
-		this.playerturn = false;
-		this.graph[this.enemynode].setinvis();
 		//this.graph[this.playernode].setvis();
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
 		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
+		this.playerturn = false;
 		console.log("MOVING TO NODE " + i);
 		this.graph[this.playernode].setinvis();
 		this.graph[i].setvis();
@@ -765,18 +779,29 @@ init: function()
 		Game.setScreen(TestWorldScreen);
 		this.playernode = 0;
 		}
-		}else{
-		this.playerturn = true;
+		if (this.enemynode == this.playernode){
+		alert("you lose!");
 		this.graph[this.playernode].setinvis();
+		Game.setScreen(TestWorldScreen);
+		this.playernode = 0;
+		}
+		}else{
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
-		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && this.moves > 0){
+		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && i != 0 && i != 27 && i != 31 && i != 39 && i != 43){
+		this.playerturn = true;
 		console.log("MOVING ENEMY TO NODE " + i);
 		this.graph[this.enemynode].setinvis();
 		this.graph[i].setenemy();
 		this.enemynode = i;
 		//this.moves = this.moves - 1;
 		}
+		}
+		if (this.enemynode == this.playernode){
+		alert("you lose!");
+		this.graph[this.playernode].setinvis();
+		Game.setScreen(TestWorldScreen);
+		this.playernode = 0;
 		}
 		}
 	}

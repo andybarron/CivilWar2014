@@ -59,7 +59,7 @@ Game.setScreen = function(screen) {
 	Game.stage.addChild(screen.stage);
 	Game.stage.addChild(screen.ui);
 	Game.currentScreen = screen;
-	Game.audio = document.getElementById("MUSIC");	
+	//Game.audio = document.getElementById("MUSIC");	
 }
 
 // update function
