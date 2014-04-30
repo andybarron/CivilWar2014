@@ -184,6 +184,8 @@ function twsInit()
 			fill : "white"
 		});
 		
+	this.answer1text = "";
+	
 	this.answer1.position.x = 20;
 	this.answer1.position.y = 550;
 	this.ui.addChild(this.answer1);
@@ -193,11 +195,13 @@ function twsInit()
 	};
 	this.answer1.ButtonMode = true;
 		
-	this.answer2 = new PIXI.Text("AHS ",{
+	this.answer2 = new PIXI.Text("",{
 			font : "24px Arial",
 			fill : "white"
 		});
-		
+	
+	this.answer2text = "";
+	
 	this.answer2.position.x = 420;
 	this.answer2.position.y = 550;
 	this.ui.addChild(this.answer2);
@@ -209,12 +213,13 @@ function twsInit()
 	
 	this.ui.addChild(this.text);
 	
+	//I have run out of brain. If there's a way to get text from a PIXI.text object, please tell me.
 	function Answer1(){
-		//change the dialogue to appropro stuff
+		console.log(TestWorldScreen.answer1text);
 	}
 	
 	function Answer2(){
-		//see Answer1()
+		console.log(TestWorldScreen.answer2text);
 	}
 }
 
