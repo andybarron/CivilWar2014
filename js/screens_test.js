@@ -11,7 +11,34 @@ TestWorldScreen = new Screen ({
 	// remember, you need commas after every
 	// key-value pair except the last one!
 });
-
+function graphnode(sprite,name,adjacent){
+this.sprite = sprite;
+this.name = name;
+this.adjacent = adjacent;
+this.touching = function(pos){
+if(wasClicked(this.sprite.getBounds(), pos, 0)){
+return true;
+}
+return false;
+}
+this.toString = function(){
+return this.name;
+}
+this.setinvis = function(){
+this.sprite.gotoAndStop(0);
+}
+this.setvis = function(){
+this.sprite.gotoAndStop(1);
+}
+this.isAdj = function(node){
+for(var key in adjacent){
+if(adjacent[key] == node){
+return true;
+}
+}
+return false;
+}
+}
 function twsInit()
 {
 	Sounds.load("coin.wav");
@@ -296,7 +323,8 @@ function twsInit()
 	
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
-	stageWorld.addChild(this.text);
+
+	//stageWorld.addChild(this.text);
 	
 	//new dialogue box
 	this.dialoguetext1 = new PIXI.Text("", {
@@ -305,8 +333,8 @@ function twsInit()
 		});
 	this.dialoguetext1.position.x = 20;
 	this.dialoguetext1.position.y = 475;
-	this.dialoguetext1.fixed = true;
-	stageWorld.addChild(this.dialoguetext1);
+	//this.dialoguetext1.fixed = true;
+	this.ui.addChild(this.dialoguetext1);
 	this.dialoguetext1.setText("");
 	
 	this.dialoguetext2 = new PIXI.Text("", {
@@ -315,8 +343,8 @@ function twsInit()
 		});
 	this.dialoguetext2.position.x = 20;
 	this.dialoguetext2.position.y = 500;
-	this.dialoguetext2.fixed = true;
-	stageWorld.addChild(this.dialoguetext2);
+	//this.dialoguetext2.fixed = true;
+	this.ui.addChild(this.dialoguetext2);
 	this.dialoguetext2.setText("");
 	
 	this.dialoguetext3 = new PIXI.Text("", {
@@ -325,8 +353,8 @@ function twsInit()
 		});
 	this.dialoguetext3.position.x = 20;
 	this.dialoguetext3.position.y = 525;
-	this.dialoguetext3.fixed = true;
-	stageWorld.addChild(this.dialoguetext3);
+	//this.dialoguetext3.fixed = true;
+	this.ui.addChild(this.dialoguetext3);
 	this.dialoguetext3.setText("");
 	
 	this.dialoguetext4 = new PIXI.Text("", {
@@ -335,9 +363,11 @@ function twsInit()
 		});
 	this.dialoguetext4.position.x = 20;
 	this.dialoguetext4.position.y = 550;
-	this.dialoguetext4.fixed = true;
-	stageWorld.addChild(this.dialoguetext4);
+	//this.dialoguetext4.fixed = true;
+	this.ui.addChild(this.dialoguetext4);
 	this.dialoguetext4.setText("");
+	
+	this.ui.addChild(this.text);
 }
 
 function twsUpdate(delta)
@@ -519,6 +549,25 @@ function twsUpdate(delta)
 		}
 	}
 	*/
+	
+
+	for(var c1 = 0; c1 < this.stage.children.length; c1++) {
+		var ob1 = this.stage.children[c1];
+		if (exists(ob1.collision) && ob1.collision == true) {
+			for(var c2 = 0; c2 < this.stage.children.length; c2++) {
+				var ob2 = this.stage.children[c2];
+				if (c1 != c2 && exists(ob2.collision) && ob2.collision == true) {
+					resolveCollisionWeighted(
+						ob1,
+						ob2,
+						0.5,
+						-10
+					);
+				}
+			}
+		}
+	}
+
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
 	this.text.setText(DEBUG_MODE ? (Math.round(Game.fps) + " FPS") : "");
@@ -530,6 +579,7 @@ function twsOnKeyDown(keyCode)
 	if (arrayContains(KEYS_EXIT,keyCode))
 	{
 		Game.setScreen(TestMenuScreen);
+		//Game.setScreen(SampleMiniGame);
 	}
 }
 
@@ -697,5 +747,98 @@ TestMenuScreen = new Screen ({
 		dogeWord.position.x = point.x;
 		dogeWord.position.y = point.y;
 		this.stage.addChild(dogeWord);
+	}
+});
+SampleMiniGame = new Screen({
+init: function()
+	{
+		//this.doge = Images.createSprite("doge.png");
+		//this.stage.addChild(this.doge);
+
+		//this.doge.position.x = -13370;
+		//this.doge.position.y = -13370;
+
+		/*this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});*/
+		//this.testWords.position.x = 0;
+		//this.testWords.position.y = STAGE_H/3;
+		//this.stage.addChild(this.testWords);
+
+this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = STAGE_H/3;
+		this.stage.addChild(this.testWords);
+		// gonna need to add the map, then add the overlays at the correct positions
+		// could either add the right objects at the right time, or just play with visibility if thats a thing
+		//new PIXI.Sprite(textureGreen);
+		//var textureMarker = PIXI.Texture.fromImage("lee.png");
+		//this.marker = new PIXI.Sprite(textureMarker);
+		//this.marker = Images.createSprite("lee.png");
+		//this.marker.mousedown = function(){
+		//alert("This is my alert!");
+		//};
+		//this.marker.mousedown = function () {
+		//alert("This is an alert!");
+		//};
+		var markTexture = [];
+	markTexture.push(Images.getTexture("lee.png"));
+	markTexture.push(Images.getTexture("lee_h.png"));
+	this.marker = new graphnode(new PIXI.MovieClip(markTexture), "start",[]);
+	this.mark2 = new graphnode(new PIXI.MovieClip(markTexture), "end",[this.marker]);
+	this.mark3 = new graphnode(new PIXI.MovieClip(markTexture), "bonus",[this.marker,this.mark2]);
+	this.marker.adjacent.push(this.mark2);
+	this.marker.adjacent.push(this.mark3);
+	this.mark2.adjacent.push(this.mark3);
+		this.stage.addChild(this.marker.sprite);
+		this.stage.addChild(this.mark2.sprite);
+		this.stage.addChild(this.mark3.sprite);
+		this.marker.sprite.position.x = 100;
+		this.marker.sprite.position.y = 30;
+		this.mark2.sprite.position.x = 200;
+		this.mark3.sprite.position.x = 300;
+		this.graph = [this.marker,this.mark2,this.mark3];
+		this.playernode = 0;
+		this.enemynode = 1;
+		this.moves = 10;
+	this.graph[this.playernode].setvis();
+	},
+	update: function(delta)
+	{
+		//gonna need to ensure the player's position is updated
+	},
+	onKeyDown: function(keyCode)
+	{
+		if (arrayContains(KEYS_EXIT,keyCode))
+		{
+			Game.setScreen(TestWorldScreen);
+		}
+	},
+	onMouseDown: function(point)
+	{
+		//need to check graph for valid move, sleep for a few seconds while disabling input to make it look like comp is "thinking"
+		//then process comp move and execute it
+		for(var i = 0; i < this.graph.length; i++){
+		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
+		this.graph[this.playernode].setinvis();
+		this.graph[i].setvis();
+		this.playernode = i;
+		this.moves = this.moves - 1;
+		}
+		}
+		if (this.playernode == 2){
+		alert("you win!");
+		this.graph[this.playernode].setinvis();
+		Game.setScreen(TestWorldScreen);
+		this.playernode = 0;
+		}
 	}
 });
