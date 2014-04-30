@@ -61,6 +61,10 @@ function twsInit()
 
 	var stageWorld = this.stage;
 	// just a nickname so we don't have to change so much stuff
+	var bg = Images.createSprite("env/town_map.png");
+	bg.position.x -= 100;
+	bg.position.y -= 100;
+	this.stage.addChild(bg);
 	
 	//REMEMBER - stuff added to the screen is added in order
 	//Lowest stuff first (the things that go behind everything else)
@@ -167,6 +171,15 @@ function twsInit()
 	//stageWorld.addChild(this.text);
 	
 	//new dialogue box
+	
+	this.namebox = new PIXI.Text("",{
+			font : "24px Arial",
+			fill : "white",
+		});
+	this.namebox.position.x = 20;
+	this.namebox.position.y = 425;
+	this.ui.addChild(this.namebox);
+	
 	this.dialoguetext = new PIXI.Text("", {
 			font : "24px Arial",
 			fill : "white",
@@ -227,6 +240,7 @@ function twsInit()
 		TestWorldScreen.answer2.setText("");
 		TestWorldScreen.answer1text = "";
 		TestWorldScreen.answer2text = "";
+		TestWorldScreen.delay++;
 		}
 		
 	
@@ -248,6 +262,7 @@ function twsInit()
 		TestWorldScreen.answer2.setText("");
 		TestWorldScreen.answer1text = "";
 		TestWorldScreen.answer2text = "";
+		TestWorldScreen.delay++;
 		}
 	}
 }
@@ -318,15 +333,20 @@ function twsUpdate(delta)
 				//BRING UP INTRO DIALOGUE
 				//TODO: Override this depending on conditionals
 
+				this.namebox.setText(this.currNPC.name);
 				this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
 				
 				//console.log(this.AllOfTheNPCs[i].answer1.intro);
 				
+				try{
 				this.answer1.setText(this.AllOfTheNPCs[i].answer1.intro);
 				this.answer1text = this.AllOfTheNPCs[i].answer1.intro;
 				
 				this.answer2.setText(this.AllOfTheNPCs[i].answer2.intro);
 				this.answer2text = this.AllOfTheNPCs[i].answer2.intro;
+				}catch(e){
+					this.delay++;
+				}
 				
 			}
 		}
@@ -382,7 +402,7 @@ function twsUpdate(delta)
 	}
 	
 	if(this.delay >= 400){
-		ClearDialogue();
+		DialogueClear();
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
@@ -434,7 +454,7 @@ function twsUpdate(delta)
 			}
 		}
 	}
-	this.stage.children.sort(spriteZSort);
+	//this.stage.children.sort(spriteZSort);
 
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
@@ -455,6 +475,7 @@ function DialogueClear(){
 TestWorldScreen.dialoguetext.setText("");
 TestWorldScreen.answer1.setText("");
 TestWorldScreen.answer2.setText("");
+TestWorldScreen.namebox.setText("");
 }
 
 // method two of defining a Screen: inlining everything
@@ -532,17 +553,6 @@ init: function()
 		var backMap = PIXI.Texture.fromImage("map.png");
 		var back = new PIXI.Sprite(backMap);
 		this.stage.addChild(back);
-		
-		this.graphtext = new PIXI.Text("Click a node to get started!", {
-			font : "24px Arial",
-			fill : "black",
-			wordWrap : true,
-			wordWrapWidth : 200
-		});
-	this.graphtext.position.x = 600;
-	this.graphtext.position.y = 10;
-	this.stage.addChild(this.graphtext);
-		
 		var markTexture = [];
 	markTexture.push(Images.getTexture("node.png"));
 	markTexture.push(Images.getTexture("node_player.png"));
@@ -571,8 +581,8 @@ init: function()
 		this.mark3.sprite.position.y = 50;
 		this.mark3.setescape();*/
 		this.graph = [];
-		this.playernode = 21;
-		this.enemynode = 22;
+		this.playernode = 10;
+		this.enemynode = 11;
 		this.moves = 100;
 	//this.graph[this.playernode].setvis();
 	
@@ -677,7 +687,7 @@ init: function()
 	this.graph[0].setescape();
 	this.graph[27].setescape();
 	this.graph[31].setescape();
-	this.graph[40].setescape();
+	this.graph[39].setescape();
 	this.graph[43].setescape();
 	this.playerturn = true;
 	this.switchtimer = 120;
@@ -710,12 +720,8 @@ init: function()
 		//this.graph[this.playernode].setvis();
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
-		if(this.graph[i].touching(point)){
-		console.log("ATTEMPTED MOVE TO " + i);
-		}
-		if(this.graph[i].touching(point) && (this.graph[this.playernode].isAdj(this.graph[i]) || this.playernode == i) && this.moves > 0){
+		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
 		this.playerturn = false;
-		this.graphtext.setText(this.graph[i]);
 		console.log("MOVING TO NODE " + i);
 		this.graph[this.playernode].setinvis();
 		this.graph[i].setvis();
@@ -723,34 +729,22 @@ init: function()
 		this.moves = this.moves - 1;
 		}
 		}
-		if (this.playernode == 0 || this.playernode == 27 || this.playernode == 31 || this.playernode == 40 || this.playernode == 43 ){
+		if (this.playernode == 0 || this.playernode == 27 || this.playernode == 31 || this.playernode == 39 || this.playernode == 43 ){
 		alert("you win!");
-		this.graph[this.playernode].setescape();
-		this.graph[this.enemynode].setinvis();
+		this.graph[this.playernode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		if (this.enemynode == this.playernode){
 		alert("you lose!");
 		this.graph[this.playernode].setinvis();
-		this.graph[this.enemynode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		}else{
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
-		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && i != 0 && i != 27 && i != 31 && i != 40 && i != 43){
+		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && i != 0 && i != 27 && i != 31 && i != 39 && i != 43){
 		this.playerturn = true;
 		console.log("MOVING ENEMY TO NODE " + i);
 		this.graph[this.enemynode].setinvis();
@@ -762,14 +756,8 @@ init: function()
 		if (this.enemynode == this.playernode){
 		alert("you lose!");
 		this.graph[this.playernode].setinvis();
-		this.graph[this.enemynode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		}
 	}
