@@ -11,6 +11,9 @@ TestWorldScreen = new Screen ({
 	// remember, you need commas after every
 	// key-value pair except the last one!
 });
+
+var talkedTo = 0;
+
 function graphnode(sprite,name,adjacent){
 this.sprite = sprite;
 this.name = name;
@@ -142,7 +145,7 @@ function twsInit()
 		
 		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
-
+	
 	//helper variables for dialogue box control
 	//text display should be 1 if a dialogue box is on-screen
 	//interact should be 1 if the interaction button is currently held down
@@ -285,6 +288,15 @@ function twsUpdate(delta)
 					this.answerbox1.gotoAndStop(i);
 					this.answerbox2.gotoAndStop(i);
 					}
+					
+				// this.NPCinter[i] = true;
+				// var currInter = 0;
+				// for (var k = 0; i < this.NPCinter.length; k++){
+				// 	if (this.NPCinter[k] = true) {
+				// 		currInter += 1;
+				// 	}
+				// }	
+				talkedTo +=1;
 				//If dialogue trees extend past 1 branch, this needs to change
 				if(i > this.answerbox1.textures.length-1){
 					this.delay = 1;
@@ -513,63 +525,46 @@ TestWorldScreen.answer2.setText("");
 TestMenuScreen = new Screen ({
 	init: function()
 	{
-		Sounds.load("bark.wav");
-		this.doge = Images.createSprite("doge.png");
-		this.stage.addChild(this.doge);
-
-		this.dogeX = 0;
-		this.dogeY = 0;
-		this.dogeTime = 1;
-		this.doged = false;
-
-		this.doge.position.x = -13370;
-		this.doge.position.y = -90010;
-
-		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014, Press up to go to the Start screen, ESC to go back to the game", {
 			font : "56px Arial",
 			fill: "001166",
 			wordWrap: true,
 			wordWrapWidth: 800
 		});
 		this.testWords.position.x = 0;
-		this.testWords.position.y = STAGE_H/3;
+		this.testWords.position.y = 0;
+		this.stage.addChild(this.testWords);
+		
+		
+		this.testWords = new PIXI.Text("Created by: University of Virginia students Alexander Kaplan, Andy Barron, Anne Owen, Becca Stein, Craig Hunter, Danielle Senft, David Amin, Delphine Trinh, Divya Bhaskara, Erin Winters, Himica Kumar, Hunter Dewing, Jessica Ya, Nicholas Lytle, Nicole Zurita, Samuel Knox, Samuel Ogbe, Tracy Alers, Uday Varkhadkar, Zane Laughlin, Zheng Qin. ", {
+			font : "25px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = 2*STAGE_H/3;
 		this.stage.addChild(this.testWords);
 
-
-		// just for fun.... ;)
-		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
-			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man","aeiou","egg of easter"];
-		var doges = this.doges;
-
-		for(var i = 0; i < doges.length; i++)
-		{
-			//this.onMouseDown( new PIXI.Point(Math.random()*STAGE_W/2,Math.random()*STAGE_H/2+STAGE_H/4) );
-		}
 
 	},
 	update: function(delta)
 	{
-		this.dogeTime += delta;
-		if(this.dogeTime >= 1)
-		{
-			if(this.doged){
-				this.onMouseDown( new PIXI.Point( this.dogeX, this.dogeY+100 ) );
-				Sounds.play("bark.wav");
-			}
-			this.doged = true;
-			this.dogeTime -= 1;
-			this.oldX = this.doge.position.x;
-			this.oldY = this.doge.position.y;
-			this.dogeX = Math.random()*STAGE_W - this.doge.width/2;
-			this.dogeY = Math.random()*STAGE_H - this.doge.height/2;
-		}
 
-		var tx = this.dogeX;
-		var ty = this.dogeY;
-		var x = this.doge.position.x;
-		var y = this.doge.position.y;
-		this.doge.position.x += (tx-x)/4;
-		this.doge.position.y += (ty-y)/4;
+		// var interactions = 0;
+		// for(var i = 0; i < talkedTo.length; i++)
+		// {
+		// 	interactions += talkedTo[i];
+		// }
+		this.inters = new PIXI.Text(talkedTo, {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.inters.position.x = 0;
+		this.inters.position.y = STAGE_H/2;
+		this.stage.addChild(this.inters);
 	},
 	onKeyDown: function(keyCode)
 	{
@@ -577,19 +572,16 @@ TestMenuScreen = new Screen ({
 		{
 			Game.setScreen(TestWorldScreen);
 		}
+
+		if (arrayContains(KEYS_UP,keyCode))
+		{ 
+			Game.setScreen(TestStartScreen);
+		}
 	},
-	onMouseDown: function(point)
-	{
-		var doges = this.doges;
-		var dogeWord = new PIXI.Text(doges[getRandomInt(doges.length)], {
-			font : "36px Comic Sans MS",
-			fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
-		});
-		dogeWord.position.x = point.x;
-		dogeWord.position.y = point.y;
-		this.stage.addChild(dogeWord);
-	}
+
+
 });
+
 SampleMiniGame = new Screen({
 init: function()
 	{
@@ -625,12 +617,12 @@ init: function()
 		this.mark3.sprite.position.y = 50;
 		this.mark3.setescape();*/
 		this.graph = [];
-		this.playernode = 0;
-		this.enemynode = 1;
+		this.playernode = 10;
+		this.enemynode = 11;
 		this.moves = 100;
 	//this.graph[this.playernode].setvis();
 	
-	strData = "50,475,\"San Antonio, Texas\",\"2,3\",2\n70,425,\"Austin, Texas\",\"1,3,4\",0\n100,445,\"Houston, Texas\",\"1,2,4,5\",0\n150,410,\"Alexandria, Louisiana\",\"2,3,5,7\",0\n200,430,\"Baton Rouge, Louisiana\",\"3,4,6,7,11\",0\n210,455,\"New Orleans, Louisiana\",\"5,\",5\n205,375,\"Jackson, Mississippi\",\"4,5,8,10\",0\n185,320,\"Little Rock, Arkansas\",\"7,9,15,16\",1\n270,345,\"Birmingham, Alabama\",\"8,10,16,17\",1\n270,375,\"Montgomery, Alabama\",\"7,9,11,17\",0\n275,420,\"Tallahassee, Florida\",\"5,10,12\",0\n365,430,\"St. Augustine, Florida\",\"11,13,18\",0\n375,475,\"Lakeland, Florida\",\"12,14\",0\n400,515,\"Everglades, Florida\",\"13,\",6\n175,270,\"Springfield, Missouri\",\"8,19\",0\n260,300,\"Nashville, Tennessee\",\"8,9,20\",0\n310,360,\"Atlanta, Georgia\",\"9,10,18,22\",0\n365,375,\"Savannah, Georgia\",\"12,17,23\",0\n185,260,\"Saint Louis, Missouri\",\"15,27\",0\n270,265,\"Louisiville, Kentucky\",\"16,21,31\",0\n355,275,\"Roanoke, Virginia\",\"20,22,24,35,36\",1\n360,335,\"Columbia, South Carolina\",\"17,21,23\",0\n395,345,\"Charleston, South Carolina\",\"18,22,25,42\",4\n405,295,\"Raleigh, North Carolina\",\"21,25\",0\n430,310,\"Jacksonville, North Carolina\",\"23,24\",0\n155,185,\"Des Moines, Iowa\",\"27,29\",0\n205,220,\"Springfield, Illinois\",\"19,26,29,30\",0\n210,145,\"Madison, Wisconsin\",\"26,29\",2\n225,190,\"Chicago, Illinois\",\"27,28,30\",0\n250,235,\"Indianapolis, Indiana\",\"27,29,31\",0\n310,195,\"Cincinnati, Ohio\",\"27,29,32\",0\n210,145,\"Detroit, Michigan\",\"27,29,33\",2\n305,220,\"Columbus, Ohio\",\"27,29,34\",0\n295,240,\"Cleveland, Ohio\",\"27,29,35\",0\n355,230,\"Charleston, West Virginia\",\"27,29,36\",0\n405,248,\"Richmond, Virginia\",\"27,29,37\",0\n370,190,\"Pittsburgh, Pennysylvania\",\"27,29,38\",0\n420,215,\"Annapolis, Maryland\",\"27,29,39\",0\n430,195,\"Philadelphia, Pennysylvania\",\"27,29,40\",0\n435,140,\"Rochester, New York\",\"27,29,41\",2\n385,135,\"Albany, New York\",\"27,29,42\",0\n450,175,\"New York, New York\",\"27,29,43\",0\n485,130,\"Boston, Massachusetts\",\"27,29,44\",0\n465,95,\"Montpelier, Vermont\",\"27,29,45\",2";
+	strData = "50,475,\"San Antonio, Texas\",\"2,3\",2\n70,425,\"Austin, Texas\",\"1,3,4\",0\n100,445,\"Houston, Texas\",\"1,2,4,5\",0\n150,410,\"Alexandria, Louisiana\",\"2,3,5,7\",0\n200,430,\"Baton Rouge, Louisiana\",\"3,4,6,7,11\",0\n210,455,\"New Orleans, Louisiana\",\"5,\",5\n205,375,\"Jackson, Mississippi\",\"4,5,8,10\",0\n185,320,\"Little Rock, Arkansas\",\"7,9,15,16\",1\n270,345,\"Birmingham, Alabama\",\"8,10,16,17\",1\n270,375,\"Montgomery, Alabama\",\"7,9,11,17\",0\n275,420,\"Tallahassee, Florida\",\"5,10,12\",0\n365,430,\"St. Augustine, Florida\",\"11,13,18\",0\n375,475,\"Lakeland, Florida\",\"12,14\",0\n400,515,\"Everglades, Florida\",\"13,\",6\n175,270,\"Springfield, Missouri\",\"8,19\",0\n260,300,\"Nashville, Tennessee\",\"8,9,20\",0\n310,360,\"Atlanta, Georgia\",\"9,10,18,22\",0\n365,375,\"Savannah, Georgia\",\"12,17,23\",0\n185,260,\"Saint Louis, Missouri\",\"15,27\",0\n270,265,\"Louisiville, Kentucky\",\"16,21,31\",0\n355,275,\"Roanoke, Virginia\",\"20,22,24,35,36\",1\n360,335,\"Columbia, South Carolina\",\"17,21,23\",0\n395,345,\"Charleston, South Carolina\",\"18,22,25,42\",4\n405,295,\"Raleigh, North Carolina\",\"21,25\",0\n430,310,\"Jacksonville, North Carolina\",\"23,24\",0\n155,185,\"Des Moines, Iowa\",\"27,29\",0\n205,220,\"Springfield, Illinois\",\"19,26,29,30\",0\n205,140,\"Madison, Wisconsin\",\"26,29\",2\n225,190,\"Chicago, Illinois\",\"27,28,30\",0\n250,235,\"Indianapolis, Indiana\",\"27,29,31\",0\n310,195,\"Cincinnati, Ohio\",\"27,29,32\",0\n210,145,\"Detroit, Michigan\",\"27,29,33\",2\n305,220,\"Columbus, Ohio\",\"27,29,34\",0\n295,240,\"Cleveland, Ohio\",\"27,29,35\",0\n355,230,\"Charleston, West Virginia\",\"27,29,36\",0\n405,248,\"Richmond, Virginia\",\"27,29,37\",0\n370,190,\"Pittsburgh, Pennysylvania\",\"27,29,38\",0\n420,215,\"Annapolis, Maryland\",\"27,29,39\",0\n430,195,\"Philadelphia, Pennysylvania\",\"27,29,40\",0\n435,140,\"Rochester, New York\",\"27,29,41\",2\n385,135,\"Albany, New York\",\"27,29,42\",0\n450,175,\"New York, New York\",\"27,29,43\",0\n485,130,\"Boston, Massachusetts\",\"27,29,44\",0\n465,95,\"Montpelier, Vermont\",\"27,29,45\",2";
 	//all this code shamelessly stolen from http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
     	// Check to see if the delimiter is defined. If not,
     	// then default to comma.
@@ -718,8 +710,20 @@ init: function()
 	tempnode.sprite.position.y = arrData[key][1];
 	this.graph.push(tempnode);
 	}
-	
-	
+	for(var adj in arrData){
+	//alert(arrData[adj][3]);
+	var adjArr = arrData[adj][3].split(',');
+	for(var adjNode in adjArr){
+	this.graph[adj].adjacent.push(this.graph[parseInt(adjArr[adjNode]) - 1]);
+	}
+	}
+	this.graph[this.playernode].setvis();
+	this.graph[0].setescape();
+	this.graph[27].setescape();
+	this.graph[31].setescape();
+	this.graph[39].setescape();
+	this.graph[43].setescape();
+	this.playerturn = true;
 	},
 	update: function(delta)
 	{
@@ -736,20 +740,89 @@ init: function()
 	{
 		//need to check graph for valid move, sleep for a few seconds while disabling input to make it look like comp is "thinking"
 		//then process comp move and execute it
+		if(this.playerturn){
+		this.playerturn = false;
+		this.graph[this.enemynode].setinvis();
+		//this.graph[this.playernode].setvis();
 		for(var i = 0; i < this.graph.length; i++){
+		//console.log("checking node " + i);
 		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
+		console.log("MOVING TO NODE " + i);
 		this.graph[this.playernode].setinvis();
 		this.graph[i].setvis();
 		this.playernode = i;
 		this.moves = this.moves - 1;
 		}
 		}
-		if (this.playernode == 2){
+		if (this.playernode == 0 || this.playernode == 27 || this.playernode == 31 || this.playernode == 39 || this.playernode == 43 ){
 		alert("you win!");
 		this.graph[this.playernode].setinvis();
 		Game.setScreen(TestWorldScreen);
 		this.playernode = 0;
 		}
+		}else{
+		this.playerturn = true;
+		this.graph[this.playernode].setinvis();
+		for(var i = 0; i < this.graph.length; i++){
+		//console.log("checking node " + i);
+		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && this.moves > 0){
+		console.log("MOVING ENEMY TO NODE " + i);
+		this.graph[this.enemynode].setinvis();
+		this.graph[i].setenemy();
+		this.enemynode = i;
+		//this.moves = this.moves - 1;
+		}
+		}
+		}
 	}
-    
+});
+
+TestStartScreen = new Screen ({
+	init: function()
+	{
+	
+
+		this.testWords = new PIXI.Text("Welcome to the Civil War! Click anywhere to get started.", {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = STAGE_H/3;
+		this.stage.addChild(this.testWords);
+
+
+		var textureButton = [];
+		textureButton.push(Images.getTexture("playbutton.png"));
+		this.button = new PIXI.MovieClip(textureButton);
+		
+		this.button.anchor.x = 0.5;
+		this.button.anchor.y = 0.5;
+		this.button.position.x = 100;
+		this.button.position.y = 100;
+		this.button.scale = new PIXI.Point(.2, .2);
+		this.stage.addChild(this.button);
+		
+
+		this.button.interactive = true;
+		this.button.mousedown = function () {
+			Game.setScreen(TestWorldScreen);
+		}
+
+
+	},
+	onKeyDown: function(keyCode)
+	{
+		if (arrayContains(KEYS_INTERACT,keyCode))
+		{
+			Game.setScreen(TestWorldScreen);
+		}
+	},
+	onMouseDown: function(point)
+	{
+			Game.setScreen(TestWorldScreen);
+		
+	}
+
 });
