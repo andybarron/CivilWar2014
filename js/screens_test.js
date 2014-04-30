@@ -898,6 +898,7 @@ init: function()
 	this.graph[31].setescape();
 	this.graph[39].setescape();
 	this.graph[43].setescape();
+	this.playerturn = true;
 	},
 	update: function(delta)
 	{
@@ -914,6 +915,10 @@ init: function()
 	{
 		//need to check graph for valid move, sleep for a few seconds while disabling input to make it look like comp is "thinking"
 		//then process comp move and execute it
+		if(this.playerturn){
+		this.playerturn = false;
+		this.graph[this.enemynode].setinvis();
+		//this.graph[this.playernode].setvis();
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
 		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
@@ -929,6 +934,20 @@ init: function()
 		this.graph[this.playernode].setinvis();
 		Game.setScreen(TestWorldScreen);
 		this.playernode = 0;
+		}
+		}else{
+		this.playerturn = true;
+		this.graph[this.playernode].setinvis();
+		for(var i = 0; i < this.graph.length; i++){
+		//console.log("checking node " + i);
+		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && this.moves > 0){
+		console.log("MOVING ENEMY TO NODE " + i);
+		this.graph[this.enemynode].setinvis();
+		this.graph[i].setenemy();
+		this.enemynode = i;
+		//this.moves = this.moves - 1;
+		}
+		}
 		}
 	}
 });
