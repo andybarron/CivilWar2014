@@ -481,14 +481,18 @@ function twsUpdate(delta)
 	
 
 	for(var c1 = 0; c1 < this.stage.children.length; c1++) {
-		for(var c2 = 0; c2 < this.stage.children.length; c2++) {
-			if (c1 != c2) {
-				resolveCollisionWeighted(
-					this.stage.children[c1],
-					this.stage.children[c2],
-					0.5,
-					-10
-				);
+		var ob1 = this.stage.children[c1];
+		if (exists(ob1.collision) && ob1.collision == true) {
+			for(var c2 = 0; c2 < this.stage.children.length; c2++) {
+				var ob2 = this.stage.children[c2];
+				if (c1 != c2 && exists(ob2.collision) && ob2.collision == true) {
+					resolveCollisionWeighted(
+						ob1,
+						ob2,
+						0.5,
+						-10
+					);
+				}
 			}
 		}
 	}
