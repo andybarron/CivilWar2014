@@ -227,6 +227,7 @@ function twsInit()
 		TestWorldScreen.answer2.setText("");
 		TestWorldScreen.answer1text = "";
 		TestWorldScreen.answer2text = "";
+		TestWorldScreen.delay++;
 		}
 		
 	
@@ -248,6 +249,7 @@ function twsInit()
 		TestWorldScreen.answer2.setText("");
 		TestWorldScreen.answer1text = "";
 		TestWorldScreen.answer2text = "";
+		TestWorldScreen.delay++;
 		}
 	}
 }
@@ -322,11 +324,15 @@ function twsUpdate(delta)
 				
 				//console.log(this.AllOfTheNPCs[i].answer1.intro);
 				
+				try{
 				this.answer1.setText(this.AllOfTheNPCs[i].answer1.intro);
 				this.answer1text = this.AllOfTheNPCs[i].answer1.intro;
 				
 				this.answer2.setText(this.AllOfTheNPCs[i].answer2.intro);
 				this.answer2text = this.AllOfTheNPCs[i].answer2.intro;
+				}catch(e){
+					this.delay++;
+				}
 				
 			}
 		}
@@ -382,7 +388,7 @@ function twsUpdate(delta)
 	}
 	
 	if(this.delay >= 400){
-		ClearDialogue();
+		DialogueClear();
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;
