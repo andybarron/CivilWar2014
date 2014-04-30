@@ -143,115 +143,6 @@ function twsInit()
 		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
 
-	/*
-	
-	// add Thomas Jefferson
-
-	var TJexture = [];
-	TJexture.push(Images.getTexture("Harriet.png")); // I know she looks bad but she's better than Thomas Jefferson
-	TJexture.push(Images.getTexture("Harriet_Speaking.png")); // She opens her mouth when you get close!
-	this.TJ = new PIXI.MovieClip(TJexture);
-
-	// do what's necessary to put him on the screen in a static location
-
-	this.TJ.anchor.x = 0.5;
-	this.TJ.anchor.y = 0.5;
-	this.TJ.position.x = 500;
-	this.TJ.position.y = 400;
-	stageWorld.addChild(this.TJ);
-	
-	//Placeholder NPC - so that BOX# lines up with NPCList[#]
-	var blankTexture = [];
-	blankTexture.push(Images.getTexture("nothing.png"));
-	blankTexture.push(Images.getTexture("nothing.png"));
-	this.Blanky = new PIXI.MovieClip(blankTexture);
-	
-	
-	// Not Lee anymore, Background NPC 1
-	
-	var LeeTexture = [];
-	LeeTexture.push(Images.getTexture("hat4.png"));
-	//LeeTexture.push(Images.getTexture("lee_h.png"));
-	this.Lee = new PIXI.MovieClip(LeeTexture);
-	
-	this.Lee.anchor.x = 0.5;
-	this.Lee.anchor.y = 0.5;
-	this.Lee.position.x = 100;
-	this.Lee.position.y = 100;
-	this.Lee.scale = new PIXI.Point(.2, .2);
-	stageWorld.addChild(this.Lee);
-	
-	// Background NPC 2
-	
-	var bgnpc2 = [];
-	bgnpc2.push(Images.getTexture("hat4.png"));
-	//LeeTexture.push(Images.getTexture("lee_h.png"));
-	this.backy2 = new PIXI.MovieClip(LeeTexture);
-	
-	this.backy2.anchor.x = 0.5;
-	this.backy2.anchor.y = 0.5;
-	this.backy2.position.x = 600;
-	this.backy2.position.y = 100;
-	this.backy2.scale = new PIXI.Point(.2, .2);
-	stageWorld.addChild(this.backy2);
-	
-	// Newspaper (inanimate objects can be NPC's too!)
-	
-	var news = [];
-	news.push(Images.getTexture("newspaper.png"));
-	//LeeTexture.push(Images.getTexture("lee_h.png"));
-	this.paper = new PIXI.MovieClip(news);
-	
-	this.paper.anchor.x = 0.5;
-	this.paper.anchor.y = 0.5;
-	this.paper.position.x = 100;
-	this.paper.position.y = 300;
-	this.paper.scale = new PIXI.Point(.2, .2);
-	stageWorld.addChild(this.paper);
-	
-	// NPC List
-	
-	this.NPCList = [];
-	this.NPCList.push(this.Blanky);
-	this.NPCList.push(this.TJ);
-	this.NPCList.push(this.Lee);
-	this.NPCList.push(this.backy2); 
-	this.NPCList.push(this.paper);
-	
-	
-	
-	//Proximity checker - I think this is outdated
-	
-	var TJbounds = this.TJ.getBounds();
-	
-	//add Dialogue Boxes
-	var boxen = [];
-   
-	//blank
-	boxen.push(Images.getTexture("BOX0.png"));
-	//TJ's (HT's?) dialogue box
-	boxen.push(Images.getTexture("BOX1.png"));
-	//Lee no, wait, first background NPC
-	boxen.push(Images.getTexture("BOX2.png"));
-	//backy2's
-	boxen.push(Images.getTexture("BOX3.png"));
-	//newspaper's
-	boxen.push(Images.getTexture("BOX4.png"));
-	//Tubman's answers
-	boxen.push(Images.getTexture("BOX5.png"));
-	boxen.push(Images.getTexture("BOX6.png"));
-	
-	this.dialoguebox = new PIXI.MovieClip(boxen);
-	
-	
-	this.dialoguebox.position.x = 0;
-	this.dialoguebox.position.y = 400;
-	this.dialoguebox.fixed = true;
-	
-	stageWorld.addChild(this.dialoguebox);
-	
-	*/
-
 	//helper variables for dialogue box control
 	//text display should be 1 if a dialogue box is on-screen
 	//interact should be 1 if the interaction button is currently held down
@@ -266,69 +157,6 @@ function twsInit()
 	this.loadingScreenIsDone = false;
 	this.delay = 0;
 	
-	//Answer boxes, makes the dialogue trees!
-	/*
-	var answerboxen1 = [];
-	answerboxen1.push(Images.getTexture("nothing.png"));
-	answerboxen1.push(Images.getTexture("tubanswer.png"));
-	
-	this.answerbox1 = new PIXI.MovieClip(answerboxen1);
-	this.answerbox1.position.x = 600;
-	this.answerbox1.position.y = 400;
-	this.answerbox1.fixed = true;
-	
-	stageWorld.addChild(this.answerbox1);
-	this.answerbox1.buttonMode = true;
-	
-	var answerboxen2 = [];
-	answerboxen2.push(Images.getTexture("nothing.png"));
-	answerboxen2.push(Images.getTexture("tubanswer2.png"));
-	
-	this.answerbox2 = new PIXI.MovieClip(answerboxen2);
-	this.answerbox2.position.x = 600;
-	this.answerbox2.position.y = 500;
-	this.answerbox2.fixed = true;
-	
-	stageWorld.addChild(this.answerbox2);
-	this.answerbox2.buttonMode = true;
-	
-	//Loading screen! Fun facts!
-	
-	var FunFacts = [];
-	FunFacts.push(Images.getTexture("FunFacts1.png"));
-	this.loadingscreen = new PIXI.MovieClip(FunFacts);
-	this.loadingscreen.alpha = 0;
-	this.loadingscreen.loop = false;
-	this.loadingscreen.fixed = true;
-	
-	stageWorld.addChild(this.loadingscreen);
-	
-	//Dialogue Tree Logic. TODO: Make this less hacky and hard-coded.
-	
-	this.answerbox1.interactive = true;
-	this.answerbox1.mousedown = function () {
-		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(5);
-			TestWorldScreen.answerbox1.gotoAndStop(0);
-			TestWorldScreen.answerbox2.gotoAndStop(0);
-			setTimeout(function(){
-				TestWorldScreen.fadeLoadingScreen = 1;
-			},5000);
-		}
-	};
-	
-	
-	this.answerbox2.interactive = true;
-	this.answerbox2.mousedown = function () {
-		if(TestWorldScreen.currNPC == 1){
-			TestWorldScreen.dialoguebox.gotoAndStop(6);
-			TestWorldScreen.answerbox1.gotoAndStop(0);
-			TestWorldScreen.answerbox2.gotoAndStop(0);
-			TestWorldScreen.delay = 1;
-		}
-	};
-	*/
-	
 	// Player character
 	stageWorld.addChild(this.bunny);
 	
@@ -338,47 +166,53 @@ function twsInit()
 	//stageWorld.addChild(this.text);
 	
 	//new dialogue box
-	this.dialoguetext1 = new PIXI.Text("", {
+	this.dialoguetext = new PIXI.Text("", {
 			font : "24px Arial",
-			fill : "white"
+			fill : "white",
+			wordWrap : true, //FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF I SPENT AN HOUR PROGRAMMING THIS IN WHEN I COULD HAVE JUST SET IT
+			wordWrapWidth : 750
 		});
-	this.dialoguetext1.position.x = 20;
-	this.dialoguetext1.position.y = 475;
-	//this.dialoguetext1.fixed = true;
-	this.ui.addChild(this.dialoguetext1);
-	this.dialoguetext1.setText("");
+	this.dialoguetext.position.x = 20;
+	this.dialoguetext.position.y = 450;
+	this.ui.addChild(this.dialoguetext);
 	
-	this.dialoguetext2 = new PIXI.Text("", {
+	this.answer1 = new PIXI.Text("AHSWER ", {
 			font : "24px Arial",
 			fill : "white"
 		});
-	this.dialoguetext2.position.x = 20;
-	this.dialoguetext2.position.y = 500;
-	//this.dialoguetext2.fixed = true;
-	this.ui.addChild(this.dialoguetext2);
-	this.dialoguetext2.setText("");
-	
-	this.dialoguetext3 = new PIXI.Text("", {
+		
+	this.answer1.position.x = 20;
+	this.answer1.position.y = 550;
+	this.ui.addChild(this.answer1);
+	this.answer1.interactive = true;
+	this.answer1.mousedown = function(){
+		Answer1();
+	};
+	this.answer1.ButtonMode = true;
+		
+	this.answer2 = new PIXI.Text("AHS ",{
 			font : "24px Arial",
 			fill : "white"
 		});
-	this.dialoguetext3.position.x = 20;
-	this.dialoguetext3.position.y = 525;
-	//this.dialoguetext3.fixed = true;
-	this.ui.addChild(this.dialoguetext3);
-	this.dialoguetext3.setText("");
-	
-	this.dialoguetext4 = new PIXI.Text("", {
-			font : "24px Arial",
-			fill : "white"
-		});
-	this.dialoguetext4.position.x = 20;
-	this.dialoguetext4.position.y = 550;
-	//this.dialoguetext4.fixed = true;
-	this.ui.addChild(this.dialoguetext4);
-	this.dialoguetext4.setText("");
+		
+	this.answer2.position.x = 420;
+	this.answer2.position.y = 550;
+	this.ui.addChild(this.answer2);
+	this.answer2.interactive = true;
+	this.answer2.mousedown = function(){
+		Answer2();
+	};
+	this.answer2.ButtonMode = true;
 	
 	this.ui.addChild(this.text);
+	
+	function Answer1(){
+		//change the dialogue to appropro stuff
+	}
+	
+	function Answer2(){
+		//see Answer1()
+	}
 }
 
 function twsUpdate(delta)
@@ -466,9 +300,8 @@ function twsUpdate(delta)
 				this.currNPC = i;
 				//BRING UP INTRO DIALOGUE
 				//TODO: Override this depending on conditionals
-				//this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
-				
-				DialogueDisplay(this.AllOfTheNPCs[i].dialogue.intro);
+
+				this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
 				
 			}
 		}
@@ -599,8 +432,9 @@ function twsOnKeyDown(keyCode)
 		Game.setScreen(SampleMiniGame);
 	}
 }
-
+/*
 function DialogueDisplay(Text){
+//GODDAMMIT PIXI, TELL ME IF YOU'VE ALREADY IMPLEMENTED WORDWRAP
 
 	//65 char per line
 	
@@ -663,12 +497,12 @@ function DialogueDisplay(Text){
 	TestWorldScreen.dialoguetext4.setText(final4);
 	
 }
+*/
 
 function DialogueClear(){
-TestWorldScreen.dialoguetext1.setText("");
-TestWorldScreen.dialoguetext2.setText("");
-TestWorldScreen.dialoguetext3.setText("");
-TestWorldScreen.dialoguetext4.setText("");
+TestWorldScreen.dialoguetext.setText("");
+TestWorldScreen.answer1.setText("");
+TestWorldScreen.answer2.setText("");
 }
 
 // method two of defining a Screen: inlining everything

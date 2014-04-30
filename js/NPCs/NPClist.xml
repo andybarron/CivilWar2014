@@ -10,11 +10,11 @@ Add conditionals to dialogue
 <npclist>
 	<NPC>
 		<name>Harriet Tubman</name>
-		<xpos>500</xpos>
-		<ypos>400</ypos>
-		<main_texture>Harriet.png</main_texture>
-		<interact_texture>Harriet_Speaking.png</interact_texture>
-		<scale>1</scale>
+		<xpos>1000</xpos>
+		<ypos>1000</ypos>
+		<main_texture>tubman.png</main_texture>
+		<interact_texture>tubman.png</interact_texture>
+		<scale>0.2</scale>
 		<dialogue>
 			<intro answer1="Yes" answer2="What" image="BOX1.png">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
 			<Yes image = "BOX5.png">Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
@@ -147,8 +147,8 @@ Add conditionals to dialogue
 	
 	<NPC>
 		<name>A newspaper</name>
-		<xpos>100</xpos>
-		<ypos>300</ypos>
+		<xpos>600</xpos>
+		<ypos>600</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
@@ -158,8 +158,8 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>Another newspaper</name>
-		<xpos>300</xpos>
-		<ypos>300</ypos>
+		<xpos>0</xpos>
+		<ypos>150</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
@@ -169,7 +169,7 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>A third newspaper</name>
-		<xpos>200</xpos>
+		<xpos>800</xpos>
 		<ypos>300</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
@@ -180,8 +180,8 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>A fourth newspaper</name>
-		<xpos>400</xpos>
-		<ypos>300</ypos>
+		<xpos>200</xpos>
+		<ypos>400</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
