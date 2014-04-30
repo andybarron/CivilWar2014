@@ -61,6 +61,10 @@ function twsInit()
 
 	var stageWorld = this.stage;
 	// just a nickname so we don't have to change so much stuff
+	var bg = Images.createSprite("env/town_map.png");
+	bg.position.x -= 100;
+	bg.position.y -= 100;
+	this.stage.addChild(bg);
 	
 	//REMEMBER - stuff added to the screen is added in order
 	//Lowest stuff first (the things that go behind everything else)
@@ -450,7 +454,7 @@ function twsUpdate(delta)
 			}
 		}
 	}
-	this.stage.children.sort(spriteZSort);
+	//this.stage.children.sort(spriteZSort);
 
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
