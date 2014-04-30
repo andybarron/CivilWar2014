@@ -61,10 +61,10 @@ function twsInit()
 
 	var stageWorld = this.stage;
 	// just a nickname so we don't have to change so much stuff
-	var bg = Images.createSprite("env/town_map.png");
-	bg.position.x -= 100;
-	bg.position.y -= 100;
-	this.stage.addChild(bg);
+	this.bg = Images.createSprite("env/town_map.png");
+	this.bg.position.x -= 100;
+	this.bg.position.y -= 100;
+	this.stage.addChild(this.bg);
 	
 	//REMEMBER - stuff added to the screen is added in order
 	//Lowest stuff first (the things that go behind everything else)
@@ -80,7 +80,6 @@ function twsInit()
 		});
 	this.text.position.x = 6;
 	this.text.position.y = 6;
-	this.text.fixed = true;
 
 	// add some random grass
 	for (var i = 0; i < 5; i++) {
@@ -264,6 +263,17 @@ function twsInit()
 		TestWorldScreen.answer2text = "";
 		TestWorldScreen.delay++;
 		}
+	}
+
+	for ( var asdf = 0; asdf < this.stage.children.length; asdf++ ) {
+		var dood = this.stage.children[asdf];
+		if (dood == this.bg) { continue; }
+		dood.interactive = true;
+		dood.mousedown = function () {
+			alert( dood.position.x + "," + dood.position.y );
+		};
+		dood.anchor.x = 0.5;
+		dood.anchor.y = 0.5;
 	}
 }
 
@@ -454,7 +464,7 @@ function twsUpdate(delta)
 			}
 		}
 	}
-	//this.stage.children.sort(spriteZSort);
+	this.stage.children.sort(spriteZSort);
 
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 

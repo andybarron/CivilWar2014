@@ -38,13 +38,13 @@ Screen.prototype.setCameraPosition = function(x,y) {
 Screen.prototype.translateCameraPosition = function(dx,dy) {
 	this.stage.position.x -= dx;
 	this.stage.position.y -= dy;
-	for(var i = 0; i < this.stage.children.length; i++) {
-		var child = this.stage.children[i];
-		if (exists(child.fixed) && child.fixed == true) {
-			child.position.x += dx;
-			child.position.y += dy;
-		}
-	}
+	// for(var i = 0; i < this.stage.children.length; i++) {
+	// 	var child = this.stage.children[i];
+	// 	if (exists(child.fixed) && child.fixed == true) {
+	// 		child.position.x += dx;
+	// 		child.position.y += dy;
+	// 	}
+	// }
 }
 
 Screen.prototype.getCameraPosition = function() {
