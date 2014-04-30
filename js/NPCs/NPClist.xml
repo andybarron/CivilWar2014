@@ -20,36 +20,11 @@ Add conditionals to dialogue
 		<scale>0.2</scale>
 		<dialogue>
 			<intro answer1="Yes" answer2="What">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
-			<Yes answer1="Okay" answer2="Nowai">Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
+			<Yes>Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
 			<What>Never mind. Just an old woman rambling.</What>
-			<Okay>Yay, game time.</Okay>
-			<Nowai>But... the slaves?!</Nowai>
 		</dialogue>
 		
-	</NPC>
-	<!--<NPC>
-		<name>Random Dude 1</name>
-		<xpos>100</xpos>
-		<ypos>100</ypos>
-		<main_texture>hat4.png</main_texture>
-		<interact_texture>hat4.png</interact_texture>
-		<scale>0.2</scale>
-		<dialogue>
-			<intro image = "BOX2.png">I read that Senator Brooks beat Senator Sumner with a cane a week ago on the Senate floor! War must be right around the corner...</intro>
-		</dialogue>
-	</NPC>
-	<NPC>
-		<name>Random Dude 2</name>
-		<xpos>600</xpos>
-		<ypos>100</ypos>
-		<main_texture>hat4.png</main_texture>
-		<interact_texture>hat4.png</interact_texture>
-		<scale>0.2</scale>
-		<dialogue>
-			<intro image = "BOX3.png">That woman down there sure is saying some strange things. I hope she isn't up to anything...</intro>
-		</dialogue>
-	</NPC>-->
-	
+	</NPC>	
 	<NPC>
 		<name>Female Villager</name>
 		<xpos>100</xpos>

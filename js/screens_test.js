@@ -142,8 +142,6 @@ function twsInit()
 		current.position.y = this.AllOfTheNPCs[i].y;
 		current.scale = new PIXI.Point(this.AllOfTheNPCs[i].scale, this.AllOfTheNPCs[i].scale);
 		stageWorld.addChild(current);
-		
-		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
 	
 	//helper variables for dialogue box control
@@ -172,7 +170,7 @@ function twsInit()
 	this.dialoguetext = new PIXI.Text("", {
 			font : "24px Arial",
 			fill : "white",
-			wordWrap : true, //FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF I SPENT AN HOUR PROGRAMMING THIS IN WHEN I COULD HAVE JUST SET IT
+			wordWrap : true,
 			wordWrapWidth : 750
 		});
 	this.dialoguetext.position.x = 20;
@@ -313,35 +311,6 @@ function twsUpdate(delta)
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
-		//OLD - delete this soon
-		/*
-		for(var i = 0; i < this.NPCList.length; i++){
-			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
-				this.interact = 1;
-				this.currNPC = i;
-				this.dialoguebox.gotoAndStop(i);
-				if(i == 1){//oh god why. no, no, no.
-					this.answerbox1.gotoAndStop(i);
-					this.answerbox2.gotoAndStop(i);
-					}
-					
-				// this.NPCinter[i] = true;
-				// var currInter = 0;
-				// for (var k = 0; i < this.NPCinter.length; k++){
-				// 	if (this.NPCinter[k] = true) {
-				// 		currInter += 1;
-				// 	}
-				// }	
-				talkedTo +=1;
-				//If dialogue trees extend past 1 branch, this needs to change
-				if(i > this.answerbox1.textures.length-1){
-					this.delay = 1;
-				}
-			}
-		}
-		*/
-		//NEW
-		
 		for(var i = 0; i < this.AllOfTheNPCs.length; i++){
 			if(recTouch(bunny.getBounds(),this.AllOfTheNPCs[i].MovieClip.getBounds(), -30)){
 				this.interact = 1;
@@ -374,11 +343,6 @@ function twsUpdate(delta)
 	//Press space again to stop interacting
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
-		/*
-		this.dialoguebox.gotoAndStop(0);
-		this.answerbox1.gotoAndStop(0);
-		this.answerbox2.gotoAndStop(0);
-		*/
 		DialogueClear();
 		this.interact = 1;
 	 }
@@ -418,9 +382,6 @@ function twsUpdate(delta)
 	}
 	
 	if(this.delay >= 400){
-		//this.dialoguebox.gotoAndStop(0);
-		//this.answerbox1.gotoAndStop(0);
-		//this.answerbox2.gotoAndStop(0);
 		ClearDialogue();
 		this.textdisplay = 0;
 		this.interact = 0;
@@ -489,72 +450,6 @@ function twsOnKeyDown(keyCode)
 		Game.setScreen(SampleMiniGame);
 	}
 }
-/*
-function DialogueDisplay(Text){
-//GODDAMMIT PIXI, TELL ME IF YOU'VE ALREADY IMPLEMENTED WORDWRAP
-
-	//65 char per line
-	
-	var textpart1=" ", textpart2=" ", textpart3=" ", textpart4=" ", final1=" ", final2=" ", final3=" ", final4=" ";
-	
-	textpart1 = Text.substr(0,66);
-	textpart2 = Text.substr(66, 131);
-	textpart3 = Text.substr(132, 196);
-	textpart4 = Text.substr(197, 250);
-	
-	//ONE LINE HERE
-	var temp = textpart1.split(" ");
-	for(var i = 0; i < temp.length-1;i++){
-		final1 += temp[i];
-		final1 += " ";
-	}
-	if(textpart2 == ""){
-		final1 += temp[temp.length-1];
-		TestWorldScreen.dialoguetext1.setText(final1);
-		return;
-	}
-	TestWorldScreen.dialoguetext1.setText(final1);
-	
-	//SECOND LINE HERE
-	final2 += temp[temp.length-1];
-	
-	var temp2 = textpart2.split(" ");
-	for(var i = 0; i < temp2.length-1;i++){
-		final2 += temp2[i];
-		final2 += " ";
-	}
-	if(textpart3 == ""){
-		final2 += temp2[temp2.length-1];
-		TestWorldScreen.dialoguetext2.setText(final2);
-		return;
-	}
-	TestWorldScreen.dialoguetext2.setText(final2);
-	
-	//Third Line Here
-	final3 += temp2[temp2.length-1];
-
-	var temp3 = textpart3.split(" ");
-	for(var i = 0; i < temp3.length-1;i++){
-		final3 += temp3[i];
-		final3 += " ";
-	}
-	if(textpart4 == ""){
-		final3 += temp3[temp3.length-1];
-		TestWorldScreen.dialoguetext3.setText(final3);
-		return;
-	}
-	TestWorldScreen.dialoguetext3.setText(final3);
-	
-	//Fourf Line Here
-	final4 += temp3[temp3.length-1]
-	
-	if(temp4 == "")
-	final4 += temp4;
-	
-	TestWorldScreen.dialoguetext4.setText(final4);
-	
-}
-*/
 
 function DialogueClear(){
 TestWorldScreen.dialoguetext.setText("");
