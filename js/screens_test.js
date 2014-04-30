@@ -167,6 +167,15 @@ function twsInit()
 	//stageWorld.addChild(this.text);
 	
 	//new dialogue box
+	
+	this.namebox = new PIXI.Text("",{
+			font : "24px Arial",
+			fill : "white",
+		});
+	this.namebox.position.x = 20;
+	this.namebox.position.y = 425;
+	this.ui.addChild(this.namebox);
+	
 	this.dialoguetext = new PIXI.Text("", {
 			font : "24px Arial",
 			fill : "white",
@@ -320,6 +329,7 @@ function twsUpdate(delta)
 				//BRING UP INTRO DIALOGUE
 				//TODO: Override this depending on conditionals
 
+				this.namebox.setText(this.currNPC.name);
 				this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
 				
 				//console.log(this.AllOfTheNPCs[i].answer1.intro);
@@ -461,6 +471,7 @@ function DialogueClear(){
 TestWorldScreen.dialoguetext.setText("");
 TestWorldScreen.answer1.setText("");
 TestWorldScreen.answer2.setText("");
+TestWorldScreen.namebox.setText("");
 }
 
 // method two of defining a Screen: inlining everything
@@ -538,17 +549,6 @@ init: function()
 		var backMap = PIXI.Texture.fromImage("map.png");
 		var back = new PIXI.Sprite(backMap);
 		this.stage.addChild(back);
-		
-		this.graphtext = new PIXI.Text("Click a node to get started!", {
-			font : "24px Arial",
-			fill : "black",
-			wordWrap : true,
-			wordWrapWidth : 200
-		});
-	this.graphtext.position.x = 600;
-	this.graphtext.position.y = 10;
-	this.stage.addChild(this.graphtext);
-		
 		var markTexture = [];
 	markTexture.push(Images.getTexture("node.png"));
 	markTexture.push(Images.getTexture("node_player.png"));
@@ -577,12 +577,12 @@ init: function()
 		this.mark3.sprite.position.y = 50;
 		this.mark3.setescape();*/
 		this.graph = [];
-		this.playernode = 21;
-		this.enemynode = 22;
+		this.playernode = 10;
+		this.enemynode = 11;
 		this.moves = 100;
 	//this.graph[this.playernode].setvis();
 	
-	strData = "50,475,\"San Antonio, Texas\",\"2,3\",2\n70,425,\"Austin, Texas\",\"1,3,4\",0\n100,445,\"Houston, Texas\",\"1,2,4\",0\n150,410,\"Alexandria, Louisiana\",\"2,3,5,7\",0\n200,430,\"Baton Rouge, Louisiana\",\"4,6,7,11\",0\n210,455,\"New Orleans, Louisiana\",\"5,\",5\n205,375,\"Jackson, Mississippi\",\"4,5,8,10\",0\n185,320,\"Little Rock, Arkansas\",\"7,9,15,16\",1\n270,345,\"Birmingham, Alabama\",\"8,10,16,17\",1\n270,375,\"Montgomery, Alabama\",\"7,9,11,17\",0\n275,420,\"Tallahassee, Florida\",\"5,10,12\",0\n365,430,\"St. Augustine, Florida\",\"11,13,18\",0\n375,475,\"Lakeland, Florida\",\"12,14\",0\n400,515,\"Everglades, Florida\",\"13,\",6\n175,270,\"Springfield, Missouri\",\"8,19\",0\n260,300,\"Nashville, Tennessee\",\"8,9,20\",0\n310,360,\"Atlanta, Georgia\",\"9,10,18,22\",0\n365,375,\"Savannah, Georgia\",\"12,17,23\",0\n185,260,\"Saint Louis, Missouri\",\"15,27,30\",0\n270,265,\"Louisville, Kentucky\",\"16,21,34\",0\n355,275,\"Roanoke, Virginia\",\"20,22,24,35,36\",1\n360,335,\"Columbia, South Carolina\",\"17,21,23\",0\n395,345,\"Charleston, South Carolina\",\"18,22,25,43\",4\n405,295,\"Raleigh, North Carolina\",\"21,22,25,36\",0\n430,310,\"Jacksonville, North Carolina\",\"23,24\",0\n155,185,\"Salem, Iowa\",\"27,28\",0\n205,220,\"Springfield, Illinois\",\"19,26,29,30\",0\n205,140,\"Madison, Wisconsin\",\"26,29\",2\n225,190,\"Chicago, Illinois\",\"27,28,30\",0\n250,235,\"Indianapolis, Indiana\",\"27,29,19,34\",0\n310,195,\"Cincinnati, Ohio\",\"33,37,32\",0\n280,150,\"Detroit, Michigan\",\"27,29,33\",2\n305,220,\"Columbus, Ohio\",\"31,35,34\",0\n295,240,\"Oberlin, Ohio\",\"30,20,33,35\",0\n355,230,\"Charleston, West Virginia\",\"33,34,37,21\",0\n405,248,\"Richmond, Virginia\",\"21,24,38\",0\n370,190,\"Pittsburgh, Pennsylvania\",\"31,35,39,38\",0\n420,215,\"Bethesda, Maryland\",\"36,37,39\",0\n430,195,\"Philadelphia, Pennsylvania\",\"37,38,42,40\",0\n435,140,\"Rochester, New York\",\"39,42,43,44,41\",2\n385,135,\"Albany, New York\",\"27,29,42\",0\n450,175,\"New York, New York\",\"39,40,43\",0\n485,130,\"Boston, Massachusetts\",\"40,42,23,44\",0\n465,95,\"Montpelier, Vermont\",\"27,29,45\",2";
+	strData = "50,475,\"San Antonio, Texas\",\"2,3\",2\n70,425,\"Austin, Texas\",\"1,3,4\",0\n100,445,\"Houston, Texas\",\"1,2,4,5\",0\n150,410,\"Alexandria, Louisiana\",\"2,3,5,7\",0\n200,430,\"Baton Rouge, Louisiana\",\"3,4,6,7,11\",0\n210,455,\"New Orleans, Louisiana\",\"5,\",5\n205,375,\"Jackson, Mississippi\",\"4,5,8,10\",0\n185,320,\"Little Rock, Arkansas\",\"7,9,15,16\",1\n270,345,\"Birmingham, Alabama\",\"8,10,16,17\",1\n270,375,\"Montgomery, Alabama\",\"7,9,11,17\",0\n275,420,\"Tallahassee, Florida\",\"5,10,12\",0\n365,430,\"St. Augustine, Florida\",\"11,13,18\",0\n375,475,\"Lakeland, Florida\",\"12,14\",0\n400,515,\"Everglades, Florida\",\"13,\",6\n175,270,\"Springfield, Missouri\",\"8,19\",0\n260,300,\"Nashville, Tennessee\",\"8,9,20\",0\n310,360,\"Atlanta, Georgia\",\"9,10,18,22\",0\n365,375,\"Savannah, Georgia\",\"12,17,23\",0\n185,260,\"Saint Louis, Missouri\",\"15,27\",0\n270,265,\"Louisiville, Kentucky\",\"16,21,31\",0\n355,275,\"Roanoke, Virginia\",\"20,22,24,35,36\",1\n360,335,\"Columbia, South Carolina\",\"17,21,23\",0\n395,345,\"Charleston, South Carolina\",\"18,22,25,42\",4\n405,295,\"Raleigh, North Carolina\",\"21,25\",0\n430,310,\"Jacksonville, North Carolina\",\"23,24\",0\n155,185,\"Des Moines, Iowa\",\"27,29\",0\n205,220,\"Springfield, Illinois\",\"19,26,29,30\",0\n205,140,\"Madison, Wisconsin\",\"26,29\",2\n225,190,\"Chicago, Illinois\",\"27,28,30\",0\n250,235,\"Indianapolis, Indiana\",\"27,29,31\",0\n310,195,\"Cincinnati, Ohio\",\"27,29,32\",0\n210,145,\"Detroit, Michigan\",\"27,29,33\",2\n305,220,\"Columbus, Ohio\",\"27,29,34\",0\n295,240,\"Cleveland, Ohio\",\"27,29,35\",0\n355,230,\"Charleston, West Virginia\",\"27,29,36\",0\n405,248,\"Richmond, Virginia\",\"27,29,37\",0\n370,190,\"Pittsburgh, Pennysylvania\",\"27,29,38\",0\n420,215,\"Annapolis, Maryland\",\"27,29,39\",0\n430,195,\"Philadelphia, Pennysylvania\",\"27,29,40\",0\n435,140,\"Rochester, New York\",\"27,29,41\",2\n385,135,\"Albany, New York\",\"27,29,42\",0\n450,175,\"New York, New York\",\"27,29,43\",0\n485,130,\"Boston, Massachusetts\",\"27,29,44\",0\n465,95,\"Montpelier, Vermont\",\"27,29,45\",2";
 	//all this code shamelessly stolen from http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
     	// Check to see if the delimiter is defined. If not,
     	// then default to comma.
@@ -683,7 +683,7 @@ init: function()
 	this.graph[0].setescape();
 	this.graph[27].setescape();
 	this.graph[31].setescape();
-	this.graph[40].setescape();
+	this.graph[39].setescape();
 	this.graph[43].setescape();
 	this.playerturn = true;
 	this.switchtimer = 120;
@@ -716,12 +716,8 @@ init: function()
 		//this.graph[this.playernode].setvis();
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
-		if(this.graph[i].touching(point)){
-		console.log("ATTEMPTED MOVE TO " + i);
-		}
-		if(this.graph[i].touching(point) && (this.graph[this.playernode].isAdj(this.graph[i]) || this.playernode == i) && this.moves > 0){
+		if(this.graph[i].touching(point) && this.graph[this.playernode].isAdj(this.graph[i]) && this.moves > 0){
 		this.playerturn = false;
-		this.graphtext.setText(this.graph[i]);
 		console.log("MOVING TO NODE " + i);
 		this.graph[this.playernode].setinvis();
 		this.graph[i].setvis();
@@ -729,34 +725,22 @@ init: function()
 		this.moves = this.moves - 1;
 		}
 		}
-		if (this.playernode == 0 || this.playernode == 27 || this.playernode == 31 || this.playernode == 40 || this.playernode == 43 ){
+		if (this.playernode == 0 || this.playernode == 27 || this.playernode == 31 || this.playernode == 39 || this.playernode == 43 ){
 		alert("you win!");
-		this.graph[this.playernode].setescape();
-		this.graph[this.enemynode].setinvis();
+		this.graph[this.playernode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		if (this.enemynode == this.playernode){
 		alert("you lose!");
 		this.graph[this.playernode].setinvis();
-		this.graph[this.enemynode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		}else{
 		for(var i = 0; i < this.graph.length; i++){
 		//console.log("checking node " + i);
-		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && i != 0 && i != 27 && i != 31 && i != 40 && i != 43){
+		if(this.graph[i].touching(point) && this.graph[this.enemynode].isAdj(this.graph[i]) && i != 0 && i != 27 && i != 31 && i != 39 && i != 43){
 		this.playerturn = true;
 		console.log("MOVING ENEMY TO NODE " + i);
 		this.graph[this.enemynode].setinvis();
@@ -768,14 +752,8 @@ init: function()
 		if (this.enemynode == this.playernode){
 		alert("you lose!");
 		this.graph[this.playernode].setinvis();
-		this.graph[this.enemynode].setinvis();
 		Game.setScreen(TestWorldScreen);
-		this.playernode = 21;
-		this.graph[this.playernode].setvis();
-		this.enemynode = 22;
-		this.graphtext.setText("Click a node to get started!");
-		this.playerturn = true;
-		this.switchtimer = 60;
+		this.playernode = 0;
 		}
 		}
 	}
