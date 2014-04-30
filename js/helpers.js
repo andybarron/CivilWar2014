@@ -122,6 +122,18 @@ function rectangleOverlapOrNull(r1,r2,err)
 	return overlap;
 }
 
+// character: person to be pushed
+// object: immovable obstacle
+// (OPTIONAL) err: positive for larger hitboxes, negative for smaller
+function resolveCollisionObject(character,object,err)
+{
+	var error = validateObject(err,0.0);
+}
+
+// e1: first entity
+// e2: second entity
+// (OPTIONAL) weight: 0.0 only moves e1; 1.0 only moves e2; 0.5 moves both equally
+// (OPTIONAL) err: positive for larger hitboxes, negative for smaller
 function resolveCollisionWeighted(e1,e2,weight,err)
 {
 	var w = validateObject(weight,0.5); // TODO clamp [0.0,1.0]
