@@ -33,6 +33,12 @@ this.sprite.gotoAndStop(0);
 this.setvis = function(){
 this.sprite.gotoAndStop(1);
 }
+this.setenemy = function(){
+this.sprite.gotoAndStop(2);
+}
+this.setescape = function(){
+this.sprite.gotoAndStop(3);
+}
 this.isAdj = function(node){
 for(var key in adjacent){
 if(adjacent[key] == node){
@@ -72,7 +78,7 @@ function twsInit()
 	this.text.position.y = 6;
 	this.text.fixed = true;
 
-	// add a hundred friends!
+	// add some random grass
 	for (var i = 0; i < 5; i++) {
 		var ob = new PIXI.Sprite(textureGreen);
 
@@ -121,23 +127,27 @@ function twsInit()
 	// attach him to the stageWorld is at the bottom, because the main character should probably be on top of everything
 	
 	//Load NPC's data from the XML file
-	var AllOfTheNPCs = [];
-	LoadNPCs(AllOfTheNPCs);
+	this.AllOfTheNPCs = [];
+	LoadNPCs(this.AllOfTheNPCs);
 	
 	//Add NPC's to the world
-	for(var i = 0; i < AllOfTheNPCs.length;i++){
-		AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(AllOfTheNPCs[i].texture);
+	for(var i = 0; i < this.AllOfTheNPCs.length;i++){
+		this.AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(this.AllOfTheNPCs[i].texture);
 		
-		var current = AllOfTheNPCs[i].MovieClip;
+		var current = this.AllOfTheNPCs[i].MovieClip;
 		
 		current.anchor.x = 0.5;
 		current.anchor.y = 0.5;
-		current.position.x = AllOfTheNPCs[i].x;
-		current.position.y = AllOfTheNPCs[i].y;
-		current.scale = new PIXI.Point(AllOfTheNPCs[i].scale, AllOfTheNPCs[i].scale);
+		current.position.x = this.AllOfTheNPCs[i].x;
+		current.position.y = this.AllOfTheNPCs[i].y;
+		current.scale = new PIXI.Point(this.AllOfTheNPCs[i].scale, this.AllOfTheNPCs[i].scale);
 		stageWorld.addChild(current);
+		
+		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
 
+	/*
+	
 	// add Thomas Jefferson
 
 	var TJexture = [];
@@ -251,6 +261,8 @@ function twsInit()
 	this.dialoguebox.fixed = true;
 	
 	stageWorld.addChild(this.dialoguebox);
+	
+	*/
 
 	//helper variables for dialogue box control
 	//text display should be 1 if a dialogue box is on-screen
@@ -267,7 +279,7 @@ function twsInit()
 	this.delay = 0;
 	
 	//Answer boxes, makes the dialogue trees!
-	
+	/*
 	var answerboxen1 = [];
 	answerboxen1.push(Images.getTexture("nothing.png"));
 	answerboxen1.push(Images.getTexture("tubanswer.png"));
@@ -327,13 +339,58 @@ function twsInit()
 			TestWorldScreen.delay = 1;
 		}
 	};
+	*/
 	
 	// Player character
 	stageWorld.addChild(this.bunny);
 	
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
-	stageWorld.addChild(this.text);
+
+	//stageWorld.addChild(this.text);
+	
+	//new dialogue box
+	this.dialoguetext1 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext1.position.x = 20;
+	this.dialoguetext1.position.y = 475;
+	//this.dialoguetext1.fixed = true;
+	this.ui.addChild(this.dialoguetext1);
+	this.dialoguetext1.setText("");
+	
+	this.dialoguetext2 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext2.position.x = 20;
+	this.dialoguetext2.position.y = 500;
+	//this.dialoguetext2.fixed = true;
+	this.ui.addChild(this.dialoguetext2);
+	this.dialoguetext2.setText("");
+	
+	this.dialoguetext3 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext3.position.x = 20;
+	this.dialoguetext3.position.y = 525;
+	//this.dialoguetext3.fixed = true;
+	this.ui.addChild(this.dialoguetext3);
+	this.dialoguetext3.setText("");
+	
+	this.dialoguetext4 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext4.position.x = 20;
+	this.dialoguetext4.position.y = 550;
+	//this.dialoguetext4.fixed = true;
+	this.ui.addChild(this.dialoguetext4);
+	this.dialoguetext4.setText("");
+	
+	this.ui.addChild(this.text);
 }
 
 function twsUpdate(delta)
@@ -364,12 +421,25 @@ function twsUpdate(delta)
 	
 	// if near an NPC, highlight them
 	
+	//OLD NPC's - delete this soon
+	/*
 	for(var i = 0; i < this.NPCList.length; i++){
 		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(1);
 		}
 		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(0);
+		}
+	}
+	*/
+	
+	//NEW NPC's
+	for(var i = 0; i < this.AllOfTheNPCs.length;i++){
+		if(recTouch(bunny.getBounds(), this.AllOfTheNPCs[i].MovieClip.getBounds(),-30)){
+			this.AllOfTheNPCs[i].MovieClip.gotoAndStop(1);
+		}
+		if(!recTouch(bunny.getBounds(), this.AllOfTheNPCs[i].MovieClip.getBounds(),-30)){
+			this.AllOfTheNPCs[i].MovieClip.gotoAndStop(0);
 		}
 	}
 
@@ -382,6 +452,8 @@ function twsUpdate(delta)
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
+		//OLD - delete this soon
+		/*
 		for(var i = 0; i < this.NPCList.length; i++){
 			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 				this.interact = 1;
@@ -406,6 +478,21 @@ function twsUpdate(delta)
 				}
 			}
 		}
+		*/
+		//NEW
+		
+		for(var i = 0; i < this.AllOfTheNPCs.length; i++){
+			if(recTouch(bunny.getBounds(),this.AllOfTheNPCs[i].MovieClip.getBounds(), -30)){
+				this.interact = 1;
+				this.currNPC = i;
+				//BRING UP INTRO DIALOGUE
+				//TODO: Override this depending on conditionals
+				//this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
+				
+				DialogueDisplay(this.AllOfTheNPCs[i].dialogue.intro);
+				
+			}
+		}
 	}
 	
 	if (this.interact == 1 && this.textdisplay == 0 && !Input.anyKeyDown(KEYS_INTERACT)){
@@ -413,18 +500,18 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
-	//console.log(this.currNPC);
-	
-	//Insert logic for dialogue trees here.
 	//While interacting, choices are available to peruse.
 	//So, space is to start talking, but everything else is mouse controlled.
 	
 	//Press space again to stop interacting
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
+		/*
 		this.dialoguebox.gotoAndStop(0);
 		this.answerbox1.gotoAndStop(0);
 		this.answerbox2.gotoAndStop(0);
+		*/
+		DialogueClear();
 		this.interact = 1;
 	 }
 	 
@@ -438,7 +525,7 @@ function twsUpdate(delta)
 	 }
 	 
 	 //Fade a loading screen
-	 
+	 /*
 	 //This is probably the hackiest thing I've done this semester.
 	 if(this.fadeLoadingScreen == 1 && this.loadingscreen.alpha <= 6){
 		this.loadingscreen.alpha+= 0.01;
@@ -454,7 +541,7 @@ function twsUpdate(delta)
 	//console.log(this.loadingscreen.alpha);
 	//console.log(this.fadeLoadingScreen);
 	//console.log(this.loadingScreenIsDone);
-	
+	*/
 	
 	//Delay function - in case people don't want to press the spacebar to end a conversation.
 	
@@ -499,6 +586,26 @@ function twsUpdate(delta)
 		}
 	}
 	*/
+	
+
+	for(var c1 = 0; c1 < this.stage.children.length; c1++) {
+		var ob1 = this.stage.children[c1];
+		if (exists(ob1.collision) && ob1.collision == true) {
+			for(var c2 = 0; c2 < this.stage.children.length; c2++) {
+				var ob2 = this.stage.children[c2];
+				if (c1 != c2 && exists(ob2.collision) && ob2.collision == true) {
+					resolveCollisionWeighted(
+						ob1,
+						ob2,
+						0.5,
+						-10
+					);
+				}
+			}
+		}
+	}
+	this.stage.children.sort(spriteZSort);
+
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
 	this.text.setText(DEBUG_MODE ? (Math.round(Game.fps) + " FPS") : "");
@@ -509,9 +616,80 @@ function twsOnKeyDown(keyCode)
 	// switch screens on ESC press
 	if (arrayContains(KEYS_EXIT,keyCode))
 	{
-		Game.setScreen(TestMenuScreen);
-		//Game.setScreen(SampleMiniGame);
+		//Game.setScreen(TestMenuScreen);
+		Game.setScreen(SampleMiniGame);
 	}
+}
+
+function DialogueDisplay(Text){
+
+	//65 char per line
+	
+	var textpart1=" ", textpart2=" ", textpart3=" ", textpart4=" ", final1=" ", final2=" ", final3=" ", final4=" ";
+	
+	textpart1 = Text.substr(0,66);
+	textpart2 = Text.substr(66, 131);
+	textpart3 = Text.substr(132, 196);
+	textpart4 = Text.substr(197, 250);
+	
+	//ONE LINE HERE
+	var temp = textpart1.split(" ");
+	for(var i = 0; i < temp.length-1;i++){
+		final1 += temp[i];
+		final1 += " ";
+	}
+	if(textpart2 == ""){
+		final1 += temp[temp.length-1];
+		TestWorldScreen.dialoguetext1.setText(final1);
+		return;
+	}
+	TestWorldScreen.dialoguetext1.setText(final1);
+	
+	//SECOND LINE HERE
+	final2 += temp[temp.length-1];
+	
+	var temp2 = textpart2.split(" ");
+	for(var i = 0; i < temp2.length-1;i++){
+		final2 += temp2[i];
+		final2 += " ";
+	}
+	if(textpart3 == ""){
+		final2 += temp2[temp2.length-1];
+		TestWorldScreen.dialoguetext2.setText(final2);
+		return;
+	}
+	TestWorldScreen.dialoguetext2.setText(final2);
+	
+	//Third Line Here
+	final3 += temp2[temp2.length-1];
+
+	var temp3 = textpart3.split(" ");
+	for(var i = 0; i < temp3.length-1;i++){
+		final3 += temp3[i];
+		final3 += " ";
+	}
+	if(textpart4 == ""){
+		final3 += temp3[temp3.length-1];
+		TestWorldScreen.dialoguetext3.setText(final3);
+		return;
+	}
+	TestWorldScreen.dialoguetext3.setText(final3);
+	
+	//Fourf Line Here
+	final4 += temp3[temp3.length-1]
+	
+	if(temp4 == "")
+	final4 += temp4;
+	
+	TestWorldScreen.dialoguetext4.setText(final4);
+	
+}
+
+function DialogueClear(){
+TestWorldScreen.dialoguetext1.setText("");
+TestWorldScreen.dialoguetext2.setText("");
+TestWorldScreen.dialoguetext3.setText("");
+TestWorldScreen.dialoguetext4.setText("");
 }
 
 // method two of defining a Screen: inlining everything
@@ -582,64 +760,133 @@ TestMenuScreen = new Screen ({
 SampleMiniGame = new Screen({
 init: function()
 	{
-		//this.doge = Images.createSprite("doge.png");
-		//this.stage.addChild(this.doge);
-
-		//this.doge.position.x = -13370;
-		//this.doge.position.y = -13370;
-
-		/*this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
-			font : "56px Arial",
-			fill: "001166",
-			wordWrap: true,
-			wordWrapWidth: 800
-		});*/
-		//this.testWords.position.x = 0;
-		//this.testWords.position.y = STAGE_H/3;
-		//this.stage.addChild(this.testWords);
-
-this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
-			font : "56px Arial",
-			fill: "001166",
-			wordWrap: true,
-			wordWrapWidth: 800
-		});
-		this.testWords.position.x = 0;
-		this.testWords.position.y = STAGE_H/3;
-		this.stage.addChild(this.testWords);
-		// gonna need to add the map, then add the overlays at the correct positions
-		// could either add the right objects at the right time, or just play with visibility if thats a thing
-		//new PIXI.Sprite(textureGreen);
-		//var textureMarker = PIXI.Texture.fromImage("lee.png");
-		//this.marker = new PIXI.Sprite(textureMarker);
-		//this.marker = Images.createSprite("lee.png");
-		//this.marker.mousedown = function(){
-		//alert("This is my alert!");
-		//};
-		//this.marker.mousedown = function () {
-		//alert("This is an alert!");
-		//};
+		/*
+		First off, let me apologize for this. Everything to create the graph is hardcoded. It's ugly. I'm sorry. I really am. But this is due in a few hours, so I'm gonna leave it. Feel free to build a better system, honestly, do.
+		-David
+		*/
 		var markTexture = [];
-	markTexture.push(Images.getTexture("lee.png"));
-	markTexture.push(Images.getTexture("lee_h.png"));
-	this.marker = new graphnode(new PIXI.MovieClip(markTexture), "start",[]);
+	markTexture.push(Images.getTexture("node.png"));
+	markTexture.push(Images.getTexture("node_player.png"));
+	markTexture.push(Images.getTexture("node_enemy.png"));
+	markTexture.push(Images.getTexture("node_escape.png"));
+	
+	/*this.marker = new graphnode(new PIXI.MovieClip(markTexture), "start",[]);
 	this.mark2 = new graphnode(new PIXI.MovieClip(markTexture), "end",[this.marker]);
 	this.mark3 = new graphnode(new PIXI.MovieClip(markTexture), "bonus",[this.marker,this.mark2]);
+	this.mark4 = new graphnode(new PIXI.MovieClip(markTexture), "namesarenotimportantrightnow",[this.marker,this.mark2, this.mark3]);
 	this.marker.adjacent.push(this.mark2);
 	this.marker.adjacent.push(this.mark3);
+	this.marker.adjacent.push(this.mark4);
 	this.mark2.adjacent.push(this.mark3);
+	this.mark2.adjacent.push(this.mark4);
+	this.mark3.adjacent.push(this.mark4);
 		this.stage.addChild(this.marker.sprite);
 		this.stage.addChild(this.mark2.sprite);
 		this.stage.addChild(this.mark3.sprite);
+		this.stage.addChild(this.mark4.sprite);
 		this.marker.sprite.position.x = 100;
 		this.marker.sprite.position.y = 30;
 		this.mark2.sprite.position.x = 200;
 		this.mark3.sprite.position.x = 300;
-		this.graph = [this.marker,this.mark2,this.mark3];
+		this.mark4.sprite.position.x = 400;
+		this.mark3.sprite.position.y = 50;
+		this.mark3.setescape();*/
+		this.graph = [];
 		this.playernode = 0;
 		this.enemynode = 1;
-		this.moves = 10;
-	this.graph[this.playernode].setvis();
+		this.moves = 100;
+	//this.graph[this.playernode].setvis();
+	
+	strData = "50,475,\"San Antonio, Texas\",\"2,3\",2\n70,425,\"Austin, Texas\",\"1,3,4\",0\n100,445,\"Houston, Texas\",\"1,2,4,5\",0\n150,410,\"Alexandria, Louisiana\",\"2,3,5,7\",0\n200,430,\"Baton Rouge, Louisiana\",\"3,4,6,7,11\",0\n210,455,\"New Orleans, Louisiana\",\"5,\",5\n205,375,\"Jackson, Mississippi\",\"4,5,8,10\",0\n185,320,\"Little Rock, Arkansas\",\"7,9,15,16\",1\n270,345,\"Birmingham, Alabama\",\"8,10,16,17\",1\n270,375,\"Montgomery, Alabama\",\"7,9,11,17\",0\n275,420,\"Tallahassee, Florida\",\"5,10,12\",0\n365,430,\"St. Augustine, Florida\",\"11,13,18\",0\n375,475,\"Lakeland, Florida\",\"12,14\",0\n400,515,\"Everglades, Florida\",\"13,\",6\n175,270,\"Springfield, Missouri\",\"8,19\",0\n260,300,\"Nashville, Tennessee\",\"8,9,20\",0\n310,360,\"Atlanta, Georgia\",\"9,10,18,22\",0\n365,375,\"Savannah, Georgia\",\"12,17,23\",0\n185,260,\"Saint Louis, Missouri\",\"15,27\",0\n270,265,\"Louisiville, Kentucky\",\"16,21,31\",0\n355,275,\"Roanoke, Virginia\",\"20,22,24,35,36\",1\n360,335,\"Columbia, South Carolina\",\"17,21,23\",0\n395,345,\"Charleston, South Carolina\",\"18,22,25,42\",4\n405,295,\"Raleigh, North Carolina\",\"21,25\",0\n430,310,\"Jacksonville, North Carolina\",\"23,24\",0\n155,185,\"Des Moines, Iowa\",\"27,29\",0\n205,220,\"Springfield, Illinois\",\"19,26,29,30\",0\n210,145,\"Madison, Wisconsin\",\"26,29\",2\n225,190,\"Chicago, Illinois\",\"27,28,30\",0\n250,235,\"Indianapolis, Indiana\",\"27,29,31\",0\n310,195,\"Cincinnati, Ohio\",\"27,29,32\",0\n210,145,\"Detroit, Michigan\",\"27,29,33\",2\n305,220,\"Columbus, Ohio\",\"27,29,34\",0\n295,240,\"Cleveland, Ohio\",\"27,29,35\",0\n355,230,\"Charleston, West Virginia\",\"27,29,36\",0\n405,248,\"Richmond, Virginia\",\"27,29,37\",0\n370,190,\"Pittsburgh, Pennysylvania\",\"27,29,38\",0\n420,215,\"Annapolis, Maryland\",\"27,29,39\",0\n430,195,\"Philadelphia, Pennysylvania\",\"27,29,40\",0\n435,140,\"Rochester, New York\",\"27,29,41\",2\n385,135,\"Albany, New York\",\"27,29,42\",0\n450,175,\"New York, New York\",\"27,29,43\",0\n485,130,\"Boston, Massachusetts\",\"27,29,44\",0\n465,95,\"Montpelier, Vermont\",\"27,29,45\",2";
+	//all this code shamelessly stolen from http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+    	// Check to see if the delimiter is defined. If not,
+    	// then default to comma.
+		strDelimiter = null;
+    	strDelimiter = (strDelimiter || ",");
+
+    	// Create a regular expression to parse the CSV values.
+    	var objPattern = new RegExp(
+    		(
+    			// Delimiters.
+    			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+    			// Quoted fields.
+    			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+    			// Standard fields.
+    			"([^\"\\" + strDelimiter + "\\r\\n]*))"
+    		),
+    		"gi"
+    		);
+
+
+    	// Create an array to hold our data. Give the array
+    	// a default empty first row.
+    	var arrData = [[]];
+
+    	// Create an array to hold our individual pattern
+    	// matching groups.
+    	var arrMatches = null;
+
+
+    	// Keep looping over the regular expression matches
+    	// until we can no longer find a match.
+    	while (arrMatches = objPattern.exec( strData )){
+
+    		// Get the delimiter that was found.
+    		var strMatchedDelimiter = arrMatches[ 1 ];
+
+    		// Check to see if the given delimiter has a length
+    		// (is not the start of string) and if it matches
+    		// field delimiter. If id does not, then we know
+    		// that this delimiter is a row delimiter.
+    		if (
+    			strMatchedDelimiter.length &&
+    			(strMatchedDelimiter != strDelimiter)
+    			){
+
+    			// Since we have reached a new row of data,
+    			// add an empty row to our data array.
+    			arrData.push( [] );
+
+    		}
+
+
+    		// Now that we have our delimiter out of the way,
+    		// let's check to see which kind of value we
+    		// captured (quoted or unquoted).
+    		if (arrMatches[ 2 ]){
+
+    			// We found a quoted value. When we capture
+    			// this value, unescape any double quotes.
+    			var strMatchedValue = arrMatches[ 2 ].replace(
+    				new RegExp( "\"\"", "g" ),
+    				"\""
+    				);
+
+    		} else {
+
+    			// We found a non-quoted value.
+    			var strMatchedValue = arrMatches[ 3 ];
+
+    		}
+
+
+    		// Now that we have our value string, let's add
+    		// it to the data array.
+    		arrData[ arrData.length - 1 ].push( strMatchedValue );
+    	}
+	
+	for(var key in arrData){
+	//alert(arrData[key][2]);
+	var tempnode = new graphnode(new PIXI.MovieClip(markTexture), arrData[key][2],[]);
+	this.stage.addChild(tempnode.sprite);
+	tempnode.sprite.position.x = arrData[key][0];
+	tempnode.sprite.position.y = arrData[key][1];
+	this.graph.push(tempnode);
+	}
+	
+	
 	},
 	update: function(delta)
 	{
@@ -720,4 +967,5 @@ TestStartScreen = new Screen ({
 			Game.setScreen(TestWorldScreen);
 		
 	}
+
 });

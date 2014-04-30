@@ -3,56 +3,190 @@
 <!-- I'm aiming to depreciate the 'image' field in dialogue -->
 
 <!-- 
-TODO: Add scaling
+TODO:
 Make dialogue work with new system
 Add conditionals to dialogue
 -->
 <npclist>
 	<NPC>
 		<name>Harriet Tubman</name>
-		<xpos>2000</xpos>
-		<ypos>-200</ypos>
+		<xpos>500</xpos>
+		<ypos>400</ypos>
 		<main_texture>Harriet.png</main_texture>
 		<interact_texture>Harriet_Speaking.png</interact_texture>
 		<scale>1</scale>
 		<dialogue>
 			<intro answer1="Yes" answer2="What" image="BOX1.png">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
-			<Yes>Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
-			<What>Never mind. Just an old woman rambling.</What>
+			<Yes image = "BOX5.png">Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
+			<What image = "BOX6.png">Never mind. Just an old woman rambling.</What>
 		</dialogue>
 		
 	</NPC>
-	<NPC>
+	<!--<NPC>
 		<name>Random Dude 1</name>
-		<xpos>2000</xpos>
+		<xpos>100</xpos>
 		<ypos>100</ypos>
 		<main_texture>hat4.png</main_texture>
 		<interact_texture>hat4.png</interact_texture>
 		<scale>0.2</scale>
 		<dialogue>
-			<intro>I read that Senator Brooks beat Senator Sumner with a cane a week ago on the Senate floor! War must be right around the corner...</intro>
+			<intro image = "BOX2.png">I read that Senator Brooks beat Senator Sumner with a cane a week ago on the Senate floor! War must be right around the corner...</intro>
 		</dialogue>
 	</NPC>
 	<NPC>
 		<name>Random Dude 2</name>
-		<xpos>2000</xpos>
-		<ypos>300</ypos>
+		<xpos>600</xpos>
+		<ypos>100</ypos>
 		<main_texture>hat4.png</main_texture>
 		<interact_texture>hat4.png</interact_texture>
 		<scale>0.2</scale>
 		<dialogue>
-			<intro>That woman down there sure is saying some strange things. I hope she isn't up to anything...</intro>
+			<intro image = "BOX3.png">That woman down there sure is saying some strange things. I hope she isn't up to anything...</intro>
+		</dialogue>
+	</NPC>-->
+	
+	<NPC>
+		<name>Female Villager</name>
+		<xpos>100</xpos>
+		<ypos>0</ypos>
+		<main_texture>femalevillager.png</main_texture>
+		<interact_texture>femalevillager.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>The men keep talking of a coming separation. Will my son have to go and fight?</intro>
 		</dialogue>
 	</NPC>
 	<NPC>
+		<name>Female NPC2</name>
+		<xpos>400</xpos>
+		<ypos>0</ypos>
+		<main_texture>femalevillager2.png</main_texture>
+		<interact_texture>femalevillager2.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>General Lee is such a gentleman!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Male NPC1</name>
+		<xpos>100</xpos>
+		<ypos>400</ypos>
+		<main_texture>malevillager.png</main_texture>
+		<interact_texture>malevillager.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>We're going to show those Yankees, you wait and see! The South is fine as it is - we don't need Lincoln!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Male NPC2</name>
+		<xpos>600</xpos>
+		<ypos>400</ypos>
+		<main_texture>malevillager2.png</main_texture>
+		<interact_texture>malevillager2.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>I don't know what my wife will do if I go to fight. The farm is enough work as it is.</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>McClellan</name>
+		<xpos>800</xpos>
+		<ypos>0</ypos>
+		<main_texture>mcclellan.png</main_texture>
+		<interact_texture>mcclellan.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>Between you and me, the battle of First Bull Run was not good for the Union. We must press forward!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Lee</name>
+		<xpos>200</xpos>
+		<ypos>700</ypos>
+		<main_texture>general lee.png</main_texture>
+		<interact_texture>general lee.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>I fight for my state and my Confederacy. The South is in danger from Lincoln.</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Union Soldier</name>
+		<xpos>1100</xpos>
+		<ypos>0</ypos>
+		<main_texture>unionsoldier.png</main_texture>
+		<interact_texture>unionsoldier.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>We'll beat the rebels! Those Confederates are lazy traitors!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Confederate Soldier</name>
+		<xpos>200</xpos>
+		<ypos>1100</ypos>
+		<main_texture>confederatesoldier.png</main_texture>
+		<interact_texture>confederatesoldier.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>The Yankees have no honor. The pride of the Southern Gentlemen will prevail!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Abe</name>
+		<xpos>400</xpos>
+		<ypos>200</ypos>
+		<main_texture>abe.png</main_texture>
+		<interact_texture>abe.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>On the eve of this great war I fear for the Union. Do you think there will be a conflict?</intro>
+		</dialogue>
+	</NPC>
+	
+	<NPC>
 		<name>A newspaper</name>
-		<xpos>2000</xpos>
-		<ypos>500</ypos>
+		<xpos>100</xpos>
+		<ypos>300</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
 		<dialogue>
-			<intro>Brooks Canes Sumner! 'The fragments of the stick are begged for as sacred relics' says Brooks.</intro>
+			<intro image = "BOX4.png">Brooks Canes Sumner! 'The fragments of the stick are begged for as sacred relics' says Brooks.</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>Another newspaper</name>
+		<xpos>300</xpos>
+		<ypos>300</ypos>
+		<main_texture>newspaper.png</main_texture>
+		<interact_texture>newspaper.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>Lincoln wins election!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>A third newspaper</name>
+		<xpos>200</xpos>
+		<ypos>300</ypos>
+		<main_texture>newspaper.png</main_texture>
+		<interact_texture>newspaper.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>Southerners fire on Fort Sumter!</intro>
+		</dialogue>
+	</NPC>
+	<NPC>
+		<name>A fourth newspaper</name>
+		<xpos>400</xpos>
+		<ypos>300</ypos>
+		<main_texture>newspaper.png</main_texture>
+		<interact_texture>newspaper.png</interact_texture>
+		<scale>0.2</scale>
+		<dialogue>
+			<intro>Virginia secedes!</intro>
 		</dialogue>
 	</NPC>
 </npclist>
@@ -63,6 +197,7 @@ Add conditionals to dialogue
 		<ypos></ypos>
 		<main_texture></main_texture>
 		<interact_texture></interact_texture>
+		<scale></scale>
 		<dialogue>
 			<intro></intro>
 		</dialogue>
