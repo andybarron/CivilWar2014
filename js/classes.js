@@ -9,6 +9,7 @@ function Screen(cfg)
 	this.backgroundColor = validateObject(cfg.backgroundColor,DEFAULT_BACKGROUND_COLOR);
 
 	this.stage = new PIXI.DisplayObjectContainer();
+	this.ui = new PIXI.DisplayObjectContainer();
 
 	this.init();
 

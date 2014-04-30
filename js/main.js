@@ -49,7 +49,7 @@ Game.setScreen = function(screen) {
 	{
 		debug("removing a child...");
 		Game.stage.removeChild(Game.stage.children[0]);
-		if(i != 0)
+		if(i > 1)
 		{
 			throw "There are extraneous root objects on the stage!!";
 			return;
@@ -57,6 +57,7 @@ Game.setScreen = function(screen) {
 	}
 	Game.stage.setBackgroundColor(screen.backgroundColor);
 	Game.stage.addChild(screen.stage);
+	Game.stage.addChild(screen.ui);
 	Game.currentScreen = screen;
 	Game.audio = document.getElementById("MUSIC");	
 }

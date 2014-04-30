@@ -294,7 +294,7 @@ function twsInit()
 	
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
-	stageWorld.addChild(this.text);
+	this.ui.addChild(this.text);
 }
 
 function twsUpdate(delta)
@@ -451,6 +451,21 @@ function twsUpdate(delta)
 		}
 	}
 	*/
+	
+
+	for(var c1 = 0; c1 < this.stage.children.length; c1++) {
+		for(var c2 = 0; c2 < this.stage.children.length; c2++) {
+			if (c1 != c2) {
+				resolveCollisionWeighted(
+					this.stage.children[c1],
+					this.stage.children[c2],
+					0.5,
+					-10
+				);
+			}
+		}
+	}
+
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
 	this.text.setText(DEBUG_MODE ? (Math.round(Game.fps) + " FPS") : "");

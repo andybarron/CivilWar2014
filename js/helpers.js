@@ -90,6 +90,71 @@ function recTouch(a,b,error) // error > 0 is easier to hit (bigger)
 	}
 }
 
+// var a = new PIXI.Rectangle(0.0,0.0,10.0,20.0);
+// var b = new PIXI.Rectangle(7.0,3.0,20.0,10.0);
+function rectangleOverlapOrNull(r1,r2,err)
+{
+	var error = validateObject(err,0.0);
+	var modified = (error != 0.0);
+	var a = !modified ? r1 : r1.clone();
+	var b = !modified ? r2 : r2.clone();
+	if (modified) {
+		var dif = -error/2.0;
+		a.x += dif;
+		b.x += dif;
+		a.y += dif;
+		b.y += dif;
+		a.width -= dif;
+		b.width -= dif;
+		a.height -= dif;
+		b.height -= dif;
+	}
+	var overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x,b.x));
+	var overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y,b.y));
+	var overlap = null;
+	if (Math.min(overlapX,overlapY) != 0.0) {
+		overlap = new PIXI.Rectangle();
+		overlap.width = overlapX;
+		overlap.height = overlapY;
+		overlap.x = Math.min(a.x + a.width,b.x + b.width) - overlap.width;
+		overlap.y = Math.min(a.y + a.height, b.y + b.height) - overlap.height;
+	}
+	return overlap;
+}
+
+function resolveCollisionWeighted(e1,e2,weight,err)
+{
+	var w = validateObject(weight,0.5); // TODO clamp [0.0,1.0]
+	var error = validateObject(err,0.0);
+	var w1 = 1.0 - w;
+	var w2 = w;
+	var r1 = e1.getBounds();
+	var r2 = e2.getBounds();
+	var overlap = rectangleOverlapOrNull(r1,r2,error);
+	if (overlap != null) {
+		if (overlap.width < overlap.height) {
+			if ( r1.x + r1.width/2.0 < r2.x + r2.width / 2.0 ) {
+				w1 *= -1.0;
+			} else {
+				w2 *= -1.0;
+			}
+			e1.position.x += w1*overlap.width/2.0;
+			e2.position.x += w2*overlap.width/2.0;
+		} else {
+			if ( r1.y + r1.height/2.0 < r2.y + r2.height / 2.0 ) {
+				w1 *= -1.0;
+			} else {
+				w2 *= -1.0;
+			}
+			e1.position.y += w1*overlap.height/2.0;
+			e2.position.y += w2*overlap.height/2.0;
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function spriteZSort(a,b)
 {
 	if(a.position.y < b.position.y)
