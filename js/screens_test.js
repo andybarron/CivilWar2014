@@ -91,21 +91,23 @@ function twsInit()
 	// attach him to the stageWorld is at the bottom, because the main character should probably be on top of everything
 	
 	//Load NPC's data from the XML file
-	var AllOfTheNPCs = [];
-	LoadNPCs(AllOfTheNPCs);
+	this.AllOfTheNPCs = [];
+	LoadNPCs(this.AllOfTheNPCs);
 	
 	//Add NPC's to the world
-	for(var i = 0; i < AllOfTheNPCs.length;i++){
-		AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(AllOfTheNPCs[i].texture);
+	for(var i = 0; i < this.AllOfTheNPCs.length;i++){
+		this.AllOfTheNPCs[i]["MovieClip"] = new PIXI.MovieClip(this.AllOfTheNPCs[i].texture);
 		
-		var current = AllOfTheNPCs[i].MovieClip;
+		var current = this.AllOfTheNPCs[i].MovieClip;
 		
 		current.anchor.x = 0.5;
 		current.anchor.y = 0.5;
-		current.position.x = AllOfTheNPCs[i].x;
-		current.position.y = AllOfTheNPCs[i].y;
-		current.scale = new PIXI.Point(AllOfTheNPCs[i].scale, AllOfTheNPCs[i].scale);
+		current.position.x = this.AllOfTheNPCs[i].x;
+		current.position.y = this.AllOfTheNPCs[i].y;
+		current.scale = new PIXI.Point(this.AllOfTheNPCs[i].scale, this.AllOfTheNPCs[i].scale);
 		stageWorld.addChild(current);
+		
+		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
 
 	// add Thomas Jefferson
@@ -295,6 +297,47 @@ function twsInit()
 	// add fps text last to make sure it's on top of everything
 	// (ow ow)
 	stageWorld.addChild(this.text);
+	
+	//new dialogue box
+	this.dialoguetext1 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext1.position.x = 20;
+	this.dialoguetext1.position.y = 475;
+	this.dialoguetext1.fixed = true;
+	stageWorld.addChild(this.dialoguetext1);
+	this.dialoguetext1.setText("");
+	
+	this.dialoguetext2 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext2.position.x = 20;
+	this.dialoguetext2.position.y = 500;
+	this.dialoguetext2.fixed = true;
+	stageWorld.addChild(this.dialoguetext2);
+	this.dialoguetext2.setText("");
+	
+	this.dialoguetext3 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext3.position.x = 20;
+	this.dialoguetext3.position.y = 525;
+	this.dialoguetext3.fixed = true;
+	stageWorld.addChild(this.dialoguetext3);
+	this.dialoguetext3.setText("");
+	
+	this.dialoguetext4 = new PIXI.Text("", {
+			font : "24px Arial",
+			fill : "white"
+		});
+	this.dialoguetext4.position.x = 20;
+	this.dialoguetext4.position.y = 550;
+	this.dialoguetext4.fixed = true;
+	stageWorld.addChild(this.dialoguetext4);
+	this.dialoguetext4.setText("");
 }
 
 function twsUpdate(delta)
@@ -325,12 +368,23 @@ function twsUpdate(delta)
 	
 	// if near an NPC, highlight them
 	
+	//OLD NPC's - delete this soon
 	for(var i = 0; i < this.NPCList.length; i++){
 		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(1);
 		}
 		if(!recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(0);
+		}
+	}
+	
+	//NEW NPC's
+	for(var i = 0; i < this.AllOfTheNPCs.length;i++){
+		if(recTouch(bunny.getBounds(), this.AllOfTheNPCs[i].MovieClip.getBounds(),-30)){
+			this.AllOfTheNPCs[i].MovieClip.gotoAndStop(1);
+		}
+		if(!recTouch(bunny.getBounds(), this.AllOfTheNPCs[i].MovieClip.getBounds(),-30)){
+			this.AllOfTheNPCs[i].MovieClip.gotoAndStop(0);
 		}
 	}
 
@@ -343,6 +397,7 @@ function twsUpdate(delta)
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
+		//OLD - delete this soon
 		for(var i = 0; i < this.NPCList.length; i++){
 			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 				this.interact = 1;
@@ -358,6 +413,21 @@ function twsUpdate(delta)
 				}
 			}
 		}
+		
+		//NEW
+		
+		for(var i = 0; i < this.AllOfTheNPCs.length; i++){
+			if(recTouch(bunny.getBounds(),this.AllOfTheNPCs[i].MovieClip.getBounds(), -30)){
+				this.interact = 1;
+				this.currNPC = i;
+				//BRING UP INTRO DIALOGUE
+				//TODO: Override this depending on conditionals
+				//this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
+				
+				DialogueDisplay(this.AllOfTheNPCs[i].dialogue.intro);
+				
+			}
+		}
 	}
 	
 	if (this.interact == 1 && this.textdisplay == 0 && !Input.anyKeyDown(KEYS_INTERACT)){
@@ -365,9 +435,6 @@ function twsUpdate(delta)
 		this.interact =  0;
 	}
 	
-	//console.log(this.currNPC);
-	
-	//Insert logic for dialogue trees here.
 	//While interacting, choices are available to peruse.
 	//So, space is to start talking, but everything else is mouse controlled.
 	
@@ -377,6 +444,7 @@ function twsUpdate(delta)
 		this.dialoguebox.gotoAndStop(0);
 		this.answerbox1.gotoAndStop(0);
 		this.answerbox2.gotoAndStop(0);
+		DialogueClear();
 		this.interact = 1;
 	 }
 	 
@@ -463,6 +531,87 @@ function twsOnKeyDown(keyCode)
 	{
 		Game.setScreen(TestMenuScreen);
 	}
+}
+
+function DialogueDisplay(Text){
+
+	//65 char per line
+	
+	var textpart1=" ", textpart2=" ", textpart3=" ", textpart4=" ", final1=" ", final2=" ", final3=" ", final4=" ";
+	
+	textpart1 = Text.substr(0,66);
+	console.log(Text);
+	textpart2 = Text.substr(66, 131);
+	textpart3 = Text.substr(132, 196);
+	textpart4 = Text.substr(197, 250);
+	
+	//ONE LINE HERE
+	//console.log(textpart1);
+	var temp = textpart1.split(" ");
+	for(var i = 0; i < temp.length-1;i++){
+		final1 += temp[i];
+		final1 += " ";
+		console.log("t1: "+temp[i]);
+	}
+	if(textpart2 == ""){
+		final1 += temp[temp.length-1];
+		TestWorldScreen.dialoguetext1.setText(final1);
+		return;
+	}
+	TestWorldScreen.dialoguetext1.setText(final1);
+	
+	//SECOND LINE HERE
+	final2 += temp[temp.length-1];
+	console.log(temp[temp.length-1]);
+	
+	//console.log(textpart2);
+	var temp2 = textpart2.split(" ");
+	for(var i = 0; i < temp2.length-1;i++){
+		final2 += temp2[i];
+		final2 += " ";
+		console.log("t2: "+temp2[i]);
+	}
+	if(textpart3 == ""){
+		final2 += temp2[temp2.length-1];
+		TestWorldScreen.dialoguetext2.setText(final2);
+		return;
+	}
+	TestWorldScreen.dialoguetext2.setText(final2);
+	
+	//Third Line Here
+	final3 += temp2[temp2.length-1];
+	console.log(temp2[temp2.length-1]);
+	
+	//console.log(textpart2);
+	var temp3 = textpart3.split(" ");
+	for(var i = 0; i < temp3.length-1;i++){
+		final3 += temp3[i];
+		final3 += " ";
+		console.log("t3: "+temp3[i]);
+	}
+	if(textpart4 == ""){
+		final3 += temp3[temp3.length-1];
+		TestWorldScreen.dialoguetext3.setText(final3);
+		return;
+	}
+	TestWorldScreen.dialoguetext3.setText(final3);
+	
+	//Fourf Line Here
+	final4 += temp3[temp3.length-1]
+	
+	final4 += temp4;
+	
+	console.log("t4: "+temp4);
+	
+	TestWorldScreen.dialoguetext4.setText(final4);
+	
+}
+
+function DialogueClear(){
+TestWorldScreen.dialoguetext1.setText("");
+TestWorldScreen.dialoguetext2.setText("");
+TestWorldScreen.dialoguetext3.setText("");
+TestWorldScreen.dialoguetext4.setText("");
 }
 
 // method two of defining a Screen: inlining everything
