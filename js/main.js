@@ -11,7 +11,7 @@ Game.canvas = document.createElement("canvas");
 Game.canvas.id = 'display';
 Game.canvas.width = STAGE_W;
 Game.canvas.height = STAGE_H;
-document.body.appendChild(Game.canvas);
+document.getElementById("game-display").appendChild(Game.canvas);
 
 Game.stage = new PIXI.Stage(0x66CC99);
 Game.currentScreen = null; // we make sure to call Game.setScreen()

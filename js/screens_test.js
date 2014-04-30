@@ -464,7 +464,7 @@ function twsUpdate(delta)
 			}
 		}
 	}
-	this.stage.children.sort(spriteZSort);
+	//this.stage.children.sort(spriteZSort);
 
 	this.centerCameraPosition(bunny.position.x, bunny.position.y);
 
