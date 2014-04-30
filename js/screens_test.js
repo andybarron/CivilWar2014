@@ -69,7 +69,7 @@ function twsInit()
 	this.text.position.y = 6;
 	this.text.fixed = true;
 
-	// add a hundred friends!
+	// add some random grass
 	for (var i = 0; i < 5; i++) {
 		var ob = new PIXI.Sprite(textureGreen);
 
@@ -137,6 +137,8 @@ function twsInit()
 		//console.log(this.AllOfTheNPCs[i].dialogue.Yes);
 	}
 
+	/*
+	
 	// add Thomas Jefferson
 
 	var TJexture = [];
@@ -241,6 +243,8 @@ function twsInit()
 	this.dialoguebox.fixed = true;
 	
 	stageWorld.addChild(this.dialoguebox);
+	
+	*/
 
 	//helper variables for dialogue box control
 	//text display should be 1 if a dialogue box is on-screen
@@ -257,7 +261,7 @@ function twsInit()
 	this.delay = 0;
 	
 	//Answer boxes, makes the dialogue trees!
-	
+	/*
 	var answerboxen1 = [];
 	answerboxen1.push(Images.getTexture("nothing.png"));
 	answerboxen1.push(Images.getTexture("tubanswer.png"));
@@ -317,6 +321,7 @@ function twsInit()
 			TestWorldScreen.delay = 1;
 		}
 	};
+	*/
 	
 	// Player character
 	stageWorld.addChild(this.bunny);
@@ -399,6 +404,7 @@ function twsUpdate(delta)
 	// if near an NPC, highlight them
 	
 	//OLD NPC's - delete this soon
+	/*
 	for(var i = 0; i < this.NPCList.length; i++){
 		if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 			this.NPCList[i].gotoAndStop(1);
@@ -407,6 +413,7 @@ function twsUpdate(delta)
 			this.NPCList[i].gotoAndStop(0);
 		}
 	}
+	*/
 	
 	//NEW NPC's
 	for(var i = 0; i < this.AllOfTheNPCs.length;i++){
@@ -428,6 +435,7 @@ function twsUpdate(delta)
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 0 && this.interact == 0) {
 	
 		//OLD - delete this soon
+		/*
 		for(var i = 0; i < this.NPCList.length; i++){
 			if(recTouch(bunny.getBounds(), this.NPCList[i].getBounds(), -30)){
 				this.interact = 1;
@@ -443,7 +451,7 @@ function twsUpdate(delta)
 				}
 			}
 		}
-		
+		*/
 		//NEW
 		
 		for(var i = 0; i < this.AllOfTheNPCs.length; i++){
@@ -471,9 +479,11 @@ function twsUpdate(delta)
 	//Press space again to stop interacting
 	
 	if (Input.anyKeyDown(KEYS_INTERACT) && this.textdisplay == 1 && this.interact == 0) {
+		/*
 		this.dialoguebox.gotoAndStop(0);
 		this.answerbox1.gotoAndStop(0);
 		this.answerbox2.gotoAndStop(0);
+		*/
 		DialogueClear();
 		this.interact = 1;
 	 }
@@ -488,7 +498,7 @@ function twsUpdate(delta)
 	 }
 	 
 	 //Fade a loading screen
-	 
+	 /*
 	 //This is probably the hackiest thing I've done this semester.
 	 if(this.fadeLoadingScreen == 1 && this.loadingscreen.alpha <= 6){
 		this.loadingscreen.alpha+= 0.01;
@@ -504,7 +514,7 @@ function twsUpdate(delta)
 	//console.log(this.loadingscreen.alpha);
 	//console.log(this.fadeLoadingScreen);
 	//console.log(this.loadingScreenIsDone);
-	
+	*/
 	
 	//Delay function - in case people don't want to press the spacebar to end a conversation.
 	
@@ -591,18 +601,15 @@ function DialogueDisplay(Text){
 	var textpart1=" ", textpart2=" ", textpart3=" ", textpart4=" ", final1=" ", final2=" ", final3=" ", final4=" ";
 	
 	textpart1 = Text.substr(0,66);
-	console.log(Text);
 	textpart2 = Text.substr(66, 131);
 	textpart3 = Text.substr(132, 196);
 	textpart4 = Text.substr(197, 250);
 	
 	//ONE LINE HERE
-	//console.log(textpart1);
 	var temp = textpart1.split(" ");
 	for(var i = 0; i < temp.length-1;i++){
 		final1 += temp[i];
 		final1 += " ";
-		console.log("t1: "+temp[i]);
 	}
 	if(textpart2 == ""){
 		final1 += temp[temp.length-1];
@@ -613,14 +620,11 @@ function DialogueDisplay(Text){
 	
 	//SECOND LINE HERE
 	final2 += temp[temp.length-1];
-	console.log(temp[temp.length-1]);
 	
-	//console.log(textpart2);
 	var temp2 = textpart2.split(" ");
 	for(var i = 0; i < temp2.length-1;i++){
 		final2 += temp2[i];
 		final2 += " ";
-		console.log("t2: "+temp2[i]);
 	}
 	if(textpart3 == ""){
 		final2 += temp2[temp2.length-1];
@@ -631,14 +635,11 @@ function DialogueDisplay(Text){
 	
 	//Third Line Here
 	final3 += temp2[temp2.length-1];
-	console.log(temp2[temp2.length-1]);
-	
-	//console.log(textpart2);
+
 	var temp3 = textpart3.split(" ");
 	for(var i = 0; i < temp3.length-1;i++){
 		final3 += temp3[i];
 		final3 += " ";
-		console.log("t3: "+temp3[i]);
 	}
 	if(textpart4 == ""){
 		final3 += temp3[temp3.length-1];
@@ -650,9 +651,8 @@ function DialogueDisplay(Text){
 	//Fourf Line Here
 	final4 += temp3[temp3.length-1]
 	
+	if(temp4 == "")
 	final4 += temp4;
-	
-	console.log("t4: "+temp4);
 	
 	TestWorldScreen.dialoguetext4.setText(final4);
 	

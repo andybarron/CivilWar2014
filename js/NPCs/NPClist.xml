@@ -10,8 +10,8 @@ Add conditionals to dialogue
 <npclist>
 	<NPC>
 		<name>Harriet Tubman</name>
-		<xpos>2000</xpos>
-		<ypos>-200</ypos>
+		<xpos>500</xpos>
+		<ypos>400</ypos>
 		<main_texture>Harriet.png</main_texture>
 		<interact_texture>Harriet_Speaking.png</interact_texture>
 		<scale>1</scale>
@@ -24,7 +24,7 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>Random Dude 1</name>
-		<xpos>2000</xpos>
+		<xpos>100</xpos>
 		<ypos>100</ypos>
 		<main_texture>hat4.png</main_texture>
 		<interact_texture>hat4.png</interact_texture>
@@ -35,8 +35,8 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>Random Dude 2</name>
-		<xpos>2000</xpos>
-		<ypos>300</ypos>
+		<xpos>600</xpos>
+		<ypos>100</ypos>
 		<main_texture>hat4.png</main_texture>
 		<interact_texture>hat4.png</interact_texture>
 		<scale>0.2</scale>
@@ -46,8 +46,8 @@ Add conditionals to dialogue
 	</NPC>
 	<NPC>
 		<name>A newspaper</name>
-		<xpos>2000</xpos>
-		<ypos>500</ypos>
+		<xpos>100</xpos>
+		<ypos>300</ypos>
 		<main_texture>newspaper.png</main_texture>
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
