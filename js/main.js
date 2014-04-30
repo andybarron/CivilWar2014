@@ -106,7 +106,7 @@ Input.init({
 	mouseAnchor : Game.canvas
 });
 
-Game.setScreen(TestWorldScreen);
+Game.setScreen(TestStartScreen);
 
 // IMPORTANT: render the stageWorld once before calling an update
 // so all the PIXI variables and actors are updated properly

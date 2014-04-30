@@ -11,6 +11,9 @@ TestWorldScreen = new Screen ({
 	// remember, you need commas after every
 	// key-value pair except the last one!
 });
+
+var talkedTo = 0;
+
 function graphnode(sprite,name,adjacent){
 this.sprite = sprite;
 this.name = name;
@@ -202,11 +205,20 @@ function twsInit()
 	// NPC List
 	
 	this.NPCList = [];
+	
 	this.NPCList.push(this.Blanky);
 	this.NPCList.push(this.TJ);
 	this.NPCList.push(this.Lee);
 	this.NPCList.push(this.backy2); 
 	this.NPCList.push(this.paper);
+	
+	//NPC interaction list 
+	
+	this.NPCinter = [];
+	for (var k = 0; k < this.NPCList.length; k++){
+		this.NPCinter.push(false);
+	}
+	
 	
 	
 	
@@ -379,6 +391,15 @@ function twsUpdate(delta)
 					this.answerbox1.gotoAndStop(i);
 					this.answerbox2.gotoAndStop(i);
 					}
+					
+				// this.NPCinter[i] = true;
+				// var currInter = 0;
+				// for (var k = 0; i < this.NPCinter.length; k++){
+				// 	if (this.NPCinter[k] = true) {
+				// 		currInter += 1;
+				// 	}
+				// }	
+				talkedTo +=1;
 				//If dialogue trees extend past 1 branch, this needs to change
 				if(i > this.answerbox1.textures.length-1){
 					this.delay = 1;
@@ -501,63 +522,46 @@ function twsOnKeyDown(keyCode)
 TestMenuScreen = new Screen ({
 	init: function()
 	{
-		Sounds.load("bark.wav");
-		this.doge = Images.createSprite("doge.png");
-		this.stage.addChild(this.doge);
-
-		this.dogeX = 0;
-		this.dogeY = 0;
-		this.dogeTime = 1;
-		this.doged = false;
-
-		this.doge.position.x = -13370;
-		this.doge.position.y = -90010;
-
-		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
+		this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014, Press up to go to the Start screen, ESC to go back to the game", {
 			font : "56px Arial",
 			fill: "001166",
 			wordWrap: true,
 			wordWrapWidth: 800
 		});
 		this.testWords.position.x = 0;
-		this.testWords.position.y = STAGE_H/3;
+		this.testWords.position.y = 0;
+		this.stage.addChild(this.testWords);
+		
+		
+		this.testWords = new PIXI.Text("Created by: University of Virginia students Alexander Kaplan, Andy Barron, Anne Owen, Becca Stein, Craig Hunter, Danielle Senft, David Amin, Delphine Trinh, Divya Bhaskara, Erin Winters, Himica Kumar, Hunter Dewing, Jessica Ya, Nicholas Lytle, Nicole Zurita, Samuel Knox, Samuel Ogbe, Tracy Alers, Uday Varkhadkar, Zane Laughlin, Zheng Qin. ", {
+			font : "25px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = 2*STAGE_H/3;
 		this.stage.addChild(this.testWords);
 
-
-		// just for fun.... ;)
-		this.doges = ["wow","many game","such eduation","brother vs brother","amaze sgd",
-			"war so civl","ken burns","wow","such game","many educate","nick lytle is the man","aeiou","egg of easter"];
-		var doges = this.doges;
-
-		for(var i = 0; i < doges.length; i++)
-		{
-			//this.onMouseDown( new PIXI.Point(Math.random()*STAGE_W/2,Math.random()*STAGE_H/2+STAGE_H/4) );
-		}
 
 	},
 	update: function(delta)
 	{
-		this.dogeTime += delta;
-		if(this.dogeTime >= 1)
-		{
-			if(this.doged){
-				this.onMouseDown( new PIXI.Point( this.dogeX, this.dogeY+100 ) );
-				Sounds.play("bark.wav");
-			}
-			this.doged = true;
-			this.dogeTime -= 1;
-			this.oldX = this.doge.position.x;
-			this.oldY = this.doge.position.y;
-			this.dogeX = Math.random()*STAGE_W - this.doge.width/2;
-			this.dogeY = Math.random()*STAGE_H - this.doge.height/2;
-		}
 
-		var tx = this.dogeX;
-		var ty = this.dogeY;
-		var x = this.doge.position.x;
-		var y = this.doge.position.y;
-		this.doge.position.x += (tx-x)/4;
-		this.doge.position.y += (ty-y)/4;
+		// var interactions = 0;
+		// for(var i = 0; i < talkedTo.length; i++)
+		// {
+		// 	interactions += talkedTo[i];
+		// }
+		this.inters = new PIXI.Text(talkedTo, {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.inters.position.x = 0;
+		this.inters.position.y = STAGE_H/2;
+		this.stage.addChild(this.inters);
 	},
 	onKeyDown: function(keyCode)
 	{
@@ -565,19 +569,16 @@ TestMenuScreen = new Screen ({
 		{
 			Game.setScreen(TestWorldScreen);
 		}
+
+		if (arrayContains(KEYS_UP,keyCode))
+		{ 
+			Game.setScreen(TestStartScreen);
+		}
 	},
-	onMouseDown: function(point)
-	{
-		var doges = this.doges;
-		var dogeWord = new PIXI.Text(doges[getRandomInt(doges.length)], {
-			font : "36px Comic Sans MS",
-			fill: getRandomInt(99) + "" + getRandomInt(99) + "" + getRandomInt(99)
-		});
-		dogeWord.position.x = point.x;
-		dogeWord.position.y = point.y;
-		this.stage.addChild(dogeWord);
-	}
+
+
 });
+
 SampleMiniGame = new Screen({
 init: function()
 	{
@@ -669,5 +670,54 @@ this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
 		Game.setScreen(TestWorldScreen);
 		this.playernode = 0;
 		}
+	}
+});
+
+TestStartScreen = new Screen ({
+	init: function()
+	{
+	
+
+		this.testWords = new PIXI.Text("Welcome to the Civil War! Click anywhere to get started.", {
+			font : "56px Arial",
+			fill: "001166",
+			wordWrap: true,
+			wordWrapWidth: 800
+		});
+		this.testWords.position.x = 0;
+		this.testWords.position.y = STAGE_H/3;
+		this.stage.addChild(this.testWords);
+
+
+		var textureButton = [];
+		textureButton.push(Images.getTexture("playbutton.png"));
+		this.button = new PIXI.MovieClip(textureButton);
+		
+		this.button.anchor.x = 0.5;
+		this.button.anchor.y = 0.5;
+		this.button.position.x = 100;
+		this.button.position.y = 100;
+		this.button.scale = new PIXI.Point(.2, .2);
+		this.stage.addChild(this.button);
+		
+
+		this.button.interactive = true;
+		this.button.mousedown = function () {
+			Game.setScreen(TestWorldScreen);
+		}
+
+
+	},
+	onKeyDown: function(keyCode)
+	{
+		if (arrayContains(KEYS_INTERACT,keyCode))
+		{
+			Game.setScreen(TestWorldScreen);
+		}
+	},
+	onMouseDown: function(point)
+	{
+			Game.setScreen(TestWorldScreen);
+		
 	}
 });
