@@ -35,8 +35,8 @@ for(var key in adjacent){
 if(adjacent[key] == node){
 return true;
 }
-return false;
 }
+return false;
 }
 }
 function twsInit()
@@ -623,15 +623,22 @@ this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
 	markTexture.push(Images.getTexture("lee_h.png"));
 	this.marker = new graphnode(new PIXI.MovieClip(markTexture), "start",[]);
 	this.mark2 = new graphnode(new PIXI.MovieClip(markTexture), "end",[this.marker]);
+	this.mark3 = new graphnode(new PIXI.MovieClip(markTexture), "bonus",[this.marker,this.mark2]);
 	this.marker.adjacent.push(this.mark2);
+	this.marker.adjacent.push(this.mark3);
+	this.mark2.adjacent.push(this.mark3);
 		this.stage.addChild(this.marker.sprite);
 		this.stage.addChild(this.mark2.sprite);
+		this.stage.addChild(this.mark3.sprite);
 		this.marker.sprite.position.x = 100;
 		this.marker.sprite.position.y = 30;
 		this.mark2.sprite.position.x = 200;
-		this.graph = [this.marker,this.mark2];
+		this.mark3.sprite.position.x = 300;
+		this.graph = [this.marker,this.mark2,this.mark3];
 		this.playernode = 0;
+		this.enemynode = 1;
 		this.moves = 10;
+	this.graph[this.playernode].setvis();
 	},
 	update: function(delta)
 	{
@@ -655,6 +662,12 @@ this.testWords = new PIXI.Text("CIVIL WAR PROJECT 2014", {
 		this.playernode = i;
 		this.moves = this.moves - 1;
 		}
+		}
+		if (this.playernode == 2){
+		alert("you win!");
+		this.graph[this.playernode].setinvis();
+		Game.setScreen(TestWorldScreen);
+		this.playernode = 0;
 		}
 	}
 });
