@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Make sure all fields are filled with something. -->
-<!-- I'm aiming to depreciate the 'image' field in dialogue -->
+<!-- 
+REQUIREMENT: All tags under dialogue (per NPC) need to be unique.
+Example: Harriet Tubman can only have 1 <Yes></Yes> dialogue, but Abe can also have only 1 <Yes></Yes>
+-->
+
 
 <!-- 
 TODO:
-Get trees/answer working
 Add conditionals to dialogue
 -->
 <npclist>
@@ -16,9 +19,11 @@ Add conditionals to dialogue
 		<interact_texture>tubman.png</interact_texture>
 		<scale>0.2</scale>
 		<dialogue>
-			<intro answer1="Yes" answer2="What" image="BOX1.png">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
-			<Yes image = "BOX5.png">Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
-			<What image = "BOX6.png">Never mind. Just an old woman rambling.</What>
+			<intro answer1="Yes" answer2="What">Got a lot of bundles of wood headed up this way. Are you a friend of the flying bondsmen?</intro>
+			<Yes answer1="Okay" answer2="Nowai">Well I've got some parcel headed here by the Freedom Train. Care to help them out?</Yes>
+			<What>Never mind. Just an old woman rambling.</What>
+			<Okay>Yay, game time.</Okay>
+			<Nowai>But... the slaves?!</Nowai>
 		</dialogue>
 		
 	</NPC>
@@ -153,7 +158,7 @@ Add conditionals to dialogue
 		<interact_texture>newspaper.png</interact_texture>
 		<scale>0.2</scale>
 		<dialogue>
-			<intro image = "BOX4.png">Brooks Canes Sumner! 'The fragments of the stick are begged for as sacred relics' says Brooks.</intro>
+			<intro>Brooks Canes Sumner! 'The fragments of the stick are begged for as sacred relics' says Brooks.</intro>
 		</dialogue>
 	</NPC>
 	<NPC>

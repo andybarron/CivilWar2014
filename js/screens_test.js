@@ -179,7 +179,7 @@ function twsInit()
 	this.dialoguetext.position.y = 450;
 	this.ui.addChild(this.dialoguetext);
 	
-	this.answer1 = new PIXI.Text("AHSWER ", {
+	this.answer1 = new PIXI.Text("", {
 			font : "24px Arial",
 			fill : "white"
 		});
@@ -215,11 +215,42 @@ function twsInit()
 	
 	//I have run out of brain. If there's a way to get text from a PIXI.text object, please tell me.
 	function Answer1(){
-		console.log(TestWorldScreen.answer1text);
+	
+		oldtext = TestWorldScreen.answer1text;
+		TestWorldScreen.dialoguetext.setText(TestWorldScreen.currNPC.dialogue[TestWorldScreen.answer1text]);
+		try{
+		TestWorldScreen.answer1.setText(TestWorldScreen.currNPC.answer1[oldtext]);
+		TestWorldScreen.answer2.setText(TestWorldScreen.currNPC.answer2[oldtext]);
+		TestWorldScreen.answer1text = TestWorldScreen.currNPC.answer1[oldtext];
+		TestWorldScreen.answer2text = TestWorldScreen.currNPC.answer2[oldtext];
+		
+		}catch(e){
+		TestWorldScreen.answer1.setText("");
+		TestWorldScreen.answer2.setText("");
+		TestWorldScreen.answer1text = "";
+		TestWorldScreen.answer2text = "";
+		}
+		
+	
+		
 	}
 	
 	function Answer2(){
-		console.log(TestWorldScreen.answer2text);
+	
+		oldtext = TestWorldScreen.answer2text;
+		TestWorldScreen.dialoguetext.setText(TestWorldScreen.currNPC.dialogue[oldtext]);
+		
+		try{
+		TestWorldScreen.answer1.setText(TestWorldScreen.currNPC.answer1[oldtext]);
+		TestWorldScreen.answer2.setText(TestWorldScreen.currNPC.answer2[oldtext]);
+		TestWorldScreen.answer1text = TestWorldScreen.currNPC.answer1[oldtext];
+		TestWorldScreen.answer2text = TestWorldScreen.currNPC.answer2[oldtext];
+		}catch(e){
+		TestWorldScreen.answer1.setText("");
+		TestWorldScreen.answer2.setText("");
+		TestWorldScreen.answer1text = "";
+		TestWorldScreen.answer2text = "";
+		}
 	}
 }
 
@@ -314,11 +345,19 @@ function twsUpdate(delta)
 		for(var i = 0; i < this.AllOfTheNPCs.length; i++){
 			if(recTouch(bunny.getBounds(),this.AllOfTheNPCs[i].MovieClip.getBounds(), -30)){
 				this.interact = 1;
-				this.currNPC = i;
+				this.currNPC = this.AllOfTheNPCs[i];
 				//BRING UP INTRO DIALOGUE
 				//TODO: Override this depending on conditionals
 
 				this.dialoguetext.setText(this.AllOfTheNPCs[i].dialogue.intro);
+				
+				//console.log(this.AllOfTheNPCs[i].answer1.intro);
+				
+				this.answer1.setText(this.AllOfTheNPCs[i].answer1.intro);
+				this.answer1text = this.AllOfTheNPCs[i].answer1.intro;
+				
+				this.answer2.setText(this.AllOfTheNPCs[i].answer2.intro);
+				this.answer2text = this.AllOfTheNPCs[i].answer2.intro;
 				
 			}
 		}
@@ -379,9 +418,10 @@ function twsUpdate(delta)
 	}
 	
 	if(this.delay >= 400){
-		this.dialoguebox.gotoAndStop(0);
-		this.answerbox1.gotoAndStop(0);
-		this.answerbox2.gotoAndStop(0);
+		//this.dialoguebox.gotoAndStop(0);
+		//this.answerbox1.gotoAndStop(0);
+		//this.answerbox2.gotoAndStop(0);
+		ClearDialogue();
 		this.textdisplay = 0;
 		this.interact = 0;
 		this.currNPC = 0;

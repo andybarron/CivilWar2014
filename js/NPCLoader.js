@@ -16,24 +16,29 @@ var scale = xmlDoc.getElementsByTagName("scale");
 var XMLdialogue = xmlDoc.getElementsByTagName("dialogue");
 
 
-//console.log("Name: "+XMLdialogue[0].childNodes[1].nodeName);
-//console.log("Value: "+XMLdialogue[0].childNodes[1].childNodes[0].nodeValue);
-
-
 for(var i = 0; i < xmlDoc.getElementsByTagName("NPC").length;i++){
 	
 	var textures = [];
 	textures.push(Images.getTexture(texture1[i].childNodes[0].nodeValue));
 	textures.push(Images.getTexture(texture2[i].childNodes[0].nodeValue));
 	
-	var dialogue = {};
+	var dialogue = new Object();
+	var answer1 = {};
+	var answer2 = {};
+	
 	for(var j = 0; j < XMLdialogue.length; j++){
 		
 		try{
-		//console.log("NPC#: "+i);
-		//console.log("NUMER: "+j);		//console.log(XMLdialogue[i].childNodes[j].childNodes[0].nodeValue);
 		dialogue[XMLdialogue[i].childNodes[j].nodeName] = XMLdialogue[i].childNodes[j].childNodes[0].nodeValue;
-		}catch(e){/*console.log("This should probably be null.")*/}
+		//Makes NPC.dialogue.<name> a choice for dialogue
+		//NPC's always start with their <intro> (for now)
+		
+		answer1[XMLdialogue[i].childNodes[j].nodeName] = XMLdialogue[i].childNodes[j].attributes.getNamedItem("answer1").nodeValue;
+		
+		answer2[XMLdialogue[i].childNodes[j].nodeName] = XMLdialogue[i].childNodes[j].attributes.getNamedItem("answer2").nodeValue;
+
+		
+		}catch(e){}
 	}
 	
 	 
@@ -43,7 +48,10 @@ for(var i = 0; i < xmlDoc.getElementsByTagName("NPC").length;i++){
 				y:y[i].childNodes[0].nodeValue, 
 				texture:textures,
 				scale:scale[i].childNodes[0].nodeValue,
-				dialogue:dialogue};
+				dialogue:dialogue,
+				answer1: answer1,
+				answer2: answer2
+				};
 
 	NPCArray.push(NPC);
 
