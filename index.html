@@ -1,29 +1,44 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>Civil War Project</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-        }
-        #display {
-            margin: 0 auto;
-            margin-top: 10px;
-            display: block;
-            border: 3px solid white;
-        }
-    </style>
-</head>
-<body>
-
-<script src="js/lib/jquery.min.js"></script>
-<script src="js/lib/pixi.min.js"></script>
-<script src="js/constants.js"></script>
-<script src="js/helpers.js"></script>
-<script src="js/classes.js"></script>
-<script src="js/screens_test.js"></script>
-<script src="js/main.js"></script>
-</body>
+	<head>
+		<title>Civil War Project</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: #000000;
+			}
+			#display {
+				margin: 0 auto;
+				margin-top: 10px;
+				display: block;
+				border: 3px solid white;
+			}
+			#game-instructions {
+				color: white;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id ="game-display"></div>
+		<div id ="game-instructions">
+			Arrow keys to move <br>
+			Space to interact <br>
+			ESC to try escape game <br>
+		</div>
+		<script src="js/lib/jquery.min.js"></script>
+		<script src="js/lib/pixi.min.js"></script>
+		<script src="js/constants.js"></script>
+		<script src="js/helpers.js"></script>
+		<script src="js/NPCLoader.js"></script>
+		<script src="js/classes.js"></script>
+		<script src="js/screens_test.js"></script>
+		
+		<audio loop autoplay id="MUSIC"  preload="auto">
+			<source src="assets/sfx/civil war 02 town ambient.mp3" type="audio/mp3">
+			Your browser does not support the audio element.
+		</audio>
+		<script src="js/main.js"></script>
+	</body>
 </html>

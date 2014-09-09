@@ -9,8 +9,51 @@ function Screen(cfg)
 	this.backgroundColor = validateObject(cfg.backgroundColor,DEFAULT_BACKGROUND_COLOR);
 
 	this.stage = new PIXI.DisplayObjectContainer();
+	this.ui = new PIXI.DisplayObjectContainer();
 
 	this.init();
+
+}
+
+// TODO add a second UI stage per screen
+// for now... that'll do, pig, that'll do
+
+// setting "child.fixed = true" will prevent objects
+// from scrolling with the camera
+
+// consider a second overlay for fixed children/objects
+
+// DON'T manually set position of the stage outside
+// of these methods, since, well, it's backwards.
+// because reasons.
+
+Screen.prototype.setCameraPosition = function(x,y) {
+	var oldPos = this.getCameraPosition();
+	var oldX = oldPos.x;
+	var oldY = oldPos.y;
+
+	this.translateCameraPosition(x-oldX,y-oldY);
+}
+
+Screen.prototype.translateCameraPosition = function(dx,dy) {
+	this.stage.position.x -= dx;
+	this.stage.position.y -= dy;
+	// for(var i = 0; i < this.stage.children.length; i++) {
+	// 	var child = this.stage.children[i];
+	// 	if (exists(child.fixed) && child.fixed == true) {
+	// 		child.position.x += dx;
+	// 		child.position.y += dy;
+	// 	}
+	// }
+}
+
+Screen.prototype.getCameraPosition = function() {
+	var backwards = this.stage.position;
+	return {x: -backwards.x, y: -backwards.y};
+}
+
+Screen.prototype.centerCameraPosition = function(x,y) {
+	this.setCameraPosition(x-STAGE_W/2.0,y-STAGE_H/2.0);
 }
 
 
